@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:orange_player/core/audiohandler.dart';
 import '../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../injection.dart' as di;
 

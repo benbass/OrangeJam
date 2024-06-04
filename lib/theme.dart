@@ -83,10 +83,10 @@ class AppTheme {
     textTheme: _textTheme,
     elevatedButtonTheme: const ElevatedButtonThemeData(
         style: ButtonStyle(
-      elevation: MaterialStatePropertyAll(30),
-      backgroundColor: MaterialStatePropertyAll(_primaryVariantColor),
-      textStyle: MaterialStatePropertyAll(_headingText),
-      foregroundColor: MaterialStatePropertyAll(_textColor),
+      elevation: WidgetStatePropertyAll(30),
+      backgroundColor: WidgetStatePropertyAll(_primaryVariantColor),
+      textStyle: WidgetStatePropertyAll(_headingText),
+      foregroundColor: WidgetStatePropertyAll(_textColor),
     )),
     buttonTheme: const ButtonThemeData(
       buttonColor: _accentColor,
@@ -104,7 +104,7 @@ class AppTheme {
     ),
     dropdownMenuTheme: const DropdownMenuThemeData(
       menuStyle: MenuStyle(
-        backgroundColor: MaterialStatePropertyAll(_primaryColor),
+        backgroundColor: WidgetStatePropertyAll(_primaryColor),
       ),
     ),
     snackBarTheme: SnackBarThemeData(
