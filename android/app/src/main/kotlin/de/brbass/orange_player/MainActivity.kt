@@ -1,4 +1,4 @@
-package de.brbass.orange_player
+package de.brbass.trackslice
 
 import io.flutter.embedding.android.FlutterActivity
 

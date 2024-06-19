@@ -16,6 +16,7 @@ import '../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../application/bottombar/playlists/playlists_bloc.dart';
 import '../presentation/homepage/homepage.dart';
 import '../services/google_auth_client.dart';
+import 'const_appname.dart';
 
 // extension requires import dart:io
 extension FileExtention on FileSystemEntity {
@@ -58,7 +59,7 @@ class BackupRestorePlaylists {
   void dialogAction(BuildContext context, String restoreOrBackup) {
     final themeData = Theme.of(context);
     String playlistsWillBeDeleted =
-        "Pick the ZIP file that contains your backup in the 'Orange Player Playlists' folder in your Google Drive."
+        "Pick the ZIP file that contains your backup in the '$appName Playlists' folder in your Google Drive."
         "\nWarning: the restored playlists will overwrite existing playlists with the same name."; //AppLocalizations.of(context)!.playlistsWillBeDeleted;
     String zipWillBeCreated =
         "A ZIP archive will be created and uploaded to your Google Drive"; //AppLocalizations.of(context)!.zipWillBeCreated;
@@ -127,12 +128,12 @@ class BackupRestorePlaylists {
         "was successfully created in "; //AppLocalizations.of(context)!.fileSuccessCreated;
 
     dynamic dir;
-    String folderName = "Orange Player user data";
+    String folderName = "$appName user data";
     final now = DateTime.now();
     final convertedDateTime =
         "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     String backupFolder =
-        "Orange Player backup dir"; // temp dir for files backup. Will be deleted after backup is completed.
+        "$appName backup dir"; // temp dir for files backup. Will be deleted after backup is completed.
     final dateTimeForReuse = convertedDateTime;
 
     List<File> files = [];
@@ -145,7 +146,7 @@ class BackupRestorePlaylists {
         await Directory(backupPath).create(recursive: true);
       }
       dynamic appDir = await getApplicationDocumentsDirectory();
-      var userData = Directory('${appDir.path}/Orange_Playlists');
+      var userData = Directory('${appDir.path}/${appName}_Playlists');
 
       try {
         var dirList = userData.list();
@@ -162,7 +163,7 @@ class BackupRestorePlaylists {
         }
         encoder.zipDirectory(Directory(backupPath),
             filename:
-                '${dir.path}/OrangePlayer_Playlists_$dateTimeForReuse.zip');
+                '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip');
 
         // SCHRITTE BEI GOOGLE:
         // Zuerst unter https://console.cloud.google.com/ die Projekt erstellen.
@@ -194,11 +195,11 @@ class BackupRestorePlaylists {
             // file
             drive.File fileToUpload = drive.File();
             var file = File(
-                '${dir.path}/OrangePlayer_Playlists_$dateTimeForReuse.zip');
+                '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip');
             fileToUpload.name = file.extractFileNameFromPath;
             // Create directory
             drive.File dirMetadata = drive.File();
-            dirMetadata.name = 'Orange Player Playlists';
+            dirMetadata.name = '$appName Playlists';
             dirMetadata.mimeType = 'application/vnd.google-apps.folder';
             try {
               var dir = await driveApi.files.create(dirMetadata);
@@ -221,10 +222,10 @@ class BackupRestorePlaylists {
           }
 
           String message =
-              "$theFile 'OrangePlayer_Playlists_$dateTimeForReuse.zip' $hasBeenUploaded";
+              "$theFile '${appName}_Playlists_$dateTimeForReuse.zip' $hasBeenUploaded";
           uploadFileToGoogleDrive()
               .whenComplete(() => deleteZipFile(
-                  '${dir.path}/OrangePlayer_Playlists_$dateTimeForReuse.zip'))
+                  '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip'))
               .whenComplete(() => Directory(backupPath).delete(recursive: true))
               .whenComplete(() {
             isCommunicating.isCommunicatingWithGoogleDrive(false);
@@ -260,10 +261,10 @@ class BackupRestorePlaylists {
         }
 
         encoder.zipDirectory(Directory(backupPath),
-            filename: dir.path + '/OrangePlayer_$dateTimeForReuse.zip');
+            filename: dir.path + '/${appName}_$dateTimeForReuse.zip');
 
-        if (dir.path + '/OrangePlayer_$dateTimeForReuse.zip' != null) {
-          String newZip = 'OrangePlayer_$dateTimeForReuse.zip';
+        if (dir.path + '/${appName}_$dateTimeForReuse.zip' != null) {
+          String newZip = '${appName}_$dateTimeForReuse.zip';
           String message = "$theFile '$newZip' $successCreated $dir.";
           Directory('${dir.path}/$backupFolder')
               .delete(recursive: true)
@@ -285,7 +286,7 @@ class BackupRestorePlaylists {
     final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(
         myGlobals.scaffoldKey.currentContext!);
     dynamic appDir = await getApplicationDocumentsDirectory();
-    var playlistsDir = Directory('${appDir.path}/Orange_Playlists');
+    var playlistsDir = Directory('${appDir.path}/${appName}_Playlists');
     String noBackupSelected =
         "No backup file selected. "; //AppLocalizations.of(context)!.noFileSelected;
     String restoreAborted =

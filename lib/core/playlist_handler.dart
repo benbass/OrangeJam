@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import '../application/bottombar/playlists/playlists_bloc.dart';
 import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
 import '../presentation/homepage/homepage.dart';
+import 'const_appname.dart';
 
 class PlaylistHandler {
   final List playlists;
@@ -21,7 +22,7 @@ class PlaylistHandler {
   Future<void> reorderLinesInFile(
       String fileName, int oldIndex, int newIndex) async {
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/Orange_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     final file = File("${plDir.path}/$fileName.m3u");
     List<String> lines = await file.readAsLines();
 
@@ -37,7 +38,7 @@ class PlaylistHandler {
 
   Future<void> deleteLineInFile(String fileName, int index) async {
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/Orange_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     final file = File("${plDir.path}/$fileName.m3u");
     List<String> lines = await file.readAsLines();
     lines.removeAt(index);
@@ -50,7 +51,7 @@ class PlaylistHandler {
 
   Future<void> deleteFile(String fileName) async {
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/Orange_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     final file = File("${plDir.path}/$fileName.m3u");
     await file.delete();
   }
@@ -116,7 +117,7 @@ class PlaylistHandler {
 
             final Directory appDir = await getApplicationDocumentsDirectory();
             final Directory plDir =
-                Directory("${appDir.path}/Orange_Playlists");
+                Directory("${appDir.path}/${appName}_Playlists");
             if (!plDir.existsSync()) {
               await plDir.create();
             }
@@ -215,7 +216,7 @@ class PlaylistHandler {
           if (!playlists[selectedIndex][1].contains(filePath)) {
             final Directory appDir = await getApplicationDocumentsDirectory();
             final Directory plDir =
-                Directory("${appDir.path}/Orange_Playlists");
+                Directory("${appDir.path}/${appName}_Playlists");
             final File file = File("${plDir.path}/$selectedVal.m3u");
             file.writeAsString("$filePath\n",
                 mode: FileMode.append, flush: true);

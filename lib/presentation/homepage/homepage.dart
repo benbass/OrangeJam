@@ -13,6 +13,7 @@ import 'package:orange_player/presentation/homepage/player_controls/widgets/play
 import 'package:orange_player/application/my_listview/ui/is_scrolling_cubit.dart';
 import '../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/my_listview/tracklist/tracklist_bloc.dart';
+import '../../core/const_appname.dart';
 import '../../domain/entities/track_entity.dart';
 import '../../injection.dart';
 import '../../services/notification_controller.dart';
@@ -209,9 +210,9 @@ class MyHomePage extends StatelessWidget {
                       NotificationChannel(
                         channelGroupKey: 'basic_channel_group',
                         channelKey: 'basic_channel',
-                        channelName: 'Orange Player Track Playing',
+                        channelName: '$appName Player Track Playing',
                         channelDescription:
-                            'Notification channel for the Orange Player',
+                            'Notification channel for the $appName Player',
                         //defaultColor: const Color(0xFFFF8100),
                         //ledColor: Colors.white,
                         playSound: false,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:orange_player/core/const_appname.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,7 +14,7 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
     List list = [];
 
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/Orange_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     if (!plDir.existsSync()) {
       await plDir.create();
     }
