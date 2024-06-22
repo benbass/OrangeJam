@@ -30,7 +30,7 @@ void main() {
     final tTracklist = <TrackEntity>[
       TrackEntity(
           id: 1,
-          file: File(""),
+          filePath: "",
           trackName: "trackName",
           trackArtistNames: "null",
           albumName: null,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
+import 'package:orange_player/injection.dart';
 import 'package:orange_player/presentation/homepage/bottombar/widgets/playlist_button.dart';
 import 'package:orange_player/core/backup_restore_playlists.dart';
 
+import '../../../../application/my_listview/tracklist/tracklist_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
 import '../../../../core/playlist_handler.dart';
 
@@ -24,6 +26,7 @@ class MenuPlaylistsWidget extends StatelessWidget {
     final BackupRestorePlaylists backupRestorePlaylists =
         BackupRestorePlaylists(playlistHandler: playlistHandler);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
+    final tracklistBlock = BlocProvider.of<TracklistBloc>(context);
     return BlocBuilder<PlaylistsBloc, PlaylistsState>(
       builder: (context, state) {
         return IconButton(
@@ -59,12 +62,10 @@ class MenuPlaylistsWidget extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                      onPressed: ()
-                                      {
+                                      onPressed: () {
                                         Navigator.of(context).pop();
                                         backupRestorePlaylists.dialogAction(
                                             context, "backup");
-
                                       },
                                       icon: const Icon(
                                         Icons.backup,
@@ -75,9 +76,8 @@ class MenuPlaylistsWidget extends StatelessWidget {
                                     IconButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
-                                        backupRestorePlaylists
-                                            .dialogAction(context, "restore");
-
+                                        backupRestorePlaylists.dialogAction(
+                                            context, "restore");
                                       },
                                       icon: const Icon(
                                         Icons.restore,
@@ -86,6 +86,18 @@ class MenuPlaylistsWidget extends StatelessWidget {
                                       ),
                                     ),
                                     const Spacer(),
+                                    IconButton(
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                        trackBox.removeAll();
+                                        tracklistBlock.add(TrackListRefreschingEvent());
+                                      },
+                                      icon: const Icon(
+                                        Icons.refresh,
+                                        size: 26,
+                                        color: Color(0xFF181C25),
+                                      ),
+                                    ),
                                     IconButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -113,7 +125,10 @@ class MenuPlaylistsWidget extends StatelessWidget {
                                       id: -2,
                                       width: 120,
                                       name: 'Files',
-                                      length: GlobalLists().initialTracks.length.toString(),
+                                      length: GlobalLists()
+                                          .initialTracks
+                                          .length
+                                          .toString(),
                                       playlistHandler: playlistHandler,
                                     ),
                                     ButtonOpenPlaylist(
@@ -122,7 +137,8 @@ class MenuPlaylistsWidget extends StatelessWidget {
                                       id: -1,
                                       width: 120,
                                       name: 'Queue',
-                                      length: GlobalLists().queue.length.toString(),
+                                      length:
+                                          GlobalLists().queue.length.toString(),
                                       playlistHandler: playlistHandler,
                                     ),
                                   ],

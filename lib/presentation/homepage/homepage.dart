@@ -328,7 +328,7 @@ class MyHomePage extends StatelessWidget {
                                               for (TrackEntity track
                                                   in playlistsBloc
                                                       .state.tracks) {
-                                                filePaths.add(track.file.path);
+                                                filePaths.add(track.filePath);
                                               }
                                               playlistHandler.createPlaylist(
                                                 "Save the queue as a playlist:",

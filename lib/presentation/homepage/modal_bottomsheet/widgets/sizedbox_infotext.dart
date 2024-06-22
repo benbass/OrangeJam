@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:orange_player/domain/entities/track_entity.dart';
@@ -273,7 +275,7 @@ class SizedBoxInfoText extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: basename(currentTrack.file.absolute.path),
+                    text: basename(File(currentTrack.filePath).absolute.path),
                     style: const TextStyle(
                       color: Color(0xFF202531),
                     ),

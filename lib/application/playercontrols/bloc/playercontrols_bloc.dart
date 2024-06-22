@@ -41,7 +41,7 @@ class PlayerControlsBloc
     on<StopButtonPressed>((event, emit) {
         // This is used by the notification only
         emit(state.copyWith(
-            track: TrackEntity.empty(),
+            track: TrackEntity.empty().copyWith(id: -1),
             isPausing: false,
             height: 0));
         sl<MyAudioHandler>().stopTrack();

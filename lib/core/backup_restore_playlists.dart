@@ -294,7 +294,17 @@ class BackupRestorePlaylists {
     //String pleaseRestartApp = "Please restart the app for the changes to take effect!"; //AppLocalizations.of(context)!.pleaseRestartApp;
     String noValidFiles =
         "The Zip file does not contain valid playlist files (extension: m3u) for this app!"; //AppLocalizations.of(context)!.noValidFiles;
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    late FilePickerResult? result;
+    try{
+      result = await FilePicker.platform.pickFiles();
+    } catch(e){
+      String message =
+          "Error while retrieving the backup file.\nPlease try again.";
+      dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+      return;
+    }
+
 
     if (result == null) {
       String message = "$noBackupSelected\n$restoreAborted";

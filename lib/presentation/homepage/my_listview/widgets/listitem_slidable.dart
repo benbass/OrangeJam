@@ -50,7 +50,7 @@ class ItemSlidable extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
-          content: Text("Ups, the file '${track.file.path}' was not found!"),
+          content: Text("Ups, the file '${track.filePath}' was not found!"),
         ),
       );
     }
@@ -61,7 +61,7 @@ class ItemSlidable extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (_) {
-              playlistHandler.addToPlaylist(track.file.path);
+              playlistHandler.addToPlaylist(track.filePath);
             },
             flex: 20,
             backgroundColor: const Color(0xFFFF8100),
@@ -110,7 +110,7 @@ class ItemSlidable extends StatelessWidget {
                     if (playlistsBloc.state.playlistId > -1) {
                       playlistsBloc
                           .state.playlists[playlistsBloc.state.playlistId][1]
-                          .remove(track.file.path);
+                          .remove(track.filePath);
                       //playlistHandler.updateDatabase();
                       playlistHandler.deleteLineInFile(
                           playlistsBloc.state
@@ -144,7 +144,7 @@ class ItemSlidable extends StatelessWidget {
             splashColor: Colors.black87,
             onTap: () async {
               // The Bloc will decide if track is to be played or stopped depending on tap on new track or on current track
-              if (await File(track.file.path).exists()) {
+              if (await File(track.filePath).exists()) {
                 playTrack(track);
                 // we delay so trackPositionCubit.state != null anymore
                 Future.delayed(const Duration(milliseconds: 200)).whenComplete(() => startPositionMonitoring());
@@ -190,7 +190,7 @@ class ItemSlidable extends StatelessWidget {
                         SizedBox(
                           width: 240,
                           child: Text(
-                            track.trackName,
+                            track.trackName ?? "",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: themeData.textTheme.bodyMedium!
@@ -199,7 +199,7 @@ class ItemSlidable extends StatelessWidget {
                         ),
                         SizedBox(
                           child: Text(
-                            track.trackArtistNames,
+                            track.trackArtistNames ?? "",
                             style: themeData.textTheme.bodySmall!
                                 .copyWith(color: textColor),
                           ),

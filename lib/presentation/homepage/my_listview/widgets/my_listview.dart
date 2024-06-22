@@ -89,7 +89,7 @@ class MyListview extends StatelessWidget {
               int index =
               tracks.indexWhere((element) => element.id == selectedTrackId);
               audioHandler.flutterSoundPlayer
-                  .startPlayer(fromURI: tracks[index].file.path);
+                  .startPlayer(fromURI: tracks[index].filePath);
               startPositionMonitoring();
             } else {
               sl<PlayerControlsBloc>().add(InitialPlayerControls());
@@ -130,9 +130,9 @@ class MyListview extends StatelessWidget {
               // If this is a playlist, we save new order
               if (playlistsState.playlistId > -1) {
                 playlistsState.playlists[playlistsState.playlistId][1]
-                    .remove(track.file.path);
+                    .remove(track.filePath);
                 playlistsState.playlists[playlistsState.playlistId][1]
-                    .insert(newIndex, track.file.path);
+                    .insert(newIndex, track.filePath);
                 //playlistHandler.updateDatabase();
                 playlistHandler.reorderLinesInFile(
                     playlistsState.playlists[playlistsState.playlistId][0],

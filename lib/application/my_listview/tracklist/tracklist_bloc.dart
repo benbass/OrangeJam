@@ -27,6 +27,10 @@ class TracklistBloc extends Bloc<TracklistEvent, TracklistState> {
       });
     });
 
+    on<TrackListRefreschingEvent>((event, emit) async {
+      emit(TracklistInitial());
+    });
+
     on<TrackListLoadedEvent>((event, emit) async {
       emit(TracklistStateLoaded());
     });

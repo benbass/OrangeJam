@@ -72,7 +72,7 @@ class PlayerControls extends StatelessWidget {
                           ),
                           SizedBox(
                             child: Text(
-                              track.trackName,
+                              track.trackName ?? "",
                               overflow: TextOverflow.ellipsis,
                               style: themeData.textTheme.bodyLarge?.copyWith(
                                 fontSize: 12,
@@ -85,7 +85,7 @@ class PlayerControls extends StatelessWidget {
                           ),
                           SizedBox(
                             child: Text(
-                              track.trackArtistNames,
+                              track.trackArtistNames ?? "",
                               overflow: TextOverflow.ellipsis,
                               style: themeData.textTheme.bodyLarge?.copyWith(
                                 fontSize: 12,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,8 +37,9 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     on<PlaylistsLoadingEvent>((event, emit) async {
       // create a copy of the list of track entities
-      globalLists.initialTracks =
-          event.tracks.map((item) => item.clone()).toList();
+      /// TODO: folgende Zeile zu initialTracks bearbeiten, im objectBox zu berücksichtigen:
+      globalLists.initialTracks = event.tracks;
+          //event.tracks.map((item) => item.clone()).toList(); /// Originale Zuweisung!!!
 
       // load id of last opened playlist from SharedPrefs so app starts with it
       int savedId =
@@ -54,7 +57,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           List selectedPlaylist = playlists[savedId][1];
           for (var el in selectedPlaylist) {
             for (var track in globalLists.initialTracks) {
-              if (track.file.path == el) {
+              if (track.filePath == el) {
                 tracks.add(track);
               }
             }
@@ -76,7 +79,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           List selectedPlaylist = state.playlists[event.id][1];
           for (var el in selectedPlaylist) {
             for (var track in globalLists.initialTracks) {
-              if (track.file.path == el) {
+              if (track.filePath == el) {
                 tracks.add(track);
               }
             }
@@ -114,21 +117,21 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
         case "File name":
           {
             tracklist.sort((a, b) => aspath
-                .basename(a.file.path.toLowerCase())
-                .compareTo(aspath.basename(b.file.path.toLowerCase())));
+                .basename(a.filePath.toLowerCase())
+                .compareTo(aspath.basename(b.filePath.toLowerCase())));
           }
           break;
         case "Track name":
           {
-            tracklist.sort((a, b) => removeDiacritics(a.trackName.toLowerCase())
-                .compareTo(removeDiacritics(b.trackName.toLowerCase())));
+            tracklist.sort((a, b) => removeDiacritics(a.trackName!.toLowerCase())
+                .compareTo(removeDiacritics(b.trackName!.toLowerCase())));
           }
           break;
         case "Artist":
           {
             tracklist.sort((a, b) =>
-                removeDiacritics(a.trackArtistNames.toLowerCase()).compareTo(
-                    removeDiacritics(b.trackArtistNames.toLowerCase())));
+                removeDiacritics(a.trackArtistNames!.toLowerCase()).compareTo(
+                    removeDiacritics(b.trackArtistNames!.toLowerCase())));
           }
           break;
         case "Genre":
@@ -139,10 +142,10 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           break;
         case "Creation date":
           {
-            tracklist.sort((a, b) => b.file
+            tracklist.sort((a, b) => File(b.filePath)
                 .statSync()
                 .modified
-                .compareTo(a.file.statSync().modified));
+                .compareTo(File(a.filePath).statSync().modified));
           }
           break;
         case "Shuffle":
@@ -181,7 +184,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
                 if (track.trackArtistNames != "" &&
                         track.trackArtistNames != " " ||
                     track.albumArtist != null) {
-                  if (track.trackArtistNames.trim() == event.value ||
+                  if (track.trackArtistNames!.trim() == event.value ||
                       track.albumArtist?.trim() == event.value) {
                     results.add(track);
                   }
@@ -264,13 +267,13 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
         }
       } else {
         for (var track in tracklist) {
-          if (track.file.path
+          if (track.filePath
                   .toLowerCase()
                   .contains(event.keyword!.toLowerCase()) ||
-              (track.trackArtistNames
+              (track.trackArtistNames!
                   .toLowerCase()
                   .contains(event.keyword!.toLowerCase())) ||
-              track.trackName
+              track.trackName!
                   .toLowerCase()
                   .contains(event.keyword!.toLowerCase()) ||
               (track.albumName != null &&

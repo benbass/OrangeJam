@@ -21,7 +21,7 @@ void main() {
   final tTracklist = [
     TrackModel(
         id: 1,
-        file: File("filepath"),
+        filePath: "",
         trackName: "trackName",
         trackArtistNames: "trackArtistNames",
         albumName: null,

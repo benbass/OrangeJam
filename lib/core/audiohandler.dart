@@ -33,7 +33,7 @@ class MyAudioHandler {
   TrackPositionCubit trackPositionCubit = TrackPositionCubit();
 
   // we need the following vars for the notification
-  late TrackEntity currentTrack;
+  TrackEntity currentTrack = TrackEntity.empty().copyWith(id: -1); // we initialize an empty track for app start
   bool isPausingState = false;
   int selectedId = -1;
   //
@@ -138,6 +138,8 @@ class MyAudioHandler {
               actionType: ActionType.KeepOnTop),
         ],
       );
+    } else {
+      return;
     }
   }
 
@@ -147,7 +149,7 @@ class MyAudioHandler {
     isPausingState = false;
     currentTrack = track;
     selectedId = track.id;
-    flutterSoundPlayer.startPlayer(fromURI: track.file.path);
+    flutterSoundPlayer.startPlayer(fromURI: track.filePath);
     openAudioSession();
     createNotification();
     // Update progressbar in notification
@@ -158,6 +160,7 @@ class MyAudioHandler {
 
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
+    currentTrack = TrackEntity.empty().copyWith(id: -1);
     AwesomeNotifications().cancel(10);
   }
 
@@ -198,7 +201,7 @@ class MyAudioHandler {
     if (index > -1 && index < tracks.length) {
       // we set new track based on decreased index
       TrackEntity track = tracks[index];
-      String filePath = track.file.path;
+      String filePath = track.filePath;
       if (await File(filePath).exists()) {
         return track;
       } else {
