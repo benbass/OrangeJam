@@ -15,7 +15,7 @@ class PlayerControlsBloc
 
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
-          track: TrackEntity.empty(),
+          track: TrackEntity.empty().copyWith(id: -1),
           isPausing: false,
           height: 0));
     });
@@ -31,7 +31,7 @@ class PlayerControlsBloc
       } else {
         // stop current track
         emit(state.copyWith(
-            track: TrackEntity.empty(),
+            track: TrackEntity.empty().copyWith(id: -1),
             isPausing: false,
             height: 0));
         sl<MyAudioHandler>().stopTrack();

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,7 +23,7 @@ void main()  {
 
   group("tracklistUsecases", () {
 
-    final tTracklist = <TrackEntity>[TrackEntity(id: 1, filePath: "", trackName: "trackName", trackArtistNames: "null", albumName: null, trackNumber: 0, albumLength: 1, year: 2000, genre: "genre", trackDuration: null, albumArt: null, albumArtist: null)];
+    final tTracklist = <TrackEntity>[TrackEntity(filePath: "", trackName: "trackName", trackArtistNames: "null", albumName: null, trackNumber: 0, albumLength: 1, year: 2000, genre: "genre", trackDuration: null, albumArt: null, albumArtist: null).copyWith(id: 1)];
 
     test("should return the same list of trackEntities as repo", () async {
       // arrange

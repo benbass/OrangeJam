@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +26,7 @@ void main(){
 
   group("get tracklist from device", () {
 
-    final tTracklistfrommodel = <TrackModel>[TrackModel(id: 1, filePath: "", trackName: "trackName", trackArtistNames: "null", albumName: null, trackNumber: 0, albumLength: 1, year: 2000, genre: "genre", trackDuration: null, albumArt: null, albumArtist: null)];
+    final tTracklistfrommodel = <TrackModel>[TrackModel(filePath: "", trackName: "trackName", trackArtistNames: "null", albumName: null, trackNumber: 0, albumLength: 1, year: 2000, genre: "genre", trackDuration: null, albumArt: null, albumArtist: null,)];
     final List<TrackEntity> tTracklistfromentity = tTracklistfrommodel;
 
     test("should return modeled data from device", () async {

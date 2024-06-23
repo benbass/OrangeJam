@@ -22,8 +22,6 @@ class TrackEntity {
   
   String? albumArtist;
 
-  //late List<TrackEntity> adjacentNodes;
-
   TrackEntity({
     required this.filePath,
     required this.trackName,

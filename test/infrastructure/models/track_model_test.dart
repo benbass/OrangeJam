@@ -9,7 +9,6 @@ import '../../fixtures/fixture_reader.dart';
 
 void main() {
   final tTrackmodel = TrackModel(
-      id: 1,
       filePath: fixture(File("mp3.mp3").path),
       trackName: "test",
       trackArtistNames: "artist",
@@ -20,7 +19,7 @@ void main() {
       genre: null,
       trackDuration: null,
       albumArt: null,
-      albumArtist: null);
+      albumArtist: null).copyWith(id: 1);
 
   test("model should be subclass of TrackEntity", () {
     expect(tTrackmodel, isA<TrackEntity>());

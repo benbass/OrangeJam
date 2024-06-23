@@ -161,6 +161,7 @@ class MyAudioHandler {
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
     currentTrack = TrackEntity.empty().copyWith(id: -1);
+    selectedId = -1;
     AwesomeNotifications().cancel(10);
   }
 

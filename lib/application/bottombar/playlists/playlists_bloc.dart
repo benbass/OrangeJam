@@ -26,10 +26,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
   final PlaylistsUsecases playlistsUsecases;
   PlaylistsBloc({required this.playlistsUsecases})
       : super(PlaylistsState.initial()) {
-    //
-    //
-    //late List<TrackEntity> initialTracks;
-    //List<TrackEntity> queue = [];
+
     final Future<SharedPreferences> startPrefs =
         SharedPreferences.getInstance();
 
@@ -37,9 +34,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     on<PlaylistsLoadingEvent>((event, emit) async {
       // create a copy of the list of track entities
-      /// TODO: folgende Zeile zu initialTracks bearbeiten, im objectBox zu berücksichtigen:
       globalLists.initialTracks = event.tracks;
-          //event.tracks.map((item) => item.clone()).toList(); /// Originale Zuweisung!!!
 
       // load id of last opened playlist from SharedPrefs so app starts with it
       int savedId =
@@ -74,6 +69,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     on<PlaylistChanged>((event, emit) async {
       List<TrackEntity> tracks = [];
+      // User select a playlist
       if (event.id > -1 && state.playlists.isNotEmpty) {
         if (state.playlists.asMap().containsKey(event.id)) {
           List selectedPlaylist = state.playlists[event.id][1];
@@ -85,8 +81,10 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
             }
           }
         }
+        // User selects the queue
       } else if (event.id == -1) {
         tracks = globalLists.queue;
+        // User selects all files
       } else {
         for (TrackEntity track in globalLists.initialTracks) {
           tracks.add(track);
@@ -110,6 +108,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       }
     });
 
+    /// Sorting and filtering
     on<PlaylistSorted>((event, emit) async {
       List<TrackEntity>? tracklist = state.tracks;
       bool wasReset = false;
@@ -123,8 +122,9 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           break;
         case "Track name":
           {
-            tracklist.sort((a, b) => removeDiacritics(a.trackName!.toLowerCase())
-                .compareTo(removeDiacritics(b.trackName!.toLowerCase())));
+            tracklist.sort((a, b) =>
+                removeDiacritics(a.trackName!.toLowerCase())
+                    .compareTo(removeDiacritics(b.trackName!.toLowerCase())));
           }
           break;
         case "Artist":
@@ -296,8 +296,9 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
       emit(state.copyWith(tracks: results));
     });
+    /// End sorting and filtering
 
-    /// Queue being a local var and not being saved in SharedPrefs, events on queue are being handled here
+    /// Queue
     on<TrackAddedToQueue>((event, emit) async {
       globalLists.queue.add(event.track);
       // if current playlist is queue we update UI

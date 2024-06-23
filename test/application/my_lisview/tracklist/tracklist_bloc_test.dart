@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,7 +28,6 @@ void main() {
 
     final tTracklist = <TrackEntity>[
       TrackEntity(
-          id: 1,
           filePath: "",
           trackName: "trackName",
           trackArtistNames: "null",
@@ -41,7 +39,7 @@ void main() {
           trackDuration: null,
           albumArt: null,
           albumArtist: null,
-      )
+      ).copyWith(id: 1)
     ];
 
     test("should call usecase if event is added", () async {
