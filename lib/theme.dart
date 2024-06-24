@@ -81,12 +81,16 @@ class AppTheme {
       primaryContainer: _primaryVariantColor,
     ),
     textTheme: _textTheme,
-    elevatedButtonTheme: const ElevatedButtonThemeData(
+    /*elevatedButtonTheme: const ElevatedButtonThemeData(
         style: ButtonStyle(
       elevation: WidgetStatePropertyAll(30),
       backgroundColor: WidgetStatePropertyAll(_primaryVariantColor),
       textStyle: WidgetStatePropertyAll(_headingText),
       foregroundColor: WidgetStatePropertyAll(_textColor),
+    )),*/
+    textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+      textStyle: WidgetStatePropertyAll(_bodyTextLarge),
     )),
     buttonTheme: const ButtonThemeData(
       buttonColor: _accentColor,

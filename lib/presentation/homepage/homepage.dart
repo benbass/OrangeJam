@@ -1,41 +1,27 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orange_player/core/initialize_awesome_notifications.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/my_listview/ui/appbar_filterby_cubit.dart';
-import 'package:orange_player/presentation/homepage/intrinsic_height/widgets/filterby_dynamic_menu.dart';
-import 'package:orange_player/presentation/homepage/intrinsic_height/widgets/sortby_dropdown.dart';
 import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls.dart';
 import 'package:orange_player/application/my_listview/ui/is_scrolling_cubit.dart';
 import '../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/my_listview/tracklist/tracklist_bloc.dart';
-import '../../core/const_appname.dart';
-import '../../domain/entities/track_entity.dart';
+import '../../core/animate_to_index.dart';
+import '../../core/globals.dart';
 import '../../injection.dart';
-import '../../services/notification_controller.dart';
 import '../../core/audiohandler.dart';
-import 'dialogs/widgets/custom_widgets.dart';
 import '../../core/playlist_handler.dart';
-import 'intrinsic_height/widgets/search.dart';
+import 'intrinsic_height/sort_filter_search_menu.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_menu.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
 import 'error/widgets/error_message.dart';
 import 'my_listview/widgets/my_listview.dart';
-
-MyGlobals myGlobals = MyGlobals();
-
-class MyGlobals {
-  late GlobalKey _scaffoldKey;
-  MyGlobals() {
-    _scaffoldKey = GlobalKey();
-  }
-  GlobalKey get scaffoldKey => _scaffoldKey;
-}
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
@@ -44,7 +30,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MyAudioHandler audioHandler = sl<MyAudioHandler>();
+    final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
@@ -56,31 +42,10 @@ class MyHomePage extends StatelessWidget {
     // Suchfeld
     final TextEditingController searchController = TextEditingController();
 
-    ScrollController sctr = ScrollController();
+    final ScrollController sctr = ScrollController();
     // This ListObserverController works much better than ScrollController for animateTo since it uses index instead of pixel
-    ListObserverController observerController =
+    final ListObserverController observerController =
         ListObserverController(controller: sctr);
-
-    void gotoItem(double offset) {
-      // we need current index in case user sorted or filtered the list
-      // 1. so first we get current track id
-      int selectedTrackId = audioHandler
-          .selectedId; //BlocProvider.of<PlayerControlsBloc>(context).state.track.id;
-
-      // 2. and we need index of this current track in current list state
-      int index = playlistsBloc.state.tracks
-          .indexWhere((element) => element.id == selectedTrackId);
-
-      observerController.animateTo(
-        alignment: 0,
-        index: index,
-        offset: (_) => offset,
-        isFixedHeight: true,
-        padding: const EdgeInsets.only(bottom: 200),
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.easeInOut,
-      );
-    }
 
     // Trying to "dispose" the player when closing the app.
     void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
@@ -121,7 +86,7 @@ class MyHomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      key: myGlobals.scaffoldKey,
+      key: globalScaffoldKey.scaffoldKey,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,6 +119,8 @@ class MyHomePage extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
+
+            /// This builder shows a sort of filtering navigation: filtertext1 > filtertext2 > filtertext3...
             BlocBuilder<AppbarFilterByCubit, String?>(
               builder: (context, appbarFilterByState) {
                 return Expanded(
@@ -203,157 +170,25 @@ class MyHomePage extends StatelessWidget {
                 // Position for Progressbar in Player controls and behaviour at track end
                 audioHandler.flutterSoundPlayer
                     .setSubscriptionDuration(const Duration(milliseconds: 100));
-                AwesomeNotifications().initialize(
-                    // set the icon to null if you want to use the default app icon
-                    null, //'resource://drawable/res_app_icon',
-                    [
-                      NotificationChannel(
-                        channelGroupKey: 'basic_channel_group',
-                        channelKey: 'basic_channel',
-                        channelName: '$appName Player Track Playing',
-                        channelDescription:
-                            'Notification channel for the $appName Player',
-                        //defaultColor: const Color(0xFFFF8100),
-                        //ledColor: Colors.white,
-                        playSound: false,
-                        enableVibration: false,
-                        importance: NotificationImportance.High,
-                        channelShowBadge: false,
-                        locked: true,
-                        defaultPrivacy: NotificationPrivacy.Public,
-                        icon: "resource://drawable/launcher_icon",
-                      )
-                    ],
-                    debug: true);
-                // Only after at least the action method is set, the notification events are delivered
-                AwesomeNotifications().setListeners(
-                  onActionReceivedMethod:
-                      NotificationController.onActionReceivedMethod,
-                );
-                /*
-                onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
-                onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
-                onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
-                */
+                //init and check permission of awesomeNotifications
+                initAwesomeNotifications();
               }
-              AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-                if (!isAllowed) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => CustomDialog(
-                      content: const Text(
-                          'Our app would like to send you notifications'),
-                      actions: [
-                        SimpleButton(
-                          themeData: themeData,
-                          btnText: 'Don\'t Allow',
-                        ),
-                        ElevatedButton(
-                          onPressed: () => AwesomeNotifications()
-                              .requestPermissionToSendNotifications()
-                              .then((_) => Navigator.pop(context)),
-                          style: themeData.elevatedButtonTheme.style,
-                          child: const Text('Allow'),
-                        ),
-                      ],
-                      showDropdown: false,
-                      titleWidget: DescriptionText(
-                        themeData: themeData,
-                        description: 'Allow Notifications',
-                      ),
-                      themeData: themeData,
-                    ),
-                  );
-                }
-              });
               return BlocBuilder<PlaylistsBloc, PlaylistsState>(
                 builder: (context, state) {
                   return Column(
                     children: [
                       state.playlistId < 0
-                          ? IntrinsicHeight(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: playlistsBloc.state.playlistId != -1
-                                    ? [
-                                        const Expanded(
-                                          flex: 10,
-                                          child: SortBy(),
-                                        ),
-                                        const Expanded(
-                                          flex: 2,
-                                          child: SizedBox.expand(),
-                                        ),
-                                        const Expanded(
-                                          flex: 7,
-                                          child: FilterByDynamicMenu(),
-                                        ),
-                                        Expanded(
-                                          flex: 9,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 12.0, top: 0),
-                                            child: SearchWidget(
-                                              searchController:
-                                                  searchController,
-                                              appbarFilterByCubit:
-                                                  appbarFilterByCubit,
-                                            ),
-                                          ),
-                                        ),
-                                      ]
-                                    : [
-                                        const Expanded(
-                                          child: SizedBox(
-                                            height: 50,
-                                          ),
-                                        ),
-                                        InkWell(
-                                          child: const Text("Clear"),
-                                          onTap: () {
-                                            playlistsBloc.add(ClearQueue());
-                                          },
-                                        ),
-                                        const Expanded(
-                                          child: SizedBox(),
-                                        ),
-                                        InkWell(
-                                          child: const Text("Save"),
-                                          onTap: () {
-                                            if (playlistsBloc
-                                                .state.tracks.isNotEmpty) {
-                                              List<String> filePaths = [];
-                                              for (TrackEntity track
-                                                  in playlistsBloc
-                                                      .state.tracks) {
-                                                filePaths.add(track.filePath);
-                                              }
-                                              playlistHandler.createPlaylist(
-                                                "Save the queue as a playlist:",
-                                                filePaths,
-                                              );
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  content: Text(
-                                                      "The queue is empty!"),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        const Expanded(
-                                          child: SizedBox(),
-                                        ),
-                                      ],
-                              ),
+
+                          /// all files or queue
+                          ? SortFilterSearchMenu(
+                              playlistsBloc: playlistsBloc,
+                              searchController: searchController,
+                              appbarFilterByCubit: appbarFilterByCubit,
+                              playlistHandler: playlistHandler,
                             )
                           : const SizedBox.shrink(),
+
+                      /// listview shows a playlist: no extra will be shown on top
                       Expanded(
                         child: RawScrollbar(
                           trackVisibility: true,
@@ -368,7 +203,6 @@ class MyHomePage extends StatelessWidget {
                                 observController: observerController,
                                 tracks: state.tracks,
                                 audioHandler: audioHandler,
-                                gotoItem: gotoItem,
                                 isScrollingCubit: isScrollingCubit,
                                 isScrollReverseCubit: isScrollReverseCubit,
                                 playlistHandler: playlistHandler,
@@ -412,15 +246,14 @@ class MyHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Sort
-                //const SortBy(),
+                /// Animate to item
                 BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
                   builder: (context, state) {
                     if (state.track.id != -1) {
                       return GotoItemIcon(
                         isScrollReverseCubit: isScrollReverseCubit,
                         isScrollingCubit: isScrollingCubit,
-                        gotoItem: gotoItem,
+                        observerController: observerController,
                       );
                     } else {
                       return const SizedBox();
@@ -430,7 +263,8 @@ class MyHomePage extends StatelessWidget {
               ],
             ),
           ),
-          // Playlists
+
+          /// Playlists menu
           BlocBuilder<PlaylistsBloc, PlaylistsState>(
             builder: (context, state) {
               playlistHandler = PlaylistHandler(playlists: state.playlists);
@@ -444,18 +278,21 @@ class MyHomePage extends StatelessWidget {
               );
             },
           ),
-          // Show/Hide player controls
+
+          /// Show/Hide player controls
           const Expanded(
             flex: 2,
             child: ShowHidePlayerControls(),
           ),
         ],
       ),
+
+      /// Player controls
       bottomSheet: BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
         builder: (context, state) {
           return PlayerControls(
             track: state.track,
-            gotoItem: gotoItem,
+            observerController: observerController,
           );
         },
       ),

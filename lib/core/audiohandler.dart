@@ -24,8 +24,8 @@ import '../application/bottomsheet/playercontrols/track_duration_cubit.dart';
 */
 
 import '../domain/entities/track_entity.dart';
-import '../presentation/homepage/homepage.dart';
 import 'format_duration.dart';
+import 'globals.dart';
 
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
@@ -33,9 +33,9 @@ class MyAudioHandler {
   TrackPositionCubit trackPositionCubit = TrackPositionCubit();
 
   // we need the following vars for the notification
-  TrackEntity currentTrack = TrackEntity.empty().copyWith(id: -1); // we initialize an empty track for app start
+  TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0); // we initialize an empty track for app start
   bool isPausingState = false;
-  int selectedId = -1;
+  int selectedId = 0;
   //
 
   void openAudioSession() {
@@ -53,7 +53,7 @@ class MyAudioHandler {
     // We create notification only if user tapped on a track.
     // This check is necessary in order to prevent errors when app is resumed or inactive and player is stopped,
     // in which case id == -1, which can causes issues...
-    if (selectedId != -1) {
+    if (selectedId != 0) {
       Duration d = Duration(milliseconds: currentTrack.trackDuration!.toInt());
 
       final tempDir = await getTemporaryDirectory();
@@ -160,8 +160,8 @@ class MyAudioHandler {
 
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
-    currentTrack = TrackEntity.empty().copyWith(id: -1);
-    selectedId = -1;
+    currentTrack = TrackEntity.empty().copyWith(id: 0);
+    selectedId = 0;
     AwesomeNotifications().cancel(10);
   }
 
@@ -189,7 +189,7 @@ class MyAudioHandler {
   }
 
   Future<TrackEntity> getNextTrack(int plusMinusOne, TrackEntity currentTrack) async {
-    PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(myGlobals.scaffoldKey.currentContext!);
+    PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
     List<TrackEntity> tracks = playlistsBloc.state.tracks;
 
     // we get the current list index based on current track id
@@ -199,7 +199,7 @@ class MyAudioHandler {
     index += plusMinusOne;
 
     // we prevent exception for index == -1 && index bigger than last index (out of range) and play previous/next track.
-    if (index > -1 && index < tracks.length) {
+    if (index > 0 && index < tracks.length) {
       // we set new track based on decreased index
       TrackEntity track = tracks[index];
       String filePath = track.filePath;

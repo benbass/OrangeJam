@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/play_pause_button.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls_progress_bar.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls_track_info_text.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../../application/playercontrols/cubits/loop_mode_cubit.dart';
 import '../../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
-import '../../../../application/playercontrols/cubits/track_duration_cubit.dart';
-import '../../../../application/playercontrols/cubits/track_position_cubit.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../../domain/entities/track_entity.dart';
-import '../../../../injection.dart';
-import '../../../../core/audiohandler.dart';
-import '../../modal_bottomsheet/widgets/container_info_image.dart';
-import '../../modal_bottomsheet/widgets/sizedbox_infotext.dart';
+
+import 'bottomsheet_track_details.dart';
+import 'continuous_playback_button.dart';
+import 'loop_button.dart';
 
 class PlayerControls extends StatelessWidget {
   final TrackEntity track;
-  final Function gotoItem;
+  final ListObserverController observerController;
 
   const PlayerControls({
     super.key,
     required this.track,
-    required this.gotoItem,
+    required this.observerController,
   });
 
   @override
@@ -52,6 +54,7 @@ class PlayerControls extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            /// 2 text lines for track info
             OrientationBuilder(builder: (context, orientation) {
               return SizedBox(
                 width: orientation == Orientation.portrait ? 620 : 372,
@@ -63,100 +66,11 @@ class PlayerControls extends StatelessWidget {
                     const SizedBox(
                       width: 38,
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            SizedBox(
-                              child: Text(
-                                track.trackName ?? "",
-                                overflow: TextOverflow.ellipsis,
-                                style: themeData.textTheme.bodyLarge?.copyWith(
-                                  fontSize: 12,
-                                  color: const Color(0xFF202531),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            SizedBox(
-                              child: Text(
-                                track.trackArtistNames ?? "",
-                                overflow: TextOverflow.ellipsis,
-                                style: themeData.textTheme.bodyLarge?.copyWith(
-                                  fontSize: 12,
-                                  color: const Color(0xFF202531),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    PlayerControlsTrackInfoText(track: track, themeData: themeData),
+                    BottomSheetTrackDetails(
+                      themeData: themeData,
+                      track: track,
                     ),
-                    IconButton(
-                      onPressed: () => showModalBottomSheet(
-                        shape: const ContinuousRectangleBorder(),
-                        backgroundColor:
-                            themeData.bottomSheetTheme.backgroundColor,
-                        context: context,
-                        builder: (BuildContext context) =>
-                            OrientationBuilder(builder: (context, orientation) {
-                          return orientation == Orientation.portrait
-                              ? SizedBox(
-                                  height: 480,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: ContainerInfoImage(
-                                            currentTrack: track),
-                                      ),
-                                      Expanded(
-                                        child: SizedBoxInfoText(
-                                          currentTrack: track,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 6.0,
-                                        top: 10.0,
-                                        bottom: 10.0,
-                                      ),
-                                      child: SizedBox(
-                                          width: 240,
-                                          child: ContainerInfoImage(
-                                            currentTrack: track,
-                                          )),
-                                    ),
-                                    Expanded(
-                                      child: SizedBoxInfoText(
-                                        currentTrack: track,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                          //buildColumnInfo();
-                        }),
-                      ),
-                      icon: const Icon(
-                        Icons.info_outline_rounded,
-                        color: Color(0xFF202531),
-                      ),
-                      iconSize: 22,
-                    )
                   ],
                 ),
               );
@@ -164,51 +78,9 @@ class PlayerControls extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            // Progressbar!
+            /// Progressbar
             OrientationBuilder(builder: (context, orientation) {
-              return Padding(
-                padding: orientation == Orientation.portrait
-                    ? const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                      )
-                    : EdgeInsets.zero, //340,
-                child: BlocBuilder<TrackPositionCubit, Duration?>(
-                  builder: (context, p) {
-                    return BlocBuilder<TrackDurationCubit, Duration>(
-                      builder: (context, d) {
-                        return Row(
-                          children: [
-                            Expanded(
-                              child: ProgressBar(
-                                progress: p ?? Duration.zero,
-                                total: d,
-                                progressBarColor:
-                                    const Color(0xFF202531).withOpacity(0.3),
-                                baseBarColor:
-                                    const Color(0xFF202531).withOpacity(0.2),
-                                bufferedBarColor: Colors.transparent,
-                                thumbColor: const Color(0xFF202531),
-                                barHeight: 10.0,
-                                barCapShape: BarCapShape.round,
-                                thumbRadius: 14.0,
-                                timeLabelPadding: 8,
-                                timeLabelType: TimeLabelType.totalTime,
-                                timeLabelTextStyle: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF202531),
-                                ),
-                                onSeek: (c) {
-                                  sl<MyAudioHandler>().gotoSeekPosition(c);
-                                },
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              );
+              return PlayerControlsProgressBar(orientation: orientation);
             }),
             const SizedBox(
               height: 10,
@@ -217,135 +89,16 @@ class PlayerControls extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                BlocBuilder<LoopModeCubit, bool>(
-                  builder: (context, loopMode) {
-                    return IconButton(
-                      onPressed: () {
-                        continuousPlaybackModeCubit
-                            .setContinuousPlaybackMode(false);
-                        loopMode
-                            ? isLoopModeCubit.setLoopMode(false)
-                            : isLoopModeCubit.setLoopMode(true);
-                        loopMode
-                            ? {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Loop playback is off"),
-                                    duration: Duration(
-                                      milliseconds: 500,
-                                    ),
-                                  ),
-                                ),
-                              }
-                            : {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Loop playback is on"),
-                                    duration: Duration(
-                                      milliseconds: 500,
-                                    ),
-                                  ),
-                                ),
-                              };
-                      },
-                      icon: loopMode
-                          ? const Icon(
-                              Icons.repeat_one_rounded,
-                              color: Color(0xFF202531),
-                            )
-                          : Icon(
-                              Icons.repeat_one_rounded,
-                              color: const Color(0xFF202531).withOpacity(0.4),
-                            ),
-                      iconSize: 22,
-                    );
-                  },
-                ),
-                IconButton(
-                  onPressed: () {
-                    BlocProvider.of<PlayerControlsBloc>(context)
-                        .add(PreviousButtonPressed());
-                    gotoItem(144.0);
-                  },
-                  icon: const Icon(
-                    Icons.skip_previous_rounded,
-                    color: Color(0xFF202531),
-                  ),
-                  iconSize: 36,
-                ),
-                IconButton(
-                  onPressed: () {
-                    BlocProvider.of<PlayerControlsBloc>(context)
-                        .add(PausePlayButtonPressed());
-                  },
-                  icon: !BlocProvider.of<PlayerControlsBloc>(context)
-                          .state
-                          .isPausing
-                      ? const Icon(
-                          Icons.pause_rounded,
-                          color: Color(0xFF202531),
-                        )
-                      : const Icon(
-                          Icons.play_arrow_rounded,
-                          color: Color(0xFF202531),
-                        ),
-                  iconSize: 64,
-                ),
-                IconButton(
-                  onPressed: () {
-                    BlocProvider.of<PlayerControlsBloc>(context)
-                        .add(NextButtonPressed());
-                    gotoItem(0.0);
-                  },
-                  icon: const Icon(
-                    Icons.skip_next_rounded,
-                    color: Color(0xFF202531),
-                  ),
-                  iconSize: 36,
-                ),
-                BlocBuilder<ContinuousPlaybackModeCubit, bool>(
-                  builder: (context, continuousPlaybackMode) {
-                    return IconButton(
-                      onPressed: () {
-                        if (isLoopModeCubit.state == true) {
-                          isLoopModeCubit.setLoopMode(false);
-                        }
-                        continuousPlaybackMode
-                            ? continuousPlaybackModeCubit
-                                .setContinuousPlaybackMode(false)
-                            : continuousPlaybackModeCubit
-                                .setContinuousPlaybackMode(true);
-                        continuousPlaybackMode
-                            ? ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Continuous playback is off"),
-                                  duration: Duration(
-                                    milliseconds: 500,
-                                  ),
-                                ),
-                              )
-                            : ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Continuous playback is on"),
-                                  duration: Duration(
-                                    milliseconds: 500,
-                                  ),
-                                ),
-                              );
-                      },
-                      icon: continuousPlaybackMode
-                          ? const Icon(
-                              Icons.loop_rounded,
-                              color: Color(0xFF202531),
-                            )
-                          : Icon(
-                              Icons.loop_rounded,
-                              color: const Color(0xFF202531).withOpacity(0.4),
-                            ),
-                      iconSize: 22,
-                    );
-                  },
-                ),
+                /// Loop button
+                LoopButton(continuousPlaybackModeCubit: continuousPlaybackModeCubit, isLoopModeCubit: isLoopModeCubit),
+                /// Skip to previous button
+                SkipToNextOrPrevious(observerController: observerController, value: 0,),
+                /// Play/Pause button
+                const PlayPause(),
+                /// Skip to next button
+                SkipToNextOrPrevious(observerController: observerController, value: 1,),
+                /// Continuous playback button
+                ContinuousPlayback(isLoopModeCubit: isLoopModeCubit, continuousPlaybackModeCubit: continuousPlaybackModeCubit),
               ],
             ),
           ],
@@ -354,3 +107,10 @@ class PlayerControls extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+

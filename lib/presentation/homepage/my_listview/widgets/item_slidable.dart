@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:orange_player/presentation/homepage/my_listview/widgets/tile_trailing.dart';
+import 'package:orange_player/presentation/homepage/my_listview/widgets/list_item_trailing.dart';
 
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../../../core/globals.dart';
+import '../../../../core/position_monitoring.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/audiohandler.dart';
 import '../../../../core/playlist_handler.dart';
-import '../../homepage.dart';
+import 'list_item_leading.dart';
+import 'list_item_texts.dart';
 
 class ItemSlidable extends StatelessWidget {
   const ItemSlidable({
@@ -22,7 +25,6 @@ class ItemSlidable extends StatelessWidget {
     required this.audioHandler,
     required this.themeData,
     required this.textColor,
-    required this.startPositionMonitoring,
     required this.playlistHandler,
   });
 
@@ -33,7 +35,6 @@ class ItemSlidable extends StatelessWidget {
   final MyAudioHandler audioHandler;
   final ThemeData themeData;
   final Color textColor;
-  final Function startPositionMonitoring;
   final PlaylistHandler playlistHandler;
 
   @override
@@ -44,7 +45,7 @@ class ItemSlidable extends StatelessWidget {
     }
 
     final playlistsBloc =
-        BlocProvider.of<PlaylistsBloc>(myGlobals.scaffoldKey.currentContext!);
+        BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
 
     void snackBarFileNotExist() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -105,13 +106,10 @@ class ItemSlidable extends StatelessWidget {
               children: [
                 SlidableAction(
                   onPressed: (_) {
-                    //playlistsBloc.state.playlists.removeAt(index);
-                    //tracklistBloc.add(TrackListLoadedEvent());
                     if (playlistsBloc.state.playlistId > -1) {
                       playlistsBloc
                           .state.playlists[playlistsBloc.state.playlistId][1]
                           .remove(track.filePath);
-                      //playlistHandler.updateDatabase();
                       playlistHandler.deleteLineInFile(
                           playlistsBloc.state
                               .playlists[playlistsBloc.state.playlistId][0],
@@ -143,10 +141,10 @@ class ItemSlidable extends StatelessWidget {
           child: InkWell(
             splashColor: Colors.black87,
             onTap: () async {
-              // The Bloc will decide if track is to be played or stopped depending on tap on new track or on current track
+              // The Bloc will decide if track is to be played (tap on new track) or stopped (tap on current track)
               if (await File(track.filePath).exists()) {
                 playTrack(track);
-                // we delay so trackPositionCubit.state != null anymore
+                // we delay to ensure that trackPositionCubit.state != null
                 Future.delayed(const Duration(milliseconds: 200)).whenComplete(() => startPositionMonitoring());
 
               } else {
@@ -160,57 +158,15 @@ class ItemSlidable extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     left: 8.0,
                   ),
-                  child: ClipOval(
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(35),
-                      child: track.albumArt == null
-                          ? const Image(
-                              image: AssetImage(
-                                "assets/album-placeholder.png",
-                              ),
-                              fit: BoxFit.fill,
-                            )
-                          : Image(
-                              image: MemoryImage(track.albumArt!),
-                              fit: BoxFit.fill,
-                            ),
-                    ),
-                  ),
+                  child: ListItemLeading(track: track),
                 ),
                 const SizedBox(
                   width: 8.0,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 240,
-                          child: Text(
-                            track.trackName ?? "",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: themeData.textTheme.bodyMedium!
-                                .copyWith(color: textColor),
-                          ),
-                        ),
-                        SizedBox(
-                          child: Text(
-                            track.trackArtistNames ?? "",
-                            style: themeData.textTheme.bodySmall!
-                                .copyWith(color: textColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ListItemTexts(track: track, themeData: themeData, textColor: textColor),
                 SizedBox(
                   height: 66,
-                  child: TileTrailing(
+                  child: ListItemTrailing(
                     id: track.id,
                     currentId: selectedTrackId,
                   ),
@@ -226,3 +182,5 @@ class ItemSlidable extends StatelessWidget {
     );
   }
 }
+
+

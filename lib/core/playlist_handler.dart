@@ -5,8 +5,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../application/bottombar/playlists/playlists_bloc.dart';
 import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
-import '../presentation/homepage/homepage.dart';
 import 'const_appname.dart';
+import 'globals.dart';
 
 class PlaylistHandler {
   final List playlists;
@@ -67,9 +67,9 @@ class PlaylistHandler {
   // AlertDialog, wenn Icon + im Bottomsheet für Playlists getapt wurde
   void createPlaylist(String description, List playlist) {
     txtController.clear();
-    final themeData = Theme.of(myGlobals.scaffoldKey.currentContext!);
+    final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
     showDialog(
-      context: myGlobals.scaffoldKey.currentContext!,
+      context: globalScaffoldKey.scaffoldKey.currentContext!,
       builder: (context) {
         return OrientationBuilder(builder: (context, orientation) {
           if (orientation == Orientation.landscape) {
@@ -105,9 +105,9 @@ class PlaylistHandler {
     );
   }
 
-  ElevatedButton buildButtonSaveNewPlaylist(
+  TextButton buildButtonSaveNewPlaylist(
       ThemeData themeData, List playlist) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () async {
         if (txtController.value.text.isNotEmpty) {
           bool nameExists = playlists
@@ -128,8 +128,8 @@ class PlaylistHandler {
               await file.writeAsString("$s\n", mode: FileMode.append);
             }
 
-            Navigator.of(myGlobals.scaffoldKey.currentContext!).pop();
-            ScaffoldMessenger.of(myGlobals.scaffoldKey.currentContext!)
+            Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+            ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
                 .showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
@@ -140,17 +140,17 @@ class PlaylistHandler {
             );
             txtController.clear();
           } else {
-            Navigator.of(myGlobals.scaffoldKey.currentContext!).pop();
+            Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
             createPlaylist(
                 'The playlist \'${txtController.value.text.trim()}\' already exists.\nPlease choose another name.',
                 playlist);
           }
         } else {
-          Navigator.of(myGlobals.scaffoldKey.currentContext!).pop();
+          Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
           createPlaylist('A playlist needs a name!', playlist);
         }
       },
-      style: themeData.elevatedButtonTheme.style,
+      style: themeData.textButtonTheme.style,
       child: const Text(
         "Save",
       ),
@@ -158,14 +158,13 @@ class PlaylistHandler {
   }
 
   Future addToPlaylist(String filePath) async {
-    final themeData = Theme.of(myGlobals.scaffoldKey.currentContext!);
+    final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
     String description = "Add this track to playlist:";
     buildDropDownStrings();
 
     if (playlists.isNotEmpty) {
-      selectedVal = "";
       return await showDialog(
-        context: myGlobals.scaffoldKey.currentContext!,
+        context: globalScaffoldKey.scaffoldKey.currentContext!,
         builder: (context) {
           return CustomDialog(
             titleWidget: DescriptionText(
@@ -184,7 +183,7 @@ class PlaylistHandler {
       );
     } else {
       return await showDialog(
-        context: myGlobals.scaffoldKey.currentContext!,
+        context: globalScaffoldKey.scaffoldKey.currentContext!,
         builder: (context) {
           description = "You don't have any playlist yet!";
           return CustomDialog(
@@ -205,50 +204,69 @@ class PlaylistHandler {
     }
   }
 
+  void closeDialogAddToPlaylist(){
+    Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+    ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(
+            "The track was added to the playlist '$selectedVal'."),
+      ),
+    );
+    selectedVal = "";
+  }
+
   StatefulBuilder buildButtonAddToPlaylist(
       String filePath, ThemeData themeData) {
     final playlistsBloc =
-        BlocProvider.of<PlaylistsBloc>(myGlobals.scaffoldKey.currentContext!);
+        BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-      return ElevatedButton(
+      return TextButton(
         onPressed: () async {
-          if (!playlists[selectedIndex][1].contains(filePath)) {
-            final Directory appDir = await getApplicationDocumentsDirectory();
-            final Directory plDir =
-                Directory("${appDir.path}/${appName}_Playlists");
-            final File file = File("${plDir.path}/$selectedVal.m3u");
-            file.writeAsString("$filePath\n",
-                mode: FileMode.append, flush: true);
-            setState(() {
+          if(selectedVal != ""){
+            if (!playlists[selectedIndex][1].contains(filePath)) {
+              final Directory appDir = await getApplicationDocumentsDirectory();
+              final Directory plDir =
+              Directory("${appDir.path}/${appName}_Playlists");
+              final File file = File("${plDir.path}/$selectedVal.m3u");
+              file.writeAsString("$filePath\n",
+                  mode: FileMode.append, flush: true);
               playlistsBloc.state.playlists[selectedIndex][1].add(filePath);
-              Navigator.pop(context);
-              // Then we update UI in case we added a track to current playlist (based on current id)
-              if (playlistsBloc.state.playlistId != -2) {
-                playlistsBloc
-                    .add(PlaylistChanged(id: playlistsBloc.state.playlistId));
-              }
+              closeDialogAddToPlaylist();
+              setState(() {
+                // Then we update UI in case we added a track to current playlist (based on current id)
+                if (playlistsBloc.state.playlistId != -2) {
+                  playlistsBloc
+                      .add(PlaylistChanged(id: playlistsBloc.state.playlistId));
+                }
+              });
+
+            } else {
+              Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   duration: const Duration(seconds: 2),
                   content: Text(
-                      "The track was added to the playlist '$selectedVal'."),
+                      "The playlist '$selectedVal' already contains this track."),
+                  backgroundColor: themeData.colorScheme.primary,
                 ),
               );
-            });
+            }
           } else {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
-                content: Text(
-                    "The playlist '$selectedVal' already contains this track."),
+                content: const Text(
+                    "Pick a playlist!"),
                 backgroundColor: themeData.colorScheme.primary,
               ),
             );
           }
+
         },
-        style: themeData.elevatedButtonTheme.style,
+        style: themeData.textButtonTheme.style,
         child: const Text(
           "Save",
         ),

@@ -14,9 +14,9 @@ import 'package:file_picker/file_picker.dart';
 
 import '../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../application/bottombar/playlists/playlists_bloc.dart';
-import '../presentation/homepage/homepage.dart';
 import '../services/google_auth_client.dart';
 import 'const_appname.dart';
+import 'globals.dart';
 
 // extension requires import dart:io
 extension FileExtention on FileSystemEntity {
@@ -81,15 +81,15 @@ class BackupRestorePlaylists {
                         ? Text(playlistsWillBeDeleted)
                         : Text(zipWillBeCreated),
                     actions: <Widget>[
-                      ElevatedButton(
-                        style: themeData.elevatedButtonTheme.style,
+                      TextButton(
+                        style: themeData.textButtonTheme.style,
                         child: Text(
                           abort,
                         ),
                         onPressed: () => Navigator.pop(context, false),
                       ),
-                      ElevatedButton(
-                        style: themeData.elevatedButtonTheme.style,
+                      TextButton(
+                        style: themeData.textButtonTheme.style,
                         child: Text(
                           continu,
                         ),
@@ -112,7 +112,7 @@ class BackupRestorePlaylists {
   /// BACKUP
   void backupFiles() async {
     final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(
-        myGlobals.scaffoldKey.currentContext!);
+        globalScaffoldKey.scaffoldKey.currentContext!);
     var encoder = ZipFileEncoder();
     String messageNotSignedIn =
         "You are not signed in to your Google account"; //AppLocalizations.of(context)!.notSignedIn;
@@ -183,7 +183,7 @@ class BackupRestorePlaylists {
 
         if (account == null) {
           dialogClose(
-              myGlobals.scaffoldKey.currentContext!, messageNotSignedIn);
+              globalScaffoldKey.scaffoldKey.currentContext!, messageNotSignedIn);
         } else {
           final authHeaders = await account.authHeaders;
           final authenticateClient = GoogleAuthClient(authHeaders);
@@ -211,7 +211,7 @@ class BackupRestorePlaylists {
                 uploadMedia: drive.Media(file.openRead(), file.lengthSync()),
               );
             } catch (e) {
-              dialogClose(myGlobals.scaffoldKey.currentContext!,
+              dialogClose(globalScaffoldKey.scaffoldKey.currentContext!,
                   'Unable to upload: $e');
               rethrow;
             }
@@ -229,12 +229,12 @@ class BackupRestorePlaylists {
               .whenComplete(() => Directory(backupPath).delete(recursive: true))
               .whenComplete(() {
             isCommunicating.isCommunicatingWithGoogleDrive(false);
-            dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+            dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
           });
         }
       } catch (e) {
         String message = "$error: $e.\n$backupNotCreated\n$pleaseTryAgain";
-        dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
       }
     } else {
       dir = await getApplicationDocumentsDirectory();
@@ -269,14 +269,14 @@ class BackupRestorePlaylists {
           Directory('${dir.path}/$backupFolder')
               .delete(recursive: true)
               .whenComplete(() =>
-                  dialogClose(myGlobals.scaffoldKey.currentContext!, message));
+                  dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message));
         } else {
           String message = "$error: $backupNotCreated\n$pleaseTryAgain";
-          dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+          dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
         }
       } catch (e) {
         String message = "$error: $e.\n$backupNotCreated\n$pleaseTryAgain";
-        dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
       }
     }
   }
@@ -284,7 +284,7 @@ class BackupRestorePlaylists {
   /// RESTORE
   void restoreFiles() async {
     final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(
-        myGlobals.scaffoldKey.currentContext!);
+        globalScaffoldKey.scaffoldKey.currentContext!);
     dynamic appDir = await getApplicationDocumentsDirectory();
     var playlistsDir = Directory('${appDir.path}/${appName}_Playlists');
     String noBackupSelected =
@@ -301,14 +301,14 @@ class BackupRestorePlaylists {
     } catch(e){
       String message =
           "Error while retrieving the backup file.\nPlease try again.";
-      dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+      dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
       return;
     }
 
 
     if (result == null) {
       String message = "$noBackupSelected\n$restoreAborted";
-      dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+      dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
     } else {
       isCommunicating.isCommunicatingWithGoogleDrive(true);
       dynamic pickedFilePath = result.files.single.path;
@@ -353,7 +353,7 @@ class BackupRestorePlaylists {
 
         /// Update playlist menue
         final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-            myGlobals.scaffoldKey.currentContext!);
+            globalScaffoldKey.scaffoldKey.currentContext!);
         playlistsBloc
             .add(PlaylistsLoadingEvent(tracks: GlobalLists().initialTracks));
 
@@ -367,12 +367,12 @@ class BackupRestorePlaylists {
             "Your playlists from the backup file have been restored.";
         extractFiles().whenComplete(() {
           isCommunicating.isCommunicatingWithGoogleDrive(false);
-          dialogClose(myGlobals.scaffoldKey.currentContext!, message);
+          dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
         });
       } else {
         zipFile.delete();
         isCommunicating.isCommunicatingWithGoogleDrive(false);
-        dialogClose(myGlobals.scaffoldKey.currentContext!, noValidFiles);
+        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, noValidFiles);
       }
     }
   }

@@ -72,9 +72,9 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () => Navigator.pop(context),
-      style: themeData.elevatedButtonTheme.style,
+      style: themeData.textButtonTheme.style,
       child: Text(
         btnText,
       ),

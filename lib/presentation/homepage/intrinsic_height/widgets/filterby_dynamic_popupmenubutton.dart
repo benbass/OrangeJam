@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
+import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
-import '../../homepage.dart';
 
 class FilterByDynamicMenu extends StatelessWidget {
   const FilterByDynamicMenu({super.key});
@@ -156,8 +156,8 @@ class MyExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playlistsBloc =
-        BlocProvider.of<PlaylistsBloc>(myGlobals.scaffoldKey.currentContext!);
-    final appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(myGlobals.scaffoldKey.currentContext!);
+        BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+    final appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(globalScaffoldKey.scaffoldKey.currentContext!);
 
     return ExpansionTile(
       expandedCrossAxisAlignment: CrossAxisAlignment.start,

@@ -15,7 +15,7 @@ class PlayerControlsBloc
 
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
-          track: TrackEntity.empty().copyWith(id: -1),
+          track: TrackEntity.empty().copyWith(id: 0),
           isPausing: false,
           height: 0));
     });
@@ -31,7 +31,7 @@ class PlayerControlsBloc
       } else {
         // stop current track
         emit(state.copyWith(
-            track: TrackEntity.empty().copyWith(id: -1),
+            track: TrackEntity.empty().copyWith(id: 0),
             isPausing: false,
             height: 0));
         sl<MyAudioHandler>().stopTrack();
@@ -41,7 +41,7 @@ class PlayerControlsBloc
     on<StopButtonPressed>((event, emit) {
         // This is used by the notification only
         emit(state.copyWith(
-            track: TrackEntity.empty().copyWith(id: -1),
+            track: TrackEntity.empty().copyWith(id: 0),
             isPausing: false,
             height: 0));
         sl<MyAudioHandler>().stopTrack();
@@ -65,7 +65,7 @@ class PlayerControlsBloc
 
     on<NextButtonPressed>((event, emit) async {
       await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
-        if(value.id != -1){
+        if(value.id != 0){
           emit(PlayerControlsState(
               track: value, isPausing: false, height: 200));
           sl<MyAudioHandler>().playTrack(value);
@@ -75,7 +75,7 @@ class PlayerControlsBloc
 
     on<PreviousButtonPressed>((event, emit) async {
       await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
-        if(value.id != -1){
+        if(value.id != 0){
           sl<MyAudioHandler>().playTrack(value);
           emit(PlayerControlsState(
               track: value, isPausing: false, height: 200));
