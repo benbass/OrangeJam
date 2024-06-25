@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/core/initialize_awesome_notifications.dart';
+import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/bottombar/playlists/is_comm_with_google_cubit.dart';
@@ -96,20 +97,12 @@ class MyHomePage extends StatelessWidget {
           builder: (context, tracklistState) {
             if (tracklistState is TracklistInitial) {
               tracklistBloc.add(TrackListLoadingEvent());
-              return Center(
-                child: CircularProgressIndicator(
-                  color: themeData.colorScheme.secondary,
-                ),
-              );
+              return CustomProgressIndicator(progressText: "Scanning device ...", themeData: themeData);
             } else if (tracklistState is TracklistStateLoading) {
               playlistsBloc
                   .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
               tracklistBloc.add(TrackListLoadedEvent());
-              return Center(
-                child: CircularProgressIndicator(
-                  color: themeData.colorScheme.secondary,
-                ),
-              );
+              return CustomProgressIndicator(progressText: "Loading tracks ...", themeData: themeData);
             } else if (tracklistState is TracklistStateLoaded) {
               // Player is open so we can subscribe
               if (audioHandler.flutterSoundPlayer.isOpen()) {
@@ -245,4 +238,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
