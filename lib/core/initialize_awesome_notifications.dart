@@ -49,6 +49,9 @@ void initAwesomeNotifications() {
             SimpleButton(
               themeData: themeData,
               btnText: 'Don\'t Allow',
+              function: () {
+                Navigator.of(context).pop();
+              },
             ),
             ElevatedButton(
               onPressed: () => AwesomeNotifications()

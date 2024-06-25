@@ -27,14 +27,14 @@ class CustomDialog extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
       child: AlertDialog(
         title: titleWidget,
-        backgroundColor: themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
+        backgroundColor:
+            themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
         content: SizedBox(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               content,
-              if (showDropdown)
-                const Placeholder() // DropDown?
+              if (showDropdown) const Placeholder() // DropDown?
             ],
           ),
         ),
@@ -72,6 +72,9 @@ void dialogClose(BuildContext context, message) {
         SimpleButton(
           themeData: themeData,
           btnText: 'Close',
+          function: () {
+            Navigator.of(context).pop();
+          },
         ),
       ],
       showDropdown: false,
@@ -85,7 +88,8 @@ void dialogClose(BuildContext context, message) {
   );
 }
 
-void dialogActionRestoreOrBackupPlaylists(BuildContext context, String restoreOrBackup) {
+void dialogActionRestoreOrBackupPlaylists(
+    BuildContext context, String restoreOrBackup) {
   final themeData = Theme.of(context);
   BackupRestorePlaylists backupRestorePlaylists = BackupRestorePlaylists();
   String playlistsWillBeDeleted =
@@ -98,41 +102,43 @@ void dialogActionRestoreOrBackupPlaylists(BuildContext context, String restoreOr
   String restore = "Restore"; //AppLocalizations.of(context)!.restore;
   String backup = "Backup"; //AppLocalizations.of(context)!.backup;
   showDialog(
-      builder: (context) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-        child: AlertDialog(
-          title: Text(
-            restoreOrBackup == "restore" ? restore : backup,
-            style: themeData.dialogTheme.titleTextStyle,
-          ),
-          backgroundColor:
-          themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
-          content: restoreOrBackup == "restore"
-              ? Text(playlistsWillBeDeleted)
-              : Text(zipWillBeCreated),
-          actions: <Widget>[
-            TextButton(
-              style: themeData.textButtonTheme.style,
-              child: Text(
-                abort,
+          builder: (context) => BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                child: AlertDialog(
+                  title: Text(
+                    restoreOrBackup == "restore" ? restore : backup,
+                    style: themeData.dialogTheme.titleTextStyle,
+                  ),
+                  backgroundColor:
+                      themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
+                  content: restoreOrBackup == "restore"
+                      ? Text(playlistsWillBeDeleted)
+                      : Text(zipWillBeCreated),
+                  actions: <Widget>[
+                    TextButton(
+                      style: themeData.textButtonTheme.style,
+                      child: Text(
+                        abort,
+                      ),
+                      onPressed: () => Navigator.pop(context, false),
+                    ),
+                    TextButton(
+                      style: themeData.textButtonTheme.style,
+                      child: Text(
+                        continu,
+                      ),
+                      onPressed: () => Navigator.pop(context, true),
+                    ),
+                  ],
+                ),
               ),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-            TextButton(
-              style: themeData.textButtonTheme.style,
-              child: Text(
-                continu,
-              ),
-              onPressed: () => Navigator.pop(context, true),
-            ),
-          ],
-        ),
-      ),
-      context: context)
+          context: context)
       .then((exit) {
     if (exit == null) return;
     if (exit) {
-      restoreOrBackup == "restore" ? backupRestorePlaylists.restoreFiles() : backupRestorePlaylists.backupFiles();
+      restoreOrBackup == "restore"
+          ? backupRestorePlaylists.restoreFiles()
+          : backupRestorePlaylists.backupFiles();
     } else {
       return;
     }
@@ -144,15 +150,17 @@ class SimpleButton extends StatelessWidget {
     super.key,
     required this.themeData,
     required this.btnText,
+    required this.function,
   });
 
   final ThemeData themeData;
   final String btnText;
+  final VoidCallback function;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Navigator.pop(context),
+      onPressed: function,
       style: themeData.textButtonTheme.style,
       child: Text(
         btnText,

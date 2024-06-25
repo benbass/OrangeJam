@@ -85,6 +85,9 @@ class PlaylistHandler {
                 SimpleButton(
                   themeData: themeData,
                   btnText: 'Cancel',
+                  function: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
                 buildButtonSaveNewPlaylist(themeData, playlist),
               ],
@@ -98,15 +101,13 @@ class PlaylistHandler {
           } else {
             return const SizedBox.shrink();
           }
-
         });
       },
     );
   }
 
   // Button Save for a new playlist
-  TextButton buildButtonSaveNewPlaylist(
-      ThemeData themeData, List playlist) {
+  TextButton buildButtonSaveNewPlaylist(ThemeData themeData, List playlist) {
     return TextButton(
       onPressed: () async {
         if (txtController.value.text.isNotEmpty) {
@@ -121,9 +122,9 @@ class PlaylistHandler {
             if (!plDir.existsSync()) {
               await plDir.create();
             }
-            final File file =
-                await File("${plDir.path}/${txtController.value.text.trim()}.m3u")
-                    .create();
+            final File file = await File(
+                    "${plDir.path}/${txtController.value.text.trim()}.m3u")
+                .create();
             for (String s in playlist) {
               await file.writeAsString("$s\n", mode: FileMode.append);
             }
@@ -174,7 +175,13 @@ class PlaylistHandler {
             ),
             content: buildDropDownAddToPlaylist(themeData),
             actions: [
-              SimpleButton(themeData: themeData, btnText: "Cancel"),
+              SimpleButton(
+                themeData: themeData,
+                btnText: "Cancel",
+                function: () {
+                  Navigator.of(context).pop();
+                },
+              ),
               buildButtonAddToPlaylist(filePath, themeData),
             ],
             showDropdown: false,
@@ -193,6 +200,9 @@ class PlaylistHandler {
               SimpleButton(
                 themeData: themeData,
                 btnText: 'OK',
+                function: () {
+                  Navigator.of(context).pop();
+                },
               )
             ],
             showDropdown: false,
@@ -205,13 +215,13 @@ class PlaylistHandler {
     }
   }
 
-  void closeDialogAddToPlaylist(){
+  void closeDialogAddToPlaylist() {
     Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-    ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!).showSnackBar(
+    ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+        .showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
-        content: Text(
-            "The track was added to the playlist '$selectedVal'."),
+        content: Text("The track was added to the playlist '$selectedVal'."),
       ),
     );
     selectedVal = "";
@@ -220,17 +230,17 @@ class PlaylistHandler {
   // Button Save for adding a track to a playlist
   StatefulBuilder buildButtonAddToPlaylist(
       String filePath, ThemeData themeData) {
-    final playlistsBloc =
-        BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return TextButton(
         onPressed: () async {
-          if(selectedVal != ""){
+          if (selectedVal != "") {
             if (!playlists[selectedIndex][1].contains(filePath)) {
               final Directory appDir = await getApplicationDocumentsDirectory();
               final Directory plDir =
-              Directory("${appDir.path}/${appName}_Playlists");
+                  Directory("${appDir.path}/${appName}_Playlists");
               final File file = File("${plDir.path}/$selectedVal.m3u");
               file.writeAsString("$filePath\n",
                   mode: FileMode.append, flush: true);
@@ -243,7 +253,6 @@ class PlaylistHandler {
                       .add(PlaylistChanged(id: playlistsBloc.state.playlistId));
                 }
               });
-
             } else {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -260,13 +269,11 @@ class PlaylistHandler {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
-                content: const Text(
-                    "Pick a playlist!"),
+                content: const Text("Pick a playlist!"),
                 backgroundColor: themeData.colorScheme.primary,
               ),
             );
           }
-
         },
         style: themeData.textButtonTheme.style,
         child: const Text(

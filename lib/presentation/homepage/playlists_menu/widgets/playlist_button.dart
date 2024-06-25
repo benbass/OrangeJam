@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orange_player/presentation/homepage/custom_widgets/custom_widgets.dart';
 
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
@@ -26,6 +27,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return InkResponse(
       onTap: id != playlistsBloc.state.playlistId
           ? () async {
@@ -36,17 +38,42 @@ class ButtonOpenPlaylist extends StatelessWidget {
           : null,
       onLongPress: id > -1
           ? () {
-              playlistsBloc.state.playlists.removeAt(id);
-              //playlistHandler.updateDatabase();
-              playlistHandler.deleteFile(name);
-              playlistsBloc.add(PlaylistDeleted(id: id));
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 1),
-                  content: Text(
-                    'The playlist \'$name\' was deleted.',
-                  ),
+              showDialog(
+                context: context,
+                builder: (context) => CustomDialog(
+                  content: const SizedBox.shrink(),
+                  actions: [
+                    SimpleButton(
+                      themeData: themeData,
+                      btnText: 'Cancel',
+                      function: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SimpleButton(
+                      themeData: themeData,
+                      btnText: "Ok",
+                      function: () {
+                        playlistsBloc.state.playlists.removeAt(id);
+                        playlistHandler.deleteFile(name);
+                        playlistsBloc.add(PlaylistDeleted(id: id));
+                        Navigator.pop(context); // closes the dialog
+                        Navigator.pop(context); // closes the playlist menu
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 2),
+                            content: Text(
+                              'The playlist \'$name\' was deleted.',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  showDropdown: false,
+                  titleWidget:
+                      Text("This will definitely delete the playlist:\n\n$name"),
+                  themeData: themeData,
                 ),
               );
             }
