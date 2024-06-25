@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:orange_player/presentation/homepage/custom_widgets/custom_widgets.dart';
 
 import '../../../../application/my_listview/tracklist/tracklist_bloc.dart';
-import '../../../../core/backup_restore_playlists.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlist_handler_and_dialogs.dart';
 import '../../../../injection.dart';
 
 class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
     super.key,
-    required this.backupRestorePlaylists,
     required this.tracklistBlock,
     required this.playlistHandler,
   });
 
-  final BackupRestorePlaylists backupRestorePlaylists;
   final TracklistBloc tracklistBlock;
   final PlaylistHandler playlistHandler;
 
@@ -25,7 +23,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            backupRestorePlaylists.dialogAction(context, "backup");
+           dialogActionRestoreOrBackupPlaylists(context, "backup");
           },
           icon: const Icon(
             Icons.backup,
@@ -36,7 +34,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            backupRestorePlaylists.dialogAction(context, "restore");
+            dialogActionRestoreOrBackupPlaylists(context, "restore");
           },
           icon: const Icon(
             Icons.restore,

@@ -2,7 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:orange_player/services/notification_controller.dart';
 
-import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
+import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'globals.dart';
 
 void initAwesomeNotifications() {

@@ -6,20 +6,17 @@ import 'package:orange_player/presentation/homepage/playlists_menu/widgets/topba
 import '../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../application/my_listview/tracklist/tracklist_bloc.dart';
 import '../../../application/my_listview/ui/appbar_filterby_cubit.dart';
-import '../../../core/backup_restore_playlists.dart';
-import '../../../core/playlist_handler.dart';
+import '../../../core/playlist_handler_and_dialogs.dart';
 
 class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({
     super.key,
-    required this.backupRestorePlaylists,
     required this.tracklistBlock,
     required this.playlistHandler,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
   });
 
-  final BackupRestorePlaylists backupRestorePlaylists;
   final TracklistBloc tracklistBlock;
   final PlaylistHandler playlistHandler;
   final PlaylistsBloc playlistsBloc;
@@ -48,7 +45,6 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: TopBarPlaylistsMenu(
-                  backupRestorePlaylists: backupRestorePlaylists,
                   tracklistBlock: tracklistBlock,
                   playlistHandler: playlistHandler,
                 ),

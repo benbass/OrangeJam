@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlist_handler_and_dialogs.dart';
 
 class ButtonOpenPlaylist extends StatelessWidget {
   const ButtonOpenPlaylist({

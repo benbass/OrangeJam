@@ -5,7 +5,7 @@ import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widge
 
 import '../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../application/my_listview/ui/appbar_filterby_cubit.dart';
-import '../../../core/playlist_handler.dart';
+import '../../../core/playlist_handler_and_dialogs.dart';
 import '../../../domain/entities/track_entity.dart';
 
 class SortFilterSearchAndQueueMenu extends StatelessWidget {

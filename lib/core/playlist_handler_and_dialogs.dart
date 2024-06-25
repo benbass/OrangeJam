@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../application/bottombar/playlists/playlists_bloc.dart';
-import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
+import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'globals.dart';
 
 class PlaylistHandler {
@@ -63,7 +63,7 @@ class PlaylistHandler {
     playlistMap = playlistNames.asMap();
   }
 
-  // AlertDialog, wenn Icon + im Bottomsheet für Playlists getapt wurde
+  // Dialog, wenn Icon + im Bottomsheet für Playlists getappt wurde
   void createPlaylist(String description, List playlist) {
     txtController.clear();
     final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
@@ -82,11 +82,11 @@ class PlaylistHandler {
                 themeData: themeData,
               ),
               actions: [
-                buildButtonSaveNewPlaylist(themeData, playlist),
                 SimpleButton(
                   themeData: themeData,
                   btnText: 'Cancel',
                 ),
+                buildButtonSaveNewPlaylist(themeData, playlist),
               ],
               showDropdown: false,
               titleWidget: DescriptionText(
@@ -104,6 +104,7 @@ class PlaylistHandler {
     );
   }
 
+  // Button Save for a new playlist
   TextButton buildButtonSaveNewPlaylist(
       ThemeData themeData, List playlist) {
     return TextButton(
@@ -156,6 +157,7 @@ class PlaylistHandler {
     );
   }
 
+  // Dialog after tap on slidable action on list item
   Future addToPlaylist(String filePath) async {
     final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
     String description = "Add this track to playlist:";
@@ -172,8 +174,8 @@ class PlaylistHandler {
             ),
             content: buildDropDownAddToPlaylist(themeData),
             actions: [
-              buildButtonAddToPlaylist(filePath, themeData),
               SimpleButton(themeData: themeData, btnText: "Cancel"),
+              buildButtonAddToPlaylist(filePath, themeData),
             ],
             showDropdown: false,
             themeData: themeData,
@@ -215,6 +217,7 @@ class PlaylistHandler {
     selectedVal = "";
   }
 
+  // Button Save for adding a track to a playlist
   StatefulBuilder buildButtonAddToPlaylist(
       String filePath, ThemeData themeData) {
     final playlistsBloc =
@@ -273,6 +276,7 @@ class PlaylistHandler {
     });
   }
 
+  // Dropdown for playlist names in dialog addToPlaylist()
   StatefulBuilder buildDropDownAddToPlaylist(ThemeData themeData) {
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {

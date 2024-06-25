@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
-import 'package:orange_player/core/backup_restore_playlists.dart';
 
 import '../../../../application/my_listview/tracklist/tracklist_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlist_handler_and_dialogs.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
 
 class MenuPlaylistsWidget extends StatelessWidget {
@@ -22,8 +21,6 @@ class MenuPlaylistsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BackupRestorePlaylists backupRestorePlaylists =
-        BackupRestorePlaylists(playlistHandler: playlistHandler);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final tracklistBlock = BlocProvider.of<TracklistBloc>(context);
     return BlocBuilder<PlaylistsBloc, PlaylistsState>(
@@ -35,7 +32,6 @@ class MenuPlaylistsWidget extends StatelessWidget {
               shape: const ContinuousRectangleBorder(),
               builder: (context) {
                 return BottomSheetPlaylistsMenu(
-                  backupRestorePlaylists: backupRestorePlaylists,
                   tracklistBlock: tracklistBlock,
                   playlistHandler: playlistHandler,
                   playlistsBloc: playlistsBloc,

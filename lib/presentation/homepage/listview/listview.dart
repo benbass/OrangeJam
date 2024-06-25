@@ -11,7 +11,7 @@ import '../../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
 import '../../../application/my_listview/ui/is_scrolling_cubit.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../domain/entities/track_entity.dart';
-import '../../../core/playlist_handler.dart';
+import '../../../core/playlist_handler_and_dialogs.dart';
 import 'widgets/list_item_slidable.dart';
 
 class MyListview extends StatelessWidget {

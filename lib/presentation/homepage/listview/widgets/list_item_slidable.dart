@@ -11,7 +11,7 @@ import '../../../../core/globals.dart';
 import '../../../../core/position_monitoring.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/audiohandler.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlist_handler_and_dialogs.dart';
 import 'item_leading.dart';
 import 'item_texts.dart';
 

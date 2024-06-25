@@ -14,7 +14,7 @@ import '../../application/my_listview/tracklist/tracklist_bloc.dart';
 import '../../core/globals.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
-import '../../core/playlist_handler.dart';
+import '../../core/playlist_handler_and_dialogs.dart';
 import 'appbar/appbar_content.dart';
 import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';

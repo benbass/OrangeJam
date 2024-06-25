@@ -1,19 +1,16 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:archive/archive_io.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/presentation/homepage/dialogs/widgets/custom_widgets.dart';
-import 'package:orange_player/core/playlist_handler.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:google_sign_in/google_sign_in.dart' as sign_in;
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
 import '../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../application/bottombar/playlists/playlists_bloc.dart';
+import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import '../services/google_auth_client.dart';
 import 'globals.dart';
 
@@ -29,84 +26,6 @@ extension FileExtention on FileSystemEntity {
 }
 
 class BackupRestorePlaylists {
-  final PlaylistHandler playlistHandler;
-
-  BackupRestorePlaylists({required this.playlistHandler});
-
-  void dialogClose(BuildContext context, message) {
-    final themeData = Theme.of(context);
-    showDialog(
-      builder: (context) => CustomDialog(
-        content: const SizedBox.shrink(),
-        actions: [
-          SimpleButton(
-            themeData: themeData,
-            btnText: 'Close',
-          ),
-        ],
-        showDropdown: false,
-        titleWidget: DescriptionText(
-          themeData: themeData,
-          description: message,
-        ),
-        themeData: themeData,
-      ),
-      context: context,
-    );
-  }
-
-  void dialogAction(BuildContext context, String restoreOrBackup) {
-    final themeData = Theme.of(context);
-    String playlistsWillBeDeleted =
-        "Pick the ZIP file that contains your backup in the '$appName Playlists' folder in your Google Drive."
-        "\nWarning: the restored playlists will overwrite existing playlists with the same name."; //AppLocalizations.of(context)!.playlistsWillBeDeleted;
-    String zipWillBeCreated =
-        "A ZIP archive will be created and uploaded to your Google Drive"; //AppLocalizations.of(context)!.zipWillBeCreated;
-    String abort = "Cancel"; //AppLocalizations.of(context)!.abort;
-    String continu = "Continue"; //AppLocalizations.of(context)!.continu;
-    String restore = "Restore"; //AppLocalizations.of(context)!.restore;
-    String backup = "Backup"; //AppLocalizations.of(context)!.backup;
-    showDialog(
-            builder: (context) => BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                  child: AlertDialog(
-                    title: Text(
-                      restoreOrBackup == "restore" ? restore : backup,
-                      style: themeData.dialogTheme.titleTextStyle,
-                    ),
-                    backgroundColor:
-                        themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
-                    content: restoreOrBackup == "restore"
-                        ? Text(playlistsWillBeDeleted)
-                        : Text(zipWillBeCreated),
-                    actions: <Widget>[
-                      TextButton(
-                        style: themeData.textButtonTheme.style,
-                        child: Text(
-                          abort,
-                        ),
-                        onPressed: () => Navigator.pop(context, false),
-                      ),
-                      TextButton(
-                        style: themeData.textButtonTheme.style,
-                        child: Text(
-                          continu,
-                        ),
-                        onPressed: () => Navigator.pop(context, true),
-                      ),
-                    ],
-                  ),
-                ),
-            context: context)
-        .then((exit) {
-      if (exit == null) return;
-      if (exit) {
-        restoreOrBackup == "restore" ? restoreFiles() : backupFiles();
-      } else {
-        return;
-      }
-    });
-  }
 
   /// BACKUP
   void backupFiles() async {
