@@ -15,7 +15,6 @@ import 'package:file_picker/file_picker.dart';
 import '../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../application/bottombar/playlists/playlists_bloc.dart';
 import '../services/google_auth_client.dart';
-import 'const_appname.dart';
 import 'globals.dart';
 
 // extension requires import dart:io

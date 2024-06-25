@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
 import 'package:orange_player/core/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import '../../../../application/playercontrols/cubits/track_duration_cubit.dart';
-import '../../../../application/playercontrols/cubits/track_position_cubit.dart';
-import '../../../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
-import '../../../../application/my_listview/ui/is_scrolling_cubit.dart';
-import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../../../domain/entities/track_entity.dart';
-import '../../../../core/playlist_handler.dart';
-import 'item_slidable.dart';
+import '../../../application/playercontrols/cubits/track_duration_cubit.dart';
+import '../../../application/playercontrols/cubits/track_position_cubit.dart';
+import '../../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
+import '../../../application/my_listview/ui/is_scrolling_cubit.dart';
+import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../../domain/entities/track_entity.dart';
+import '../../../core/playlist_handler.dart';
+import 'widgets/list_item_slidable.dart';
 
 class MyListview extends StatelessWidget {
   final List<TrackEntity> tracks;
@@ -128,7 +128,7 @@ class MyListview extends StatelessWidget {
                   ? const Color(0xFFCBD4C2)
                   : const Color(0xFF202531);
 
-              return ItemSlidable(
+              return ListItemSlidable(
                 key: Key(index.toString()),
                 index: index,
                 track: track,

@@ -9,3 +9,5 @@ class GlobalScaffoldKey {
   }
   GlobalKey get scaffoldKey => _scaffoldKey;
 }
+
+const String appName = "Trackslice";

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/track_entity.dart';
 
-class ListItemLeading extends StatelessWidget {
-  const ListItemLeading({
+class ItemLeading extends StatelessWidget {
+  const ItemLeading({
     super.key,
     required this.track,
   });

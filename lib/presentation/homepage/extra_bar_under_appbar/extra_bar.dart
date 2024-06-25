@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/presentation/homepage/intrinsic_height/widgets/filterby_dynamic_popupmenubutton.dart';
-import 'package:orange_player/presentation/homepage/intrinsic_height/widgets/search_textfield.dart';
-import 'package:orange_player/presentation/homepage/intrinsic_height/widgets/sortby_dropdown.dart';
+import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/filterby_popupmenubutton.dart';
+import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
+import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
 
 import '../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../application/my_listview/ui/appbar_filterby_cubit.dart';
 import '../../../core/playlist_handler.dart';
 import '../../../domain/entities/track_entity.dart';
 
-class SortFilterSearchMenu extends StatelessWidget {
-  const SortFilterSearchMenu({
+class SortFilterSearchAndQueueMenu extends StatelessWidget {
+  const SortFilterSearchAndQueueMenu({
     super.key,
     required this.playlistsBloc,
     required this.searchController,
@@ -35,7 +35,7 @@ class SortFilterSearchMenu extends StatelessWidget {
               /// SORT
           const Expanded(
             flex: 10,
-            child: SortBy(),
+            child: SortByDropdown(),
           ),
           const Expanded(
             flex: 2,
@@ -44,7 +44,7 @@ class SortFilterSearchMenu extends StatelessWidget {
           /// FILTER
           const Expanded(
             flex: 7,
-            child: FilterByDynamicMenu(),
+            child: FilterByPopupMenuButton(),
           ),
           /// SEARCH
           Expanded(
@@ -52,7 +52,7 @@ class SortFilterSearchMenu extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(
                   right: 12.0, top: 0),
-              child: SearchWidget(
+              child: SearchTextField(
                 searchController:
                 searchController,
                 appbarFilterByCubit:

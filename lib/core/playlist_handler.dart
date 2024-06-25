@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../application/bottombar/playlists/playlists_bloc.dart';
 import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
-import 'const_appname.dart';
 import 'globals.dart';
 
 class PlaylistHandler {

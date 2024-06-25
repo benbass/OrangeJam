@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:orange_player/presentation/homepage/my_listview/widgets/list_item_trailing.dart';
+import 'package:orange_player/presentation/homepage/listview/widgets/item_trailing.dart';
 
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
@@ -12,11 +12,11 @@ import '../../../../core/position_monitoring.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/audiohandler.dart';
 import '../../../../core/playlist_handler.dart';
-import 'list_item_leading.dart';
-import 'list_item_texts.dart';
+import 'item_leading.dart';
+import 'item_texts.dart';
 
-class ItemSlidable extends StatelessWidget {
-  const ItemSlidable({
+class ListItemSlidable extends StatelessWidget {
+  const ListItemSlidable({
     super.key,
     required this.index,
     required this.track,
@@ -158,15 +158,15 @@ class ItemSlidable extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     left: 8.0,
                   ),
-                  child: ListItemLeading(track: track),
+                  child: ItemLeading(track: track),
                 ),
                 const SizedBox(
                   width: 8.0,
                 ),
-                ListItemTexts(track: track, themeData: themeData, textColor: textColor),
+                ItemTexts(track: track, themeData: themeData, textColor: textColor),
                 SizedBox(
                   height: 66,
-                  child: ListItemTrailing(
+                  child: ItemTrailing(
                     id: track.id,
                     currentId: selectedTrackId,
                   ),

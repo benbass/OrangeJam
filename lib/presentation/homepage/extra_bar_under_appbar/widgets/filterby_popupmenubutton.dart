@@ -6,8 +6,8 @@ import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
 import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
 
-class FilterByDynamicMenu extends StatelessWidget {
-  const FilterByDynamicMenu({super.key});
+class FilterByPopupMenuButton extends StatelessWidget {
+  const FilterByPopupMenuButton({super.key});
 
   @override
   Widget build(BuildContext context) {

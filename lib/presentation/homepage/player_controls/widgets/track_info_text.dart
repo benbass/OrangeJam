@@ -2,42 +2,48 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/track_entity.dart';
 
-class ListItemTexts extends StatelessWidget {
-  const ListItemTexts({
+class TrackInfoText extends StatelessWidget {
+  const TrackInfoText({
     super.key,
     required this.track,
     required this.themeData,
-    required this.textColor,
   });
 
   final TrackEntity track;
   final ThemeData themeData;
-  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(
+              height: 2,
+            ),
             SizedBox(
-              width: 240,
               child: Text(
                 track.trackName ?? "",
-                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: themeData.textTheme.bodyMedium!
-                    .copyWith(color: textColor),
+                style: themeData.textTheme.bodyLarge?.copyWith(
+                  fontSize: 12,
+                  color: const Color(0xFF202531),
+                ),
               ),
+            ),
+            const SizedBox(
+              height: 4,
             ),
             SizedBox(
               child: Text(
                 track.trackArtistNames ?? "",
-                style: themeData.textTheme.bodySmall!
-                    .copyWith(color: textColor),
+                overflow: TextOverflow.ellipsis,
+                style: themeData.textTheme.bodyLarge?.copyWith(
+                  fontSize: 12,
+                  color: const Color(0xFF202531),
+                ),
               ),
             ),
           ],

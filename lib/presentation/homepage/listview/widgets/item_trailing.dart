@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/playercontrols/bloc/playercontrols_bloc.dart';
 
 // Hervorhebung des current tracks mit Animation
-class ListItemTrailing extends StatelessWidget {
+class ItemTrailing extends StatelessWidget {
   final int id;
   final int? currentId;
 
-  const ListItemTrailing({
+  const ItemTrailing({
     super.key,
     required this.id,
     required this.currentId,

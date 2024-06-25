@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/presentation/homepage/player_controls/widgets/play_pause_button.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls_progress_bar.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls_track_info_text.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/progress_bar.dart';
+import 'package:orange_player/presentation/homepage/player_controls/widgets/track_info_text.dart';
 import 'package:orange_player/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import '../../../../application/playercontrols/cubits/loop_mode_cubit.dart';
-import '../../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
-import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../../../domain/entities/track_entity.dart';
+import '../../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
+import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../../domain/entities/track_entity.dart';
 
-import 'bottomsheet_track_details.dart';
-import 'continuous_playback_button.dart';
-import 'loop_button.dart';
+import '../modal_bottomsheet_track_details/bottomsheet_track_details.dart';
+import 'widgets/continuous_playback_button.dart';
+import 'widgets/loop_button.dart';
 
 class PlayerControls extends StatelessWidget {
   final TrackEntity track;
@@ -66,7 +66,7 @@ class PlayerControls extends StatelessWidget {
                     const SizedBox(
                       width: 38,
                     ),
-                    PlayerControlsTrackInfoText(track: track, themeData: themeData),
+                    TrackInfoText(track: track, themeData: themeData),
                     BottomSheetTrackDetails(
                       themeData: themeData,
                       track: track,

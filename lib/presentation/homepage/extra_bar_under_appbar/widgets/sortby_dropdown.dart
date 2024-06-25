@@ -5,8 +5,8 @@ import 'package:orange_player/application/my_listview/sortby/sort_by_cubit.dart'
 import '../../../../application/bottombar/playlists/playlists_bloc.dart';
 
 
-class SortBy extends StatelessWidget {
-  const SortBy({super.key});
+class SortByDropdown extends StatelessWidget {
+  const SortByDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

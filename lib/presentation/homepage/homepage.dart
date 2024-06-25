@@ -7,21 +7,21 @@ import '../../application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/my_listview/ui/appbar_filterby_cubit.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/player_controls.dart';
+import 'package:orange_player/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orange_player/application/my_listview/ui/is_scrolling_cubit.dart';
 import '../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/my_listview/tracklist/tracklist_bloc.dart';
-import '../../core/animate_to_index.dart';
 import '../../core/globals.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
 import '../../core/playlist_handler.dart';
-import 'intrinsic_height/sort_filter_search_menu.dart';
+import 'appbar/appbar_content.dart';
+import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
-import 'bottombar/widgets/playlists_menu.dart';
+import 'bottombar/widgets/playlists_icon_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
-import 'error/widgets/error_message.dart';
-import 'my_listview/widgets/my_listview.dart';
+import 'error/error_message.dart';
+import 'listview/listview.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
@@ -88,61 +88,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       key: globalScaffoldKey.scaffoldKey,
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                flex: 3,
-                child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
-                  builder: (context, state) {
-                    if (state.playlistId == -2) {
-                      return Text(
-                        "Files (${state.tracks.length})",
-                      );
-                    } else if (state.playlistId == -1) {
-                      return Text(
-                        "Queue (${state.tracks.length})",
-                      );
-                    } else if (state.playlistId > -1) {
-                      return Text(
-                        "${state.playlists[state.playlistId][0]} (${state.tracks.length})",
-                        overflow: TextOverflow.ellipsis,
-                        //"Playlist",
-                      );
-                    } else {
-                      return Text(
-                        "Files (${state.tracks.length})",
-                      );
-                    }
-                  },
-                )),
-            const SizedBox(
-              width: 20,
-            ),
-
-            /// This builder shows a sort of filtering navigation: filtertext1 > filtertext2 > filtertext3...
-            BlocBuilder<AppbarFilterByCubit, String?>(
-              builder: (context, appbarFilterByState) {
-                return Expanded(
-                  flex: 2,
-                  child: appbarFilterByState != null
-                      ? Text(
-                          appbarFilterByState,
-                          style: themeData.appBarTheme.titleTextStyle?.copyWith(
-                            color: const Color(0xFFFF8100),
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          textAlign: TextAlign.end,
-                        )
-                      : const SizedBox.shrink(),
-                );
-              },
-            ),
-          ],
-        ),
+        title: AppBarContent(themeData: themeData),
       ),
       body: SizedBox(
         height: double.infinity,
@@ -179,8 +125,8 @@ class MyHomePage extends StatelessWidget {
                     children: [
                       state.playlistId < 0
 
-                          /// all files or queue
-                          ? SortFilterSearchMenu(
+                          /// Extra bar for all files and queue
+                          ? SortFilterSearchAndQueueMenu(
                               playlistsBloc: playlistsBloc,
                               searchController: searchController,
                               appbarFilterByCubit: appbarFilterByCubit,
@@ -188,7 +134,7 @@ class MyHomePage extends StatelessWidget {
                             )
                           : const SizedBox.shrink(),
 
-                      /// listview shows a playlist: no extra will be shown on top
+                      /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id < 0)
                       Expanded(
                         child: RawScrollbar(
                           trackVisibility: true,
@@ -239,7 +185,7 @@ class MyHomePage extends StatelessWidget {
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Sort list + go to item in list
+          /// Go to item
           Expanded(
             flex: 2,
             child: Row(
@@ -299,3 +245,4 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+

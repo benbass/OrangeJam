@@ -4,7 +4,6 @@ import 'package:orange_player/application/my_listview/ui/appbar_filterby_cubit.d
 import 'package:orange_player/core/audiohandler.dart';
 import 'application/bottombar/playlists/is_comm_with_google_cubit.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
-import 'core/objectbox.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
 import 'package:metadata_god/metadata_god.dart';

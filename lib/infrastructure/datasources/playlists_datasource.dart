@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:orange_player/core/const_appname.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../core/globals.dart';
 
 abstract class Playlistsdatasource {
   Future<List> getPlaylistsFromM3uFiles();

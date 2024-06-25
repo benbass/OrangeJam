@@ -5,11 +5,11 @@ import 'package:orange_player/application/my_listview/sortby/sort_by_cubit.dart'
 import 'package:orange_player/application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
 
-class SearchWidget extends StatelessWidget {
+class SearchTextField extends StatelessWidget {
   final TextEditingController searchController;
   final AppbarFilterByCubit appbarFilterByCubit;
 
-  const SearchWidget({
+  const SearchTextField({
     super.key,
     required this.searchController,
     required this.appbarFilterByCubit,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:orange_player/services/notification_controller.dart';
 
 import '../presentation/homepage/dialogs/widgets/custom_widgets.dart';
-import 'const_appname.dart';
 import 'globals.dart';
 
 void initAwesomeNotifications() {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../domain/entities/track_entity.dart';
-import '../../modal_bottomsheet/widgets/container_info_image.dart';
-import '../../modal_bottomsheet/widgets/sizedbox_infotext.dart';
+import '../../../domain/entities/track_entity.dart';
+import 'widgets/container_info_image.dart';
+import 'widgets/sizedbox_info_text.dart';
 
 class BottomSheetTrackDetails extends StatelessWidget {
   const BottomSheetTrackDetails({
