@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/application/my_listview/tracklist/tracklist_bloc.dart';
+import 'package:orange_player/application/listview/tracklist/tracklist_bloc.dart';
 import 'package:orange_player/domain/entities/track_entity.dart';
 import 'package:orange_player/domain/failures/tracklist_failures.dart';
 import 'package:orange_player/domain/usecases/tracklist_usecases.dart';

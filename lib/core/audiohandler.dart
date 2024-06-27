@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
+import 'package:orange_player/application/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/playercontrols/cubits/track_duration_cubit.dart';
 import 'package:orange_player/application/playercontrols/cubits/track_position_cubit.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,11 +32,11 @@ class MyAudioHandler {
   TrackDurationCubit trackDurationCubit = TrackDurationCubit();
   TrackPositionCubit trackPositionCubit = TrackPositionCubit();
 
-  // we need the following vars for the notification
+  /// we need the following vars for the notification
   TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0); // we initialize an empty track for app start
   bool isPausingState = false;
   int selectedId = 0;
-  //
+  ///
 
   void openAudioSession() {
     di.sl<MyAudioSession>().audioSession();
@@ -52,7 +52,7 @@ class MyAudioHandler {
   void createNotification() async {
     // We create notification only if user tapped on a track.
     // This check is necessary in order to prevent errors when app is resumed or inactive and player is stopped,
-    // in which case id == -1, which can causes issues...
+    // in which case id == 0, which can causes issues... id 0 is the id of an empty track
     if (selectedId != 0) {
       Duration d = Duration(milliseconds: currentTrack.trackDuration!.toInt());
 
@@ -198,7 +198,7 @@ class MyAudioHandler {
     // We in- or decrease list index based on parameter
     index += plusMinusOne;
 
-    // we prevent exception for index == -1 && index bigger than last index (out of range) and play previous/next track.
+    // we prevent exception for index == 0 && index bigger than last index (out of range) and play previous/next track.
     if (index > 0 && index < tracks.length) {
       // we set new track based on decreased index
       TrackEntity track = tracks[index];
@@ -213,47 +213,5 @@ class MyAudioHandler {
       return currentTrack;
     }
   }
-
-/*
-
-  // This method handles behaviour of player at end of track
-  startPositionMonitoring() {
-    bool hasStoppedChanging = false;
-    TracklistCubit tracklistCubit = BlocProvider.of<TracklistCubit>(myGlobals.scaffoldKey.currentContext!);
-    List<TrackEntity> tracks = tracklistCubit.state;
-    final continuousPlaybackModeCubit =
-    BlocProvider.of<ContinuousPlaybackModeCubit>(myGlobals.scaffoldKey.currentContext!);
-    final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(myGlobals.scaffoldKey.currentContext!);
-    final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(myGlobals.scaffoldKey.currentContext!);
-
-    Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      if (unformatedDuration(trackDurationCubit.state) - 1500 <
-          unformatedDuration(trackPositionCubit.state)) {
-        hasStoppedChanging = true;
-        timer.cancel();
-        if (hasStoppedChanging == true) {
-          if (continuousPlaybackModeCubit.state) {
-            BlocProvider.of<PlayerControlsBloc>(myGlobals.scaffoldKey.currentContext!).add(NextButtonPressed());
-            // Delay -> ensure timer starts when when new track duration is known
-            Future.delayed(const Duration(milliseconds: 2000),
-                startPositionMonitoring());
-          } else if (isLoopModeCubit.state) {
-            // we need current index in case user sorted or filtered the list
-            int index =
-            tracks.indexWhere((element) => element.id == selectedId);
-            playTrack2(tracks[index]);
-            startPositionMonitoring();
-          } else {
-            BlocProvider.of<PlayerControlsBloc>(myGlobals.scaffoldKey.currentContext!).add(InitialPlayerControls());
-            cancelNotification();
-          }
-        }
-      } else if (selectedId == -1) {
-        timer.cancel();
-      }
-    });
-  }
-
-*/
 
 }

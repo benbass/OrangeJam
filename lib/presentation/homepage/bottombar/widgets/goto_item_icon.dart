@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/core/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
-import '../../../../application/my_listview/ui/is_scrolling_cubit.dart';
+import '../../../../application/listview/ui/is_scroll_reverse_cubit.dart';
+import '../../../../application/listview/ui/is_scrolling_cubit.dart';
 import '../../../../core/animate_to_index.dart';
 import '../../../../injection.dart';
 

@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/my_listview/tracklist/tracklist_bloc.dart';
+import 'package:orange_player/application/playlists/playlists_bloc.dart';
+import 'package:orange_player/application/listview/tracklist/tracklist_bloc.dart';
 import 'package:orange_player/core/objectbox.dart';
 import 'package:orange_player/domain/repositories/playlists_repository.dart';
 import 'package:orange_player/domain/repositories/tracklist_repository.dart';

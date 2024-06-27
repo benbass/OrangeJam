@@ -4,14 +4,14 @@ import 'package:orange_player/core/initialize_awesome_notifications.dart';
 import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../application/bottombar/playlists/is_comm_with_google_cubit.dart';
+import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/my_listview/ui/appbar_filterby_cubit.dart';
+import 'package:orange_player/application/playlists/playlists_bloc.dart';
+import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import 'package:orange_player/presentation/homepage/player_controls/player_controls.dart';
-import 'package:orange_player/application/my_listview/ui/is_scrolling_cubit.dart';
-import '../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
-import '../../application/my_listview/tracklist/tracklist_bloc.dart';
+import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
+import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
+import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../core/globals.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
@@ -99,6 +99,7 @@ class MyHomePage extends StatelessWidget {
               tracklistBloc.add(TrackListLoadingEvent());
               return CustomProgressIndicator(progressText: "Scanning device ...", themeData: themeData);
             } else if (tracklistState is TracklistStateLoading) {
+              /// we send the data from source to the playlist bloc so playlist can be built
               playlistsBloc
                   .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
               tracklistBloc.add(TrackListLoadedEvent());

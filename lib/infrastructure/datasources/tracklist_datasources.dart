@@ -27,10 +27,12 @@ class TrackListDatasourceImpl implements TrackListDatasource {
 
   @override
   Future<List<TrackEntity>> getTracksFromFiles() async {
+    /// if db is not empty, we work with its data: it acceleartes the app start
     if(!trackBox.isEmpty()){
       _tracks = trackBox.getAll();
       return _tracks;
     } else {
+      /// if db is empty or if user rescan the device, we gets all files from device: time consuming!
       List<TrackEntity> tracksFromFiles = [];
       try {
         // First we load the file from device storage

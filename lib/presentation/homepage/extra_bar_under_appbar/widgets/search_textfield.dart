@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/application/bottombar/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/my_listview/sortby/sort_by_cubit.dart';
+import 'package:orange_player/application/playlists/playlists_bloc.dart';
+import 'package:orange_player/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import 'package:orange_player/application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
+import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 
 class SearchTextField extends StatelessWidget {
   final TextEditingController searchController;

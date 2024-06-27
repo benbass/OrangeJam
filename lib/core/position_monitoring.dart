@@ -1,4 +1,4 @@
-// This method handles behaviour of player at end of track
+// This method helps handling behaviour of player at end of track
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

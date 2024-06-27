@@ -3,8 +3,8 @@ import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widge
 import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
 import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
 
-import '../../../application/bottombar/playlists/playlists_bloc.dart';
-import '../../../application/my_listview/ui/appbar_filterby_cubit.dart';
+import '../../../application/playlists/playlists_bloc.dart';
+import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../core/playlist_handler_and_dialogs.dart';
 import '../../../domain/entities/track_entity.dart';
 
@@ -68,6 +68,7 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
               height: 50,
             ),
           ),
+          /// CLEAR
           InkWell(
             child: const Text("Clear"),
             onTap: () {
@@ -77,6 +78,7 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
           const Expanded(
             child: SizedBox(),
           ),
+          /// SAVE to new playlist
           InkWell(
             child: const Text("Save"),
             onTap: () {

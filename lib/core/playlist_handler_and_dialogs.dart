@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../application/bottombar/playlists/playlists_bloc.dart';
+import '../application/playlists/playlists_bloc.dart';
 import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'globals.dart';
 

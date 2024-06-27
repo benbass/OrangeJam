@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orange_player/presentation/homepage/custom_widgets/custom_widgets.dart';
 
-import '../../../../application/bottombar/playlists/playlists_bloc.dart';
-import '../../../../application/my_listview/ui/appbar_filterby_cubit.dart';
+import '../../../../application/playlists/playlists_bloc.dart';
+import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
 
 class ButtonOpenPlaylist extends StatelessWidget {

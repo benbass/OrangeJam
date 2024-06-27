@@ -6,21 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as aspath;
 import 'package:diacritic/diacritic.dart';
 
+import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/usecases/playlists_usecases.dart';
 
 part 'playlists_event.dart';
 part 'playlists_state.dart';
 
-class GlobalLists {
-  static final GlobalLists _globalLists = GlobalLists._internal();
-  factory GlobalLists() {
-    return _globalLists;
-  }
-  GlobalLists._internal();
-  List<TrackEntity> initialTracks = [];
-  List<TrackEntity> queue = [];
-}
+
 
 class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
   final PlaylistsUsecases playlistsUsecases;
@@ -33,7 +26,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
     final globalLists = GlobalLists();
 
     on<PlaylistsLoadingEvent>((event, emit) async {
-      // create a copy of the list of track entities
+      // create a copy of the list of track entities from data source
       globalLists.initialTracks = event.tracks;
 
       // load id of last opened playlist from SharedPrefs so app starts with it
@@ -43,7 +36,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       if (savedId == -1) {
         savedId = -2;
       }
-      // load all playlists from Hive
+      // load all playlists from m3u files, if any
       List playlists = await playlistsUsecases.getPlaylistsUsecase();
       List<TrackEntity> tracks = [];
       // start with a playlist (id > -1) or with all files
@@ -69,7 +62,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     on<PlaylistChanged>((event, emit) async {
       List<TrackEntity> tracks = [];
-      // User select a playlist
+      // User selects a playlist
       if (event.id > -1 && state.playlists.isNotEmpty) {
         if (state.playlists.asMap().containsKey(event.id)) {
           List selectedPlaylist = state.playlists[event.id][1];
@@ -96,7 +89,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
     });
 
     on<PlaylistDeleted>((event, emit) async {
-      // If current playlist is deleted we change to all files
+      // If current playlist is deleted we change view to all files
       List<TrackEntity> tracks = [];
       if (event.id == state.playlistId) {
         for (TrackEntity track in globalLists.initialTracks) {
@@ -108,7 +101,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       }
     });
 
-    /// Sorting and filtering
+    /// Sorting and filtering (only on all files)
     on<PlaylistSorted>((event, emit) async {
       List<TrackEntity>? tracklist = state.tracks;
       bool wasReset = false;
@@ -259,14 +252,13 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     on<PlaylistSearchedByKeyword>((event, emit) async {
       List<TrackEntity> results = [];
-      List<TrackEntity>? tracklist = state.tracks;
 
       if (event.keyword == null) {
         for (TrackEntity track in globalLists.initialTracks) {
           results.add(track);
         }
       } else {
-        for (var track in tracklist) {
+        for (var track in globalLists.initialTracks) {
           if (track.filePath
                   .toLowerCase()
                   .contains(event.keyword!.toLowerCase()) ||

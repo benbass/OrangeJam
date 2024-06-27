@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:orange_player/presentation/homepage/listview/widgets/item_trailing.dart';
 
-import '../../../../application/bottombar/playlists/playlists_bloc.dart';
+import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../../core/globals.dart';
 import '../../../../core/position_monitoring.dart';

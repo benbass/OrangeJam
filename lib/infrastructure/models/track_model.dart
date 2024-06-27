@@ -19,6 +19,7 @@ class TrackModel extends TrackEntity {
     required super.albumArtist,
   });
 
+  /// gets metadata from file
   factory TrackModel.getMetaData(Metadata metadata, File file) {
     // track name: from metadata. If this field is null, we use the file name.
     return TrackModel(

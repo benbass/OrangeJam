@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orange_player/presentation/homepage/custom_widgets/custom_widgets.dart';
 
-import '../../../../application/my_listview/tracklist/tracklist_bloc.dart';
+import '../../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
 import '../../../../injection.dart';
 
