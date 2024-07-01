@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../core/globals.dart';
 import 'package:orange_player/core/backup_restore_playlists.dart';
 
+import '../../../generated/l10n.dart';
+
 class CustomDialog extends StatelessWidget {
   final Widget content;
   final List<Widget> actions;
@@ -71,7 +73,7 @@ void dialogClose(BuildContext context, message) {
       actions: [
         SimpleButton(
           themeData: themeData,
-          btnText: 'Close',
+          btnText: S.of(context).close,
           function: () {
             Navigator.of(context).pop();
           },
@@ -93,14 +95,12 @@ void dialogActionRestoreOrBackupPlaylists(
   final themeData = Theme.of(context);
   BackupRestorePlaylists backupRestorePlaylists = BackupRestorePlaylists();
   String playlistsWillBeDeleted =
-      "Pick the ZIP file that contains your backup in the '$appName Playlists' folder in your Google Drive."
-      "\nWarning: the restored playlists will overwrite existing playlists with the same name."; //AppLocalizations.of(context)!.playlistsWillBeDeleted;
-  String zipWillBeCreated =
-      "A ZIP archive will be created and uploaded to your Google Drive"; //AppLocalizations.of(context)!.zipWillBeCreated;
-  String abort = "Cancel"; //AppLocalizations.of(context)!.abort;
-  String continu = "Continue"; //AppLocalizations.of(context)!.continu;
-  String restore = "Restore"; //AppLocalizations.of(context)!.restore;
-  String backup = "Backup"; //AppLocalizations.of(context)!.backup;
+      S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
+  String zipWillBeCreated = S.of(context).cutomWidgets_aZipArchiveWillBeCreatedAndUploaded;
+  String abort = S.of(context).buttonCancel;
+  String continu = S.of(context).buttonContinue;
+  String restore = S.of(context).buttonRestore;
+  String backup = S.of(context).buttonBackup;
   showDialog(
           builder: (context) => BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),

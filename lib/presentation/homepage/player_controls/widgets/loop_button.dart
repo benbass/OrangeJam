@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
 import '../../../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../../../generated/l10n.dart';
 
 class LoopButton extends StatelessWidget {
   const LoopButton({
@@ -28,9 +29,9 @@ class LoopButton extends StatelessWidget {
             loopMode
                 ? {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Loop playback is off"),
-                  duration: Duration(
+                SnackBar(
+                  content: Text(S.of(context).loopButton_LoopPlaybackIsOff),
+                  duration: const Duration(
                     milliseconds: 500,
                   ),
                 ),
@@ -38,9 +39,9 @@ class LoopButton extends StatelessWidget {
             }
                 : {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Loop playback is on"),
-                  duration: Duration(
+                SnackBar(
+                  content: Text(S.of(context).loopButton_LoopPlaybackIsOn),
+                  duration: const Duration(
                     milliseconds: 500,
                   ),
                 ),

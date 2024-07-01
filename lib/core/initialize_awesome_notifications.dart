@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:orange_player/services/notification_controller.dart';
 
+import '../generated/l10n.dart';
 import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'globals.dart';
 
@@ -44,11 +45,11 @@ void initAwesomeNotifications() {
       showDialog(
         context: globalScaffoldKey.scaffoldKey.currentContext!,
         builder: (context) => CustomDialog(
-          content: const Text('Our app would like to send you notifications'),
+          content: Text(S.of(context).initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications),
           actions: [
             SimpleButton(
               themeData: themeData,
-              btnText: 'Don\'t Allow',
+              btnText: S.of(context).initializeAwesomeNotification_dontAllow,
               function: () {
                 Navigator.of(context).pop();
               },
@@ -58,13 +59,13 @@ void initAwesomeNotifications() {
                   .requestPermissionToSendNotifications()
                   .then((_) => Navigator.pop(context)),
               style: themeData.elevatedButtonTheme.style,
-              child: const Text('Allow'),
+              child: Text(S.of(context).initializeAwesomeNotification_allow),
             ),
           ],
           showDropdown: false,
           titleWidget: DescriptionText(
             themeData: themeData,
-            description: 'Allow Notifications',
+            description: S.of(context).initializeAwesomeNotification_allowNotifications,
           ),
           themeData: themeData,
         ),

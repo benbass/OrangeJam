@@ -5,6 +5,7 @@ import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
+import '../../../../generated/l10n.dart';
 
 class FilterByPopupMenuButton extends StatelessWidget {
   const FilterByPopupMenuButton({super.key});
@@ -94,6 +95,7 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           themeData: themeData,
                           list: artists,
                           value: value,
+                          name: S.of(context).sortByDropdown_artist,
                         );
                       }
                       if (value == "Album") {
@@ -101,6 +103,7 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           themeData: themeData,
                           list: albums,
                           value: value,
+                          name: S.of(context).filterByPopUpMenuButton_album,
                         );
                       }
                       if (value == "Genre") {
@@ -108,6 +111,7 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           themeData: themeData,
                           list: genres,
                           value: value,
+                          name: S.of(context).sortByDropdown_genre
                         );
                       }
                       if (value == "Year") {
@@ -115,6 +119,7 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           themeData: themeData,
                           list: years,
                           value: value,
+                          name: S.of(context).filterByPopUpMenuButton_year,
                         );
                       } else {
                         return const SizedBox.shrink();
@@ -125,14 +130,14 @@ class FilterByPopupMenuButton extends StatelessWidget {
               );
             }).toList();
           },
-          child: const Row(
+          child:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text("Filter"),
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(S.of(context).filterByPopUpMenuButton_filter),
               ),
-              Icon(Icons.arrow_drop_down),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
         );
@@ -147,11 +152,13 @@ class MyExpansionTile extends StatelessWidget {
     required this.themeData,
     required this.list,
     required this.value,
+    required this.name,
   });
 
   final ThemeData themeData;
   final List<String> list;
   final String value;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +173,7 @@ class MyExpansionTile extends StatelessWidget {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),
       title: Text(
-        value,
+        name,
         style: themeData.textTheme.bodyLarge!.copyWith(
           fontSize: 13,
           color: const Color(0xFFCBD4C2),

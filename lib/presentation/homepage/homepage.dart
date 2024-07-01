@@ -13,6 +13,7 @@ import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../core/globals.dart';
+import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
 import '../../core/playlist_handler_and_dialogs.dart';
@@ -31,6 +32,14 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String deviceLang = Localizations.localeOf(context).languageCode;
+    final List<Locale> supportedLang = S.delegate.supportedLocales;
+    if(supportedLang.contains(Locale(deviceLang))){
+      S.load(Locale(deviceLang));
+    } else {
+      S.load(const Locale('en'));
+    }
+
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
@@ -91,19 +100,21 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: AppBarContent(themeData: themeData),
       ),
+      /// TODO: drawer!!!
+      endDrawer: const Drawer(),
       body: SizedBox(
         height: double.infinity,
         child: BlocBuilder<TracklistBloc, TracklistState>(
           builder: (context, tracklistState) {
             if (tracklistState is TracklistInitial) {
               tracklistBloc.add(TrackListLoadingEvent());
-              return CustomProgressIndicator(progressText: "Scanning device ...", themeData: themeData);
+              return CustomProgressIndicator(progressText: S.of(context).homePage_ScanningDevice, themeData: themeData);
             } else if (tracklistState is TracklistStateLoading) {
               /// we send the data from source to the playlist bloc so playlist can be built
               playlistsBloc
                   .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
               tracklistBloc.add(TrackListLoadedEvent());
-              return CustomProgressIndicator(progressText: "Loading tracks ...", themeData: themeData);
+              return CustomProgressIndicator(progressText: S.of(context).homePage_LoadingTracks, themeData: themeData);
             } else if (tracklistState is TracklistStateLoaded) {
               // Player is open so we can subscribe
               if (audioHandler.flutterSoundPlayer.isOpen()) {

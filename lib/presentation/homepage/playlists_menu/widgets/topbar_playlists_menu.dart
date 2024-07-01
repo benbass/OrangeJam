@@ -3,6 +3,7 @@ import 'package:orange_player/presentation/homepage/custom_widgets/custom_widget
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../injection.dart';
 
 class TopBarPlaylistsMenu extends StatelessWidget {
@@ -58,7 +59,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            playlistHandler.createPlaylist("New playlist:", []);
+            playlistHandler.createPlaylist(S.of(context).playlistsMenu_NewPlaylist, []);
           },
           icon: const Icon(
             Icons.add,

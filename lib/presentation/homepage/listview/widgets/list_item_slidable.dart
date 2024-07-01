@@ -12,6 +12,7 @@ import '../../../../core/position_monitoring.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/audiohandler.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../generated/l10n.dart';
 import 'item_leading.dart';
 import 'item_texts.dart';
 
@@ -51,7 +52,7 @@ class ListItemSlidable extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
-          content: Text("Ups, the file '${track.filePath}' was not found!"),
+          content: Text(S.of(context).listItemSlidable_upsTheFileTrackfilepathWasNotFound(track.filePath)),
         ),
       );
     }
@@ -79,14 +80,14 @@ class ListItemSlidable extends StatelessWidget {
                   SnackBar(
                     duration: const Duration(seconds: 2),
                     content: Text(
-                        "The track '${track.trackName}' is now added to the queue."),
+                        S.of(context).listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue(track.trackName!)),
                   ),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     duration: const Duration(seconds: 2),
-                    content: const Text("The queue already contains this track."),
+                    content: Text(S.of(context).listItemSlidable_theQueueAlreadyContainsThisTrack),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                 );
@@ -123,7 +124,7 @@ class ListItemSlidable extends StatelessWidget {
                   backgroundColor: const Color(0xFFFF8100),
                   foregroundColor: const Color(0xFF202531),
                   icon: Icons.delete,
-                  label: 'Remove',
+                  label: S.of(context).listItemSlidable_remove,
                 ),
               ],
             )

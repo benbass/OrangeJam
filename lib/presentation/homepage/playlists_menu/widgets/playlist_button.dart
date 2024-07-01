@@ -4,6 +4,7 @@ import 'package:orange_player/presentation/homepage/custom_widgets/custom_widget
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../generated/l10n.dart';
 
 class ButtonOpenPlaylist extends StatelessWidget {
   const ButtonOpenPlaylist({
@@ -45,14 +46,14 @@ class ButtonOpenPlaylist extends StatelessWidget {
                   actions: [
                     SimpleButton(
                       themeData: themeData,
-                      btnText: 'Cancel',
+                      btnText: S.of(context).buttonCancel,
                       function: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     SimpleButton(
                       themeData: themeData,
-                      btnText: "Ok",
+                      btnText: S.of(context).buttonOk,
                       function: () {
                         playlistsBloc.state.playlists.removeAt(id);
                         playlistHandler.deleteFile(name);
@@ -63,7 +64,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
                           SnackBar(
                             duration: const Duration(seconds: 2),
                             content: Text(
-                              'The playlist \'$name\' was deleted.',
+                              S.of(context).playlistButton_SnackbarNameWasDeleted(name),
                             ),
                           ),
                         );
@@ -72,7 +73,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
                   ],
                   showDropdown: false,
                   titleWidget:
-                      Text("This will definitely delete the playlist:\n\n$name"),
+                      Text(S.of(context).playlistButton_ThisWillDefinitelyDeleteThePlaylist(name)),
                   themeData: themeData,
                 ),
               );

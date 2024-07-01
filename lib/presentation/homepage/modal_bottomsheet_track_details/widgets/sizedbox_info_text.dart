@@ -6,6 +6,7 @@ import 'package:orange_player/domain/entities/track_entity.dart';
 import 'package:path/path.dart';
 
 import '../../../../core/format_duration.dart';
+import '../../../../generated/l10n.dart';
 
 class SizedBoxInfoText extends StatelessWidget {
   final TrackEntity currentTrack;
@@ -26,9 +27,9 @@ class SizedBoxInfoText extends StatelessWidget {
               maxLines: 2,
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "Track: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).track,
+                    style: const TextStyle(
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
                     ),
@@ -46,9 +47,9 @@ class SizedBoxInfoText extends StatelessWidget {
               maxLines: 2,
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "Artist: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).artist,
+                    style: const TextStyle(
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
                     ),
@@ -70,9 +71,9 @@ class SizedBoxInfoText extends StatelessWidget {
                 maxLines: 2,
                 TextSpan(
                   children: [
-                    const TextSpan(
-                      text: "Album: ",
-                      style: TextStyle(
+                    TextSpan(
+                      text: S.of(context).album,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Color(0xFF202531),
                         fontWeight: FontWeight.w600,
@@ -101,9 +102,9 @@ class SizedBoxInfoText extends StatelessWidget {
               maxLines: 2,
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "Album artist: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).albumArtist,
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
@@ -131,9 +132,9 @@ class SizedBoxInfoText extends StatelessWidget {
             Text.rich(
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "Year: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).year,
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
@@ -160,9 +161,9 @@ class SizedBoxInfoText extends StatelessWidget {
             Text.rich(
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "Genre: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).genre,
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
@@ -188,9 +189,9 @@ class SizedBoxInfoText extends StatelessWidget {
             ),
             Text.rich(TextSpan(
               children: [
-                const TextSpan(
-                  text: "Track no: ",
-                  style: TextStyle(
+                TextSpan(
+                  text: S.of(context).trackNo,
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Color(0xFF202531),
                     fontWeight: FontWeight.w600,
@@ -231,9 +232,9 @@ class SizedBoxInfoText extends StatelessWidget {
               TextSpan(
                 children: [
                   currentTrack.trackDuration == null
-                      ? const TextSpan(
-                          text: "Duration: ?",
-                          style: TextStyle(
+                      ? TextSpan(
+                          text: "${S.of(context).duration}?",
+                          style: const TextStyle(
                             fontSize: 12,
                             color: Color(0xFF202531),
                             fontWeight: FontWeight.w600,
@@ -241,9 +242,9 @@ class SizedBoxInfoText extends StatelessWidget {
                         )
                       : TextSpan(
                           children: [
-                            const TextSpan(
-                              text: "Duration: ",
-                              style: TextStyle(
+                            TextSpan(
+                              text: S.of(context).duration,
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Color(0xFF202531),
                                 fontWeight: FontWeight.w600,
@@ -267,9 +268,9 @@ class SizedBoxInfoText extends StatelessWidget {
               maxLines: 2,
               TextSpan(
                 children: [
-                  const TextSpan(
-                    text: "File: ",
-                    style: TextStyle(
+                  TextSpan(
+                    text: S.of(context).file,
+                    style: const TextStyle(
                       color: Color(0xFF202531),
                       fontWeight: FontWeight.w600,
                     ),

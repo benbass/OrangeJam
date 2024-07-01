@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../application/playlists/playlists_bloc.dart';
+import '../generated/l10n.dart';
 import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'globals.dart';
 
@@ -84,7 +85,7 @@ class PlaylistHandler {
               actions: [
                 SimpleButton(
                   themeData: themeData,
-                  btnText: 'Cancel',
+                  btnText: S.of(context).buttonCancel,
                   function: () {
                     Navigator.of(context).pop();
                   },
@@ -111,10 +112,11 @@ class PlaylistHandler {
     return TextButton(
       onPressed: () async {
         if (txtController.value.text.isNotEmpty) {
+          final String name = txtController.value.text.trim();
           bool nameExists = playlists
-              .any((element) => element[0] == txtController.value.text.trim());
+              .any((element) => element[0] == name);
           if (!nameExists) {
-            playlists.add([txtController.value.text.trim(), playlist]);
+            playlists.add([name, playlist]);
 
             final Directory appDir = await getApplicationDocumentsDirectory();
             final Directory plDir =
@@ -123,19 +125,18 @@ class PlaylistHandler {
               await plDir.create();
             }
             final File file = await File(
-                    "${plDir.path}/${txtController.value.text.trim()}.m3u")
+                    "${plDir.path}/$name.m3u")
                 .create();
             for (String s in playlist) {
               await file.writeAsString("$s\n", mode: FileMode.append);
             }
-
             Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
             ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
                 .showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
                 content: Text(
-                  'The playlist \'${txtController.value.text.trim()}\' was created.',
+                  S.of(globalScaffoldKey.scaffoldKey.currentContext!).playlistHandler_thePlaylistNameWasCreated(name),
                 ),
               ),
             );
@@ -143,17 +144,17 @@ class PlaylistHandler {
           } else {
             Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
             createPlaylist(
-                'The playlist \'${txtController.value.text.trim()}\' already exists.\nPlease choose another name.',
+                S.of(globalScaffoldKey.scaffoldKey.currentContext!).playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName(name),
                 playlist);
           }
         } else {
           Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-          createPlaylist('A playlist needs a name!', playlist);
+          createPlaylist(S.of(globalScaffoldKey.scaffoldKey.currentContext!).playlistHandler_enterANameForYourNewPlaylist, playlist);
         }
       },
       style: themeData.textButtonTheme.style,
-      child: const Text(
-        "Save",
+      child: Text(
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).save,
       ),
     );
   }
@@ -161,7 +162,7 @@ class PlaylistHandler {
   // Dialog after tap on slidable action on list item
   Future addToPlaylist(String filePath) async {
     final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
-    String description = "Add this track to playlist:";
+    String description = S.of(globalScaffoldKey.scaffoldKey.currentContext!).playlistHandler_addThisTrackToPlaylist;
     buildDropDownStrings();
 
     if (playlists.isNotEmpty) {
@@ -177,7 +178,7 @@ class PlaylistHandler {
             actions: [
               SimpleButton(
                 themeData: themeData,
-                btnText: "Cancel",
+                btnText: S.of(context).buttonCancel,
                 function: () {
                   Navigator.of(context).pop();
                 },
@@ -193,13 +194,13 @@ class PlaylistHandler {
       return await showDialog(
         context: globalScaffoldKey.scaffoldKey.currentContext!,
         builder: (context) {
-          description = "You don't have any playlist yet!";
+          description = S.of(context).playlistHandler_youDontHaveAnyPlaylistYet;
           return CustomDialog(
             content: const SizedBox.shrink(),
             actions: [
               SimpleButton(
                 themeData: themeData,
-                btnText: 'OK',
+                btnText: S.of(context).buttonOk,
                 function: () {
                   Navigator.of(context).pop();
                 },
@@ -221,7 +222,7 @@ class PlaylistHandler {
         .showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
-        content: Text("The track was added to the playlist '$selectedVal'."),
+        content: Text(S.of(globalScaffoldKey.scaffoldKey.currentContext!).playlistHandler_theTrackWasAddedToThePlaylistSelectedval(selectedVal)),
       ),
     );
     selectedVal = "";
@@ -259,7 +260,7 @@ class PlaylistHandler {
                 SnackBar(
                   duration: const Duration(seconds: 2),
                   content: Text(
-                      "The playlist '$selectedVal' already contains this track."),
+                      S.of(context).playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack(selectedVal)),
                   backgroundColor: themeData.colorScheme.primary,
                 ),
               );
@@ -269,15 +270,15 @@ class PlaylistHandler {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
-                content: const Text("Pick a playlist!"),
+                content: Text(S.of(context).playlistHandler_pickAPlaylist),
                 backgroundColor: themeData.colorScheme.primary,
               ),
             );
           }
         },
         style: themeData.textButtonTheme.style,
-        child: const Text(
-          "Save",
+        child: Text(
+          S.of(context).save,
         ),
       );
     });
@@ -328,7 +329,7 @@ class PlaylistHandler {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: selectedVal == ""
-                          ? const Text("Pick")
+                          ? Text(S.of(context).playlistHandler_pick)
                           : Text(selectedVal),
                     ),
                     const Icon(Icons.arrow_drop_down),

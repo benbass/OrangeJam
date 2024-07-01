@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/extra_bar_all_files/sortby/ascending_cubit.dart';
 import 'package:orange_player/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import '../../../../application/playlists/playlists_bloc.dart';
+import '../../../../generated/l10n.dart';
 
 
 class SortByDropdown extends StatelessWidget {
@@ -18,13 +19,13 @@ class SortByDropdown extends StatelessWidget {
     // Vars für die Sortierung im DropdownButton (BottomNavigationBar)
     String? selectedOption; // Zustand für die ausgewählte Option
     final List<String> sortByItems = [
-      "Track name",
-      "File name",
-      "Artist",
-      "Genre",
-      "Creation date",
-      "Shuffle",
-      "Reset",
+      S.of(context).sortByDropdown_trackName,
+      S.of(context).sortByDropdown_fileName,
+      S.of(context).sortByDropdown_artist,
+      S.of(context).sortByDropdown_genre,
+      S.of(context).sortByDropdown_creationDate,
+      S.of(context).sortByDropdown_shuffle,
+      S.of(context).sortByDropdown_reset,
     ];
 
     return BlocBuilder<AscendingCubit, bool>(
@@ -42,7 +43,7 @@ class SortByDropdown extends StatelessWidget {
                     color: Color(0xFFCBD4C2),
                   ),
                   hint: Text(
-                    'Sort',
+                    S.of(context).sortByDropdown_sort,
                     style: themeData.textTheme.bodyLarge!.copyWith(
                       fontSize: 13,
                     ),
@@ -68,7 +69,7 @@ class SortByDropdown extends StatelessWidget {
                           e,
                           style: themeData.textTheme.bodyLarge!.copyWith(
                             fontSize: 13,
-                            color: sortbyState == e && e != 'Reset'
+                            color: sortbyState == e && e != S.of(context).sortByDropdown_reset
                                 ? const Color(0xFFFF8100)
                                 : const Color(0xFFCBD4C2),
                           ),

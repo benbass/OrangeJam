@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
 import '../../../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../../../generated/l10n.dart';
 
 class ContinuousPlayback extends StatelessWidget {
   const ContinuousPlayback({
@@ -30,16 +31,16 @@ class ContinuousPlayback extends StatelessWidget {
                 .setContinuousPlaybackMode(true);
             continuousPlaybackMode
                 ? ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Continuous playback is off"),
+              SnackBar(
+                content: Text(S.of(context).continuousPlaybackButton_ContinuousPlaybackIsOff),
                 duration: Duration(
                   milliseconds: 500,
                 ),
               ),
             )
                 : ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Continuous playback is on"),
+              SnackBar(
+                content: Text(S.of(context).continuousPlaybackButton_ContinuousPlaybackIsOn),
                 duration: Duration(
                   milliseconds: 500,
                 ),

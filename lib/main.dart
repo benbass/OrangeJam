@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/l10n.dart';
 import 'package:orange_player/application/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import 'package:orange_player/core/audiohandler.dart';
@@ -20,8 +22,6 @@ import 'application/listview/ui/is_scroll_reverse_cubit.dart';
 import 'application/listview/ui/is_scrolling_cubit.dart';
 import 'theme.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
@@ -31,13 +31,19 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       title: 'Trackslice',
       theme: AppTheme.lightTheme,
       home: MultiBlocProvider(
@@ -48,30 +54,37 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => sl<TracklistBloc>(),
           ),
+
           /// handles player controls
           BlocProvider(
             create: (BuildContext context) => sl<PlayerControlsBloc>(),
           ),
+
           /// handles event on playlists and on tracks within playlists (delete, sorting, filtering, moving...)
           BlocProvider(
             create: (BuildContext context) => sl<PlaylistsBloc>(),
           ),
+
           /// handles sortBy menu in extra bar
           BlocProvider(
             create: (BuildContext context) => SortByCubit(),
           ),
+
           /// handles asc/desc of sortBy menu in extra bar
           BlocProvider(
             create: (BuildContext context) => AscendingCubit(),
           ),
+
           /// handles list scrolling
           BlocProvider(
             create: (BuildContext context) => IsScrollingCubit(),
           ),
+
           /// handles list scrolling direction
           BlocProvider(
             create: (BuildContext context) => IsScrollReverseCubit(),
           ),
+
           /// handles progress bar in player controls
           BlocProvider(
             create: (BuildContext context) => TrackPositionCubit(),
@@ -79,18 +92,22 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => TrackDurationCubit(),
           ),
+
           /// handles loop playback mode
           BlocProvider(
             create: (BuildContext context) => LoopModeCubit(),
           ),
+
           /// handles continuous playback mode
           BlocProvider(
             create: (BuildContext context) => ContinuousPlaybackModeCubit(),
           ),
+
           /// handles filterBy menu in extra bar
           BlocProvider(
             create: (BuildContext context) => AppbarFilterByCubit(),
           ),
+
           /// handles waiting time when app communicates with Google Drive (restore or backup)
           BlocProvider(
             create: (BuildContext context) => IsCommWithGoogleCubit(),

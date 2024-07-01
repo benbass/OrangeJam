@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
+import '../../../generated/l10n.dart';
 
 class AppBarContent extends StatelessWidget {
   const AppBarContent({
@@ -23,11 +24,11 @@ class AppBarContent extends StatelessWidget {
               builder: (context, state) {
                 if (state.playlistId == -2) {
                   return Text(
-                    "Files (${state.tracks.length})",
+                    "${S.of(context).files} (${state.tracks.length})",
                   );
                 } else if (state.playlistId == -1) {
                   return Text(
-                    "Queue (${state.tracks.length})",
+                    "${S.of(context).queue} (${state.tracks.length})",
                   );
                 } else if (state.playlistId > -1) {
                   return Text(
@@ -37,7 +38,7 @@ class AppBarContent extends StatelessWidget {
                   );
                 } else {
                   return Text(
-                    "Files (${state.tracks.length})",
+                    "${S.of(context).files} (${state.tracks.length})",
                   );
                 }
               },
@@ -53,20 +54,29 @@ class AppBarContent extends StatelessWidget {
               flex: 2,
               child: appbarFilterByState != null
                   ? Text(
-                appbarFilterByState,
-                style: themeData.appBarTheme.titleTextStyle?.copyWith(
-                  color: const Color(0xFFFF8100),
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.end,
-              )
+                      appbarFilterByState,
+                      style: themeData.appBarTheme.titleTextStyle?.copyWith(
+                        color: const Color(0xFFFF8100),
+                        fontSize: 13,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.end,
+                    )
                   : const SizedBox.shrink(),
             );
           },
         ),
+        /*SizedBox(
+          height: 24,
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.menu),
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.zero,
+          ),
+        ),*/
       ],
     );
   }

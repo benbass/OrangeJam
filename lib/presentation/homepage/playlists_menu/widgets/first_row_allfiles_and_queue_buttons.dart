@@ -5,6 +5,7 @@ import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/globals.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../generated/l10n.dart';
 
 class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
   const FirstRowAllFilesAndQueueButtons({
@@ -30,7 +31,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             appbarFilterByCubit: appbarFilterByCubit,
             id: -2,
             width: 120,
-            name: 'Files',
+            name: S.of(context).files,
             length: GlobalLists().initialTracks.length.toString(),
             playlistHandler: playlistHandler,
           ),
@@ -39,7 +40,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             appbarFilterByCubit: appbarFilterByCubit,
             id: -1,
             width: 120,
-            name: 'Queue',
+            name: S.of(context).queue,
             length: GlobalLists().queue.length.toString(),
             playlistHandler: playlistHandler,
           ),

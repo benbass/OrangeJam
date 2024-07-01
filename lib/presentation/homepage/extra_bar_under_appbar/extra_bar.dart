@@ -7,6 +7,7 @@ import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../core/playlist_handler_and_dialogs.dart';
 import '../../../domain/entities/track_entity.dart';
+import '../../../generated/l10n.dart';
 
 class SortFilterSearchAndQueueMenu extends StatelessWidget {
   const SortFilterSearchAndQueueMenu({
@@ -70,7 +71,7 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
           ),
           /// CLEAR
           InkWell(
-            child: const Text("Clear"),
+            child: Text(S.of(context).extraBar_clear),
             onTap: () {
               playlistsBloc.add(ClearQueue());
             },
@@ -80,7 +81,7 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
           ),
           /// SAVE to new playlist
           InkWell(
-            child: const Text("Save"),
+            child: Text(S.of(context).save),
             onTap: () {
               if (playlistsBloc
                   .state.tracks.isNotEmpty) {
@@ -91,17 +92,17 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
                   filePaths.add(track.filePath);
                 }
                 playlistHandler.createPlaylist(
-                  "Save the queue as a playlist:",
+                  S.of(context).extraBar_saveTheQueueAsAPlaylist,
                   filePaths,
                 );
               } else {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     duration:
-                    Duration(seconds: 1),
+                    const Duration(seconds: 1),
                     content: Text(
-                        "The queue is empty!"),
+                        S.of(context).extraBar_theQueueIsEmpty),
                   ),
                 );
               }

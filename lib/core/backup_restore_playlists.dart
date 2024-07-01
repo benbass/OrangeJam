@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 
 import '../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../application/playlists/playlists_bloc.dart';
+import '../generated/l10n.dart';
 import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 import '../services/google_auth_client.dart';
 import 'globals.dart';
@@ -33,17 +34,17 @@ class BackupRestorePlaylists {
         globalScaffoldKey.scaffoldKey.currentContext!);
     var encoder = ZipFileEncoder();
     String messageNotSignedIn =
-        "You are not signed in to your Google account"; //AppLocalizations.of(context)!.notSignedIn;
-    String theFile = "The file "; //AppLocalizations.of(context)!.theFile;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_youAreNotSignedInToYourGoogleAccount; //AppLocalizations.of(context)!.notSignedIn;
+    String theFile = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theFile; //AppLocalizations.of(context)!.theFile;
     String hasBeenUploaded =
-        "has been uploaded to your Google Drive."; //AppLocalizations.of(context)!.hasBeeUploaded;
-    String error = "Error"; //AppLocalizations.of(context)!.error;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_hasBeenUploadedToYourGoogleDrive; //AppLocalizations.of(context)!.hasBeeUploaded;
+    String error = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_error; //AppLocalizations.of(context)!.error;
     String backupNotCreated =
-        "Backup file not created."; //AppLocalizations.of(context)!.backupFileNotCreated;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_backupFileNotCreated; //AppLocalizations.of(context)!.backupFileNotCreated;
     String pleaseTryAgain =
-        "Please try again."; //AppLocalizations.of(context)!.pleaseTryAgain;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_pleaseTryAgain; //AppLocalizations.of(context)!.pleaseTryAgain;
     String successCreated =
-        "was successfully created in "; //AppLocalizations.of(context)!.fileSuccessCreated;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_wasSuccessfullyCreatedIn; //AppLocalizations.of(context)!.fileSuccessCreated;
 
     dynamic dir;
     String folderName = "$appName user data";
@@ -130,7 +131,7 @@ class BackupRestorePlaylists {
               );
             } catch (e) {
               dialogClose(globalScaffoldKey.scaffoldKey.currentContext!,
-                  'Unable to upload: $e');
+                  S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_unableToUpload + e.toString());
               rethrow;
             }
           }
@@ -206,19 +207,19 @@ class BackupRestorePlaylists {
     dynamic appDir = await getApplicationDocumentsDirectory();
     var playlistsDir = Directory('${appDir.path}/${appName}_Playlists');
     String noBackupSelected =
-        "No backup file selected. "; //AppLocalizations.of(context)!.noFileSelected;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_noBackupFileSelected; //AppLocalizations.of(context)!.noFileSelected;
     String restoreAborted =
-        "Restore aborted."; //AppLocalizations.of(context)!.restoreAborted;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_restoreAborted; //AppLocalizations.of(context)!.restoreAborted;
     //String pleaseRestartApp = "Please restart the app for the changes to take effect!"; //AppLocalizations.of(context)!.pleaseRestartApp;
     String noValidFiles =
-        "The Zip file does not contain valid playlist files (extension: m3u) for this app!"; //AppLocalizations.of(context)!.noValidFiles;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theZipFileDoesNotContainValidPlaylistFilesExtension; //AppLocalizations.of(context)!.noValidFiles;
 
     late FilePickerResult? result;
     try{
       result = await FilePicker.platform.pickFiles();
     } catch(e){
       String message =
-          "Error while retrieving the backup file.\nPlease try again.";
+          S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain;
       dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
       return;
     }
@@ -282,7 +283,7 @@ class BackupRestorePlaylists {
 
       if (isValidFile) {
         String message =
-            "Your playlists from the backup file have been restored.";
+            S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored;
         extractFiles().whenComplete(() {
           isCommunicating.isCommunicatingWithGoogleDrive(false);
           dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
