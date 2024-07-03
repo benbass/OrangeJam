@@ -93,6 +93,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "A ZIP archive will be created and uploaded to your Google Drive"),
         "cutomWidgets_pickTheZipFileThatContainsYourBackup": m0,
+        "drawer_backup": MessageLookupByLibrary.simpleMessage("Backup"),
+        "drawer_language": MessageLookupByLibrary.simpleMessage("Language"),
+        "drawer_restore": MessageLookupByLibrary.simpleMessage("Restore"),
+        "drawer_scanDevice":
+            MessageLookupByLibrary.simpleMessage("Scan device"),
         "duration": MessageLookupByLibrary.simpleMessage("Duration: "),
         "extraBar_clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "extraBar_saveTheQueueAsAPlaylist":

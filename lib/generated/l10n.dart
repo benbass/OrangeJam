@@ -786,6 +786,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Language`
+  String get drawer_language {
+    return Intl.message(
+      'Language',
+      name: 'drawer_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup`
+  String get drawer_backup {
+    return Intl.message(
+      'Backup',
+      name: 'drawer_backup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore`
+  String get drawer_restore {
+    return Intl.message(
+      'Restore',
+      name: 'drawer_restore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan device`
+  String get drawer_scanDevice {
+    return Intl.message(
+      'Scan device',
+      name: 'drawer_scanDevice',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

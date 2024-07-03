@@ -29,11 +29,11 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
         image: DecorationImage(
           image: AssetImage("assets/orange.jpeg"),
           fit: BoxFit.fitWidth,
-          opacity: 0.75,
+          opacity: 0.35,
           alignment: Alignment.center,
           colorFilter: ColorFilter.mode(
             Color(0xFFFF8100),
-            BlendMode.color,
+            BlendMode.darken,
           ),
         ),
         color: Color(0xFFFF8100),

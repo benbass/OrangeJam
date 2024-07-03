@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/presentation/homepage/custom_widgets/custom_widgets.dart';
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../../core/playlist_handler_and_dialogs.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../injection.dart';
 
 class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
@@ -19,43 +17,9 @@ class TopBarPlaylistsMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-           dialogActionRestoreOrBackupPlaylists(context, "backup");
-          },
-          icon: const Icon(
-            Icons.backup,
-            size: 26,
-            color: Color(0xFF181C25),
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            dialogActionRestoreOrBackupPlaylists(context, "restore");
-          },
-          icon: const Icon(
-            Icons.restore,
-            size: 26,
-            color: Color(0xFF181C25),
-          ),
-        ),
-        const Spacer(),
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            trackBox.removeAll();
-            tracklistBlock.add(TrackListRefreschingEvent());
-          },
-          icon: const Icon(
-            Icons.refresh,
-            size: 26,
-            color: Color(0xFF181C25),
-          ),
-        ),
+        //const Spacer(),
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -63,7 +27,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
           },
           icon: const Icon(
             Icons.add,
-            size: 26,
+            size: 32,
             color: Color(0xFF181C25),
           ),
         ),

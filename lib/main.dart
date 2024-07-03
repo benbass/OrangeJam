@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:orange_player/application/language/language_cubit.dart';
+
 import 'generated/l10n.dart';
 import 'package:orange_player/application/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
@@ -111,6 +113,11 @@ class MyApp extends StatelessWidget {
           /// handles waiting time when app communicates with Google Drive (restore or backup)
           BlocProvider(
             create: (BuildContext context) => IsCommWithGoogleCubit(),
+          ),
+
+          /// handles app language
+          BlocProvider(
+            create: (BuildContext context) => LanguageCubit(),
           ),
         ],
         child: const MyHomePage(),

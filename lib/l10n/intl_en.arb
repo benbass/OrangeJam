@@ -71,5 +71,9 @@
   "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": "The track was added to the playlist '{selectedVal}'.",
   "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": "The playlist '{selectedVal}' already contains this track.",
   "playlistHandler_pickAPlaylist": "Pick a playlist!",
-  "playlistHandler_pick": "Pick"
+  "playlistHandler_pick": "Pick",
+  "drawer_language": "Language",
+  "drawer_backup": "Backup",
+  "drawer_restore": "Restore",
+  "drawer_scanDevice": "Scan device"
 }

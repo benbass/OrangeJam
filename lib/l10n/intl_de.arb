@@ -71,5 +71,9 @@
   "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": "Der Track wurde zur Playlist '{selectedVal}' hinzugefügt.",
   "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": "Dieser Track befindet sich bereits in der Playlist '{selectedVal}'.",
   "playlistHandler_pickAPlaylist": "Playlist auswählen!",
-  "playlistHandler_pick": "Auswählen"
+  "playlistHandler_pick": "Auswählen",
+  "drawer_language": "Sprache",
+  "drawer_backup": "Sicherung",
+  "drawer_restore": "Wiederherstellung",
+  "drawer_scanDevice": "Gerät durchsuchen"
 }

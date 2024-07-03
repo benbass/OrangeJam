@@ -98,6 +98,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Eine ZIP Datei wird erstellt und auf deinen Google Drive hochgeladen"),
         "cutomWidgets_pickTheZipFileThatContainsYourBackup": m0,
+        "drawer_backup": MessageLookupByLibrary.simpleMessage("Sicherung"),
+        "drawer_language": MessageLookupByLibrary.simpleMessage("Sprache"),
+        "drawer_restore":
+            MessageLookupByLibrary.simpleMessage("Wiederherstellung"),
+        "drawer_scanDevice":
+            MessageLookupByLibrary.simpleMessage("Gerät durchsuchen"),
         "duration": MessageLookupByLibrary.simpleMessage("Dauer: "),
         "extraBar_clear": MessageLookupByLibrary.simpleMessage("Leeren"),
         "extraBar_saveTheQueueAsAPlaylist":

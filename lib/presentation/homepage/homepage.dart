@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orange_player/application/language/language_cubit.dart';
 import 'package:orange_player/core/initialize_awesome_notifications.dart';
+import 'package:orange_player/presentation/drawer/drawer.dart';
 import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
@@ -30,15 +33,16 @@ class MyHomePage extends StatelessWidget {
     super.key,
   });
 
+  Future<String> getLangFromPrefs() async {
+    final Future<SharedPreferences> langPrefs = SharedPreferences.getInstance();
+    final String prefLang =
+        await langPrefs.then((value) => value.getString("prefLang") ?? "");
+    return prefLang;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String deviceLang = Localizations.localeOf(context).languageCode;
-    final List<Locale> supportedLang = S.delegate.supportedLocales;
-    if(supportedLang.contains(Locale(deviceLang))){
-      S.load(Locale(deviceLang));
-    } else {
-      S.load(const Locale('en'));
-    }
+    getLangFromPrefs().then((value) => S.load(Locale(value)));
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
@@ -95,157 +99,170 @@ class MyHomePage extends StatelessWidget {
       onStateChange: onStateChanged,
     );
 
-    return Scaffold(
-      key: globalScaffoldKey.scaffoldKey,
-      appBar: AppBar(
-        title: AppBarContent(themeData: themeData),
-      ),
-      /// TODO: drawer!!!
-      endDrawer: const Drawer(),
-      body: SizedBox(
-        height: double.infinity,
-        child: BlocBuilder<TracklistBloc, TracklistState>(
-          builder: (context, tracklistState) {
-            if (tracklistState is TracklistInitial) {
-              tracklistBloc.add(TrackListLoadingEvent());
-              return CustomProgressIndicator(progressText: S.of(context).homePage_ScanningDevice, themeData: themeData);
-            } else if (tracklistState is TracklistStateLoading) {
-              /// we send the data from source to the playlist bloc so playlist can be built
-              playlistsBloc
-                  .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
-              tracklistBloc.add(TrackListLoadedEvent());
-              return CustomProgressIndicator(progressText: S.of(context).homePage_LoadingTracks, themeData: themeData);
-            } else if (tracklistState is TracklistStateLoaded) {
-              // Player is open so we can subscribe
-              if (audioHandler.flutterSoundPlayer.isOpen()) {
-                // Position for Progressbar in Player controls and behaviour at track end
-                audioHandler.flutterSoundPlayer
-                    .setSubscriptionDuration(const Duration(milliseconds: 100));
-                //init and check permission of awesomeNotifications
-                initAwesomeNotifications();
-              }
-              return BlocBuilder<PlaylistsBloc, PlaylistsState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      state.playlistId < 0
+    return BlocConsumer<LanguageCubit, String>(
+      listener: (context, state) {
+        S.load(Locale(state));
+      },
+      builder: (context, state) => Scaffold(
+        key: globalScaffoldKey.scaffoldKey,
+        appBar: AppBar(
+          title: AppBarContent(themeData: themeData),
+        ),
 
-                          /// Extra bar for all files and queue
-                          ? SortFilterSearchAndQueueMenu(
-                              playlistsBloc: playlistsBloc,
-                              searchController: searchController,
-                              appbarFilterByCubit: appbarFilterByCubit,
-                              playlistHandler: playlistHandler,
-                            )
-                          : const SizedBox.shrink(),
+        endDrawer: MyDrawer(
+          supportedLang: S.delegate.supportedLocales,
+        ),
+        body: SizedBox(
+          height: double.infinity,
+          child: BlocBuilder<TracklistBloc, TracklistState>(
+            builder: (context, tracklistState) {
+              if (tracklistState is TracklistInitial) {
+                tracklistBloc.add(TrackListLoadingEvent());
+                return CustomProgressIndicator(
+                    progressText: S.of(context).homePage_ScanningDevice,
+                    themeData: themeData);
+              } else if (tracklistState is TracklistStateLoading) {
+                /// we send the data from source to the playlist bloc so playlist can be built
+                playlistsBloc
+                    .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
+                tracklistBloc.add(TrackListLoadedEvent());
+                return CustomProgressIndicator(
+                    progressText: S.of(context).homePage_LoadingTracks,
+                    themeData: themeData);
+              } else if (tracklistState is TracklistStateLoaded) {
+                // Player is open so we can subscribe
+                if (audioHandler.flutterSoundPlayer.isOpen()) {
+                  // Position for Progressbar in Player controls and behaviour at track end
+                  audioHandler.flutterSoundPlayer.setSubscriptionDuration(
+                      const Duration(milliseconds: 100));
+                  //init and check permission of awesomeNotifications
+                  initAwesomeNotifications();
+                }
+                return BlocBuilder<PlaylistsBloc, PlaylistsState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        state.playlistId < 0
 
-                      /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id < 0)
-                      Expanded(
-                        child: RawScrollbar(
-                          trackVisibility: true,
-                          thickness: 8.0,
-                          thumbColor: const Color(0xFFFF8100).withOpacity(0.7),
-                          controller: sctr,
-                          //shape: const OvalBorder(),
-                          child: Stack(
-                            children: [
-                              MyListview(
-                                sctr: sctr,
-                                observController: observerController,
-                                tracks: state.tracks,
-                                audioHandler: audioHandler,
-                                isScrollingCubit: isScrollingCubit,
-                                isScrollReverseCubit: isScrollReverseCubit,
+                            /// Extra bar for all files and queue
+                            ? SortFilterSearchAndQueueMenu(
+                                playlistsBloc: playlistsBloc,
+                                searchController: searchController,
+                                appbarFilterByCubit: appbarFilterByCubit,
                                 playlistHandler: playlistHandler,
-                              ),
-                              BlocBuilder<IsCommWithGoogleCubit, bool>(
-                                builder: (context, state) {
-                                  return Visibility(
-                                    visible: state,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: themeData.colorScheme.secondary,
+                              )
+                            : const SizedBox.shrink(),
+
+                        /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id < 0)
+                        Expanded(
+                          child: RawScrollbar(
+                            trackVisibility: true,
+                            thickness: 8.0,
+                            thumbColor:
+                                const Color(0xFFFF8100).withOpacity(0.7),
+                            controller: sctr,
+                            //shape: const OvalBorder(),
+                            child: Stack(
+                              children: [
+                                MyListview(
+                                  sctr: sctr,
+                                  observController: observerController,
+                                  tracks: state.tracks,
+                                  audioHandler: audioHandler,
+                                  isScrollingCubit: isScrollingCubit,
+                                  isScrollReverseCubit: isScrollReverseCubit,
+                                  playlistHandler: playlistHandler,
+                                ),
+                                BlocBuilder<IsCommWithGoogleCubit, bool>(
+                                  builder: (context, state) {
+                                    return Visibility(
+                                      visible: state,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color:
+                                              themeData.colorScheme.secondary,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (tracklistState is TracklistStateError) {
-              return ErrorMessage(
-                message: tracklistState.message,
-              );
-            }
-            return Container();
-          },
-        ),
-      ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          /// Go to item
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                /// Animate to item
-                BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
-                  builder: (context, state) {
-                    if (state.track.id != -1) {
-                      return GotoItemIcon(
-                        isScrollReverseCubit: isScrollReverseCubit,
-                        isScrollingCubit: isScrollingCubit,
-                        observerController: observerController,
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
+                      ],
+                    );
                   },
-                ),
-              ],
-            ),
-          ),
-
-          /// Playlists menu
-          BlocBuilder<PlaylistsBloc, PlaylistsState>(
-            builder: (context, state) {
-              playlistHandler = PlaylistHandler(playlists: state.playlists);
-              playlistHandler.buildDropDownStrings();
-              return Expanded(
-                child: MenuPlaylistsWidget(
-                  playlistHandler: playlistHandler,
-                  appbarFilterByCubit: appbarFilterByCubit,
-                  themeData: themeData,
-                ),
-              );
+                );
+              } else if (tracklistState is TracklistStateError) {
+                return ErrorMessage(
+                  message: tracklistState.message,
+                );
+              }
+              return Container();
             },
           ),
+        ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            /// Go to item
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /// Animate to item
+                  BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
+                    builder: (context, state) {
+                      if (state.track.id != -1) {
+                        return GotoItemIcon(
+                          isScrollReverseCubit: isScrollReverseCubit,
+                          isScrollingCubit: isScrollingCubit,
+                          observerController: observerController,
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
 
-          /// Show/Hide player controls
-          const Expanded(
-            flex: 2,
-            child: ShowHidePlayerControls(),
-          ),
-        ],
-      ),
+            /// Playlists menu
+            BlocBuilder<PlaylistsBloc, PlaylistsState>(
+              builder: (context, state) {
+                playlistHandler = PlaylistHandler(playlists: state.playlists);
+                playlistHandler.buildDropDownStrings();
+                return Expanded(
+                  child: MenuPlaylistsWidget(
+                    playlistHandler: playlistHandler,
+                    appbarFilterByCubit: appbarFilterByCubit,
+                    themeData: themeData,
+                  ),
+                );
+              },
+            ),
 
-      /// Player controls
-      bottomSheet: BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
-        builder: (context, state) {
-          return PlayerControls(
-            track: state.track,
-            observerController: observerController,
-          );
-        },
+            /// Show/Hide player controls
+            const Expanded(
+              flex: 2,
+              child: ShowHidePlayerControls(),
+            ),
+          ],
+        ),
+
+        /// Player controls
+        bottomSheet: BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
+          builder: (context, state) {
+            return PlayerControls(
+              track: state.track,
+              observerController: observerController,
+            );
+          },
+        ),
       ),
     );
   }
