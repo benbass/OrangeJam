@@ -35,9 +35,9 @@ class MyHomePage extends StatelessWidget {
 
   Future<String> getLangFromPrefs() async {
     final Future<SharedPreferences> langPrefs = SharedPreferences.getInstance();
-    final String prefLang =
-        await langPrefs.then((value) => value.getString("prefLang") ?? "");
-    return prefLang;
+    final String? prefLang =
+        await langPrefs.then((value) => value.getString("prefLang"));
+    return prefLang ?? "en";
   }
 
   @override
