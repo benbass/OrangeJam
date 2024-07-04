@@ -28,7 +28,7 @@ void initAwesomeNotifications() {
         icon: "resource://drawable/launcher_icon",
       )
     ],
-    debug: true,
+    // debug: true,
   );
   // Only after at least the action method is set, the notification events are delivered
   AwesomeNotifications().setListeners(

@@ -17,12 +17,6 @@ import 'package:orange_player/application/playercontrols/bloc/playercontrols_blo
 import 'package:orange_player/services/audio_session.dart';
 import 'package:orange_player/injection.dart' as di;
 
-/*
-import '../application/bottomsheet/playercontrols/continuousplayback_mode_cubit.dart';
-import '../application/bottomsheet/playercontrols/loop_mode_cubit.dart';
-import '../application/bottomsheet/playercontrols/track_duration_cubit.dart';
-*/
-
 import '../domain/entities/track_entity.dart';
 import 'format_duration.dart';
 import 'globals.dart';
