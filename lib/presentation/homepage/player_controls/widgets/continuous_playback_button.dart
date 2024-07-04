@@ -33,7 +33,7 @@ class ContinuousPlayback extends StatelessWidget {
                 ? ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(S.of(context).continuousPlaybackButton_ContinuousPlaybackIsOff),
-                duration: Duration(
+                duration: const Duration(
                   milliseconds: 500,
                 ),
               ),
@@ -41,7 +41,7 @@ class ContinuousPlayback extends StatelessWidget {
                 : ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(S.of(context).continuousPlaybackButton_ContinuousPlaybackIsOn),
-                duration: Duration(
+                duration: const Duration(
                   milliseconds: 500,
                 ),
               ),

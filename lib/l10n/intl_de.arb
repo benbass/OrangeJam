@@ -60,8 +60,6 @@
   "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain": "Fehler beim Holen der Sicherungsdatei.\nBitte versuche es nochmal.",
   "backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored": "Die Playlists aus der Sicherung wurden wiederhergestellt.",
   "initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications": "Die App möchte Benachrichtungen anzeigen",
-  "initializeAwesomeNotification_dontAllow": "nicht erlauben",
-  "initializeAwesomeNotification_allow": "Erlauben",
   "initializeAwesomeNotification_allowNotifications": "Benachrichtigungen erlauben",
   "playlistHandler_thePlaylistNameWasCreated": "Die Playlist '{name}' wurde erstellt.",
   "playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName": "Die Playlist '{name}' existiert bereits.\nBitte einen anderen Namen vergeben.",

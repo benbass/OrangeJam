@@ -60,8 +60,6 @@
   "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain": "Erreur de lecture du fichier.\nEssaie à nouveau.",
   "backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored": "Tes playlists ont été restaurées.",
   "initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications": "L'application voudrait afficher des notifications",
-  "initializeAwesomeNotification_dontAllow": "Refuser",
-  "initializeAwesomeNotification_allow": "Accepter",
   "initializeAwesomeNotification_allowNotifications": "Accepte les notifications",
   "playlistHandler_thePlaylistNameWasCreated": "La playlist '{name}' a été créée.",
   "playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName": "La playlist '{name}' existe déjà.\nChoisis un autre nom.",

@@ -124,12 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lade Tracks ..."),
         "homePage_ScanningDevice":
             MessageLookupByLibrary.simpleMessage("Durchsuche Gerät ..."),
-        "initializeAwesomeNotification_allow":
-            MessageLookupByLibrary.simpleMessage("Erlauben"),
         "initializeAwesomeNotification_allowNotifications":
             MessageLookupByLibrary.simpleMessage("Benachrichtigungen erlauben"),
-        "initializeAwesomeNotification_dontAllow":
-            MessageLookupByLibrary.simpleMessage("nicht erlauben"),
         "initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications":
             MessageLookupByLibrary.simpleMessage(
                 "Die App möchte Benachrichtungen anzeigen"),

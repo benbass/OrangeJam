@@ -121,12 +121,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chargenent des titres ..."),
         "homePage_ScanningDevice":
             MessageLookupByLibrary.simpleMessage("Recherche de fichiers ..."),
-        "initializeAwesomeNotification_allow":
-            MessageLookupByLibrary.simpleMessage("Accepter"),
         "initializeAwesomeNotification_allowNotifications":
             MessageLookupByLibrary.simpleMessage("Accepte les notifications"),
-        "initializeAwesomeNotification_dontAllow":
-            MessageLookupByLibrary.simpleMessage("Refuser"),
         "initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications":
             MessageLookupByLibrary.simpleMessage(
                 "L\'application voudrait afficher des notifications"),

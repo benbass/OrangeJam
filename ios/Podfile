@@ -64,7 +64,6 @@ post_install do |installer|
     require awesome_pod_file
     update_awesome_pod_build_settings(installer)
     ################  Awesome Notifications pod modification 1 ###################
-
 end
 
 ################  Awesome Notifications pod modification 2 ###################

@@ -663,26 +663,6 @@ class S {
     );
   }
 
-  /// `Don't Allow`
-  String get initializeAwesomeNotification_dontAllow {
-    return Intl.message(
-      'Don\'t Allow',
-      name: 'initializeAwesomeNotification_dontAllow',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Allow`
-  String get initializeAwesomeNotification_allow {
-    return Intl.message(
-      'Allow',
-      name: 'initializeAwesomeNotification_allow',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Allow Notifications`
   String get initializeAwesomeNotification_allowNotifications {
     return Intl.message(

@@ -49,17 +49,17 @@ void initAwesomeNotifications() {
           actions: [
             SimpleButton(
               themeData: themeData,
-              btnText: S.of(context).initializeAwesomeNotification_dontAllow,
+              btnText: S.of(context).buttonCancel,
               function: () {
                 Navigator.of(context).pop();
               },
             ),
-            ElevatedButton(
-              onPressed: () => AwesomeNotifications()
+            SimpleButton(
+              themeData: themeData,
+              function: () => AwesomeNotifications()
                   .requestPermissionToSendNotifications()
                   .then((_) => Navigator.pop(context)),
-              style: themeData.elevatedButtonTheme.style,
-              child: Text(S.of(context).initializeAwesomeNotification_allow),
+              btnText: S.of(context).buttonOk,
             ),
           ],
           showDropdown: false,

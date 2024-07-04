@@ -60,8 +60,6 @@
   "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain": "Error while retrieving the backup file.\nPlease try again.",
   "backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored": "Your playlists from the backup file have been restored.",
   "initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications": "Our app would like to send you notifications",
-  "initializeAwesomeNotification_dontAllow": "Don't Allow",
-  "initializeAwesomeNotification_allow": "Allow",
   "initializeAwesomeNotification_allowNotifications": "Allow Notifications",
   "playlistHandler_thePlaylistNameWasCreated": "The playlist '{name}' was created.",
   "playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName": "The playlist '{name}' already exists.\nPlease choose another name.",
