@@ -5,7 +5,6 @@ import 'package:orange_player/core/initialize_awesome_notifications.dart';
 import 'package:orange_player/presentation/drawer/drawer.dart';
 import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
@@ -16,6 +15,7 @@ import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../core/globals.dart';
+import '../../core/set_app_language.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
@@ -33,16 +33,10 @@ class MyHomePage extends StatelessWidget {
     super.key,
   });
 
-  Future<String> getLangFromPrefs() async {
-    final Future<SharedPreferences> langPrefs = SharedPreferences.getInstance();
-    final String? prefLang =
-        await langPrefs.then((value) => value.getString("prefLang"));
-    return prefLang ?? "en";
-  }
-
   @override
   Widget build(BuildContext context) {
-    getLangFromPrefs().then((value) => S.load(Locale(value)));
+    setAppLanguage(context);
+
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
