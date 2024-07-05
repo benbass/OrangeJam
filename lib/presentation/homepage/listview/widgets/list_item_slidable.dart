@@ -138,7 +138,7 @@ class ListItemSlidable extends StatelessWidget {
         elevation: 0.0,
         margin: EdgeInsets.zero,
         child: SizedBox(
-          height: 72.0,
+          height: 74.0,
           child: InkWell(
             splashColor: Colors.black87,
             onTap: () async {
