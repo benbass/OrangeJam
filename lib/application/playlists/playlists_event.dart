@@ -32,11 +32,11 @@ final class PlaylistSorted extends PlaylistsEvent {
 }
 
 final class PlaylistFiltered extends PlaylistsEvent {
-  final String filterdBy;
+  final String filterBy;
   final String value;
 
   PlaylistFiltered({
-    required this.filterdBy,
+    required this.filterBy,
     required this.value,
   });
 }

@@ -13,7 +13,6 @@ import 'injection.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/playercontrols/cubits/loop_mode_cubit.dart';
-import 'package:orange_player/application/extra_bar_all_files/sortby/ascending_cubit.dart';
 import 'package:orange_player/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import 'package:orange_player/application/listview/tracklist/tracklist_bloc.dart';
 import 'package:orange_player/presentation/homepage/homepage.dart';
@@ -71,12 +70,6 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => SortByCubit(),
           ),
-
-          /// handles asc/desc of sortBy menu in extra bar
-          BlocProvider(
-            create: (BuildContext context) => AscendingCubit(),
-          ),
-
           /// handles list scrolling
           BlocProvider(
             create: (BuildContext context) => IsScrollingCubit(),

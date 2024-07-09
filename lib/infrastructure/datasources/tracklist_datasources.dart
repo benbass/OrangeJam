@@ -22,24 +22,23 @@ class TrackListDatasourceImpl implements TrackListDatasource {
 
   TrackListDatasourceImpl({required this.audioFilesDataSources});
 
-  late List _audioFiles;
-  List<TrackEntity> _tracks = [];
-
   @override
   Future<List<TrackEntity>> getTracksFromFiles() async {
-    /// if db is not empty, we work with its data: it acceleartes the app start
+    //List<TrackEntity> tracks = [];
+
+    /// if db is not empty, we work with its data: it speeds up the app start
     if(!trackBox.isEmpty()){
-      _tracks = trackBox.getAll();
-      return _tracks;
+      return trackBox.getAll();
+      //return tracks;
     } else {
       /// if db is empty or if user rescan the device, we gets all files from device: time consuming!
       List<TrackEntity> tracksFromFiles = [];
       try {
         // First we load the file from device storage
-        _audioFiles = await audioFilesDataSources.getAudioFiles();
+        List audioFiles = await audioFilesDataSources.getAudioFiles();
         // Then we create a track entity from track model based on retrieved metadata of each mp3 file
         // and we add it to our list of tracks
-        for (File file in _audioFiles) {
+        for (File file in audioFiles) {
           TrackEntity track = await Future.value(_createTrack(file));
           tracksFromFiles.add(track);
         }
@@ -53,8 +52,8 @@ class TrackListDatasourceImpl implements TrackListDatasource {
         trackBox.removeAll();
         // and add all tracks at once
         trackBox.putMany(tracksFromFiles);
-        _tracks = trackBox.getAll();
-        return _tracks;
+        return trackBox.getAll();
+        //return tracks;
       } catch (e) {
         if (e is TracklistIoFailure) {
           throw IOExceptionReadFiles();

@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:orange_player/core/sort_filter_search_tracklist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart' as aspath;
-import 'package:diacritic/diacritic.dart';
 
 import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
@@ -103,189 +100,28 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     /// Sorting and filtering (only on all files)
     on<PlaylistSorted>((event, emit) async {
-      List<TrackEntity>? tracklist = state.tracks;
+      List<TrackEntity> tracklist = sortedList(state.tracks, event.sortBy!);
       bool wasReset = false;
-      switch (event.sortBy) {
-        case "File name":
-          {
-            tracklist.sort((a, b) => aspath
-                .basename(a.filePath.toLowerCase())
-                .compareTo(aspath.basename(b.filePath.toLowerCase())));
-          }
-          break;
-        case "Track name":
-          {
-            tracklist.sort((a, b) =>
-                removeDiacritics(a.trackName!.toLowerCase())
-                    .compareTo(removeDiacritics(b.trackName!.toLowerCase())));
-          }
-          break;
-        case "Artist":
-          {
-            tracklist.sort((a, b) =>
-                removeDiacritics(a.trackArtistNames!.toLowerCase()).compareTo(
-                    removeDiacritics(b.trackArtistNames!.toLowerCase())));
-          }
-          break;
-        case "Genre":
-          {
-            tracklist.sort((a, b) => removeDiacritics(a.genre!.toLowerCase())
-                .compareTo(removeDiacritics(b.genre!.toLowerCase())));
-          }
-          break;
-        case "Creation date":
-          {
-            tracklist.sort((a, b) => File(b.filePath)
-                .statSync()
-                .modified
-                .compareTo(File(a.filePath).statSync().modified));
-          }
-          break;
-        case "Shuffle":
-          {
-            tracklist.shuffle();
-          }
-          break;
-        case "Reset":
-          {
-            tracklist.clear();
-            for (TrackEntity el in globalLists.initialTracks) {
-              tracklist.add(el);
-            }
-            wasReset = true;
-          }
-          break;
-        default:
-          {}
-          break;
+
+      if(event.sortBy == "Reset"){
+        wasReset = true;
       }
-      if (!event.ascending && !wasReset) {
+
+      if (!event.ascending && wasReset == false) {
         tracklist = tracklist.reversed.toList();
       }
+
       emit(state.copyWith(tracks: tracklist));
-      wasReset = false;
+      //wasReset = false;
     });
 
     on<PlaylistFiltered>((event, emit) async {
-      List<TrackEntity>? tracklist = state.tracks;
-      List<TrackEntity> results = [];
-      switch (event.filterdBy) {
-        case "Artist":
-          {
-            for (var track in tracklist) {
-              if (event.value != "#") {
-                if (track.trackArtistNames != "" &&
-                        track.trackArtistNames != " " ||
-                    track.albumArtist != null) {
-                  if (track.trackArtistNames!.trim() == event.value ||
-                      track.albumArtist?.trim() == event.value) {
-                    results.add(track);
-                  }
-                }
-              } else if (track.trackArtistNames == "" ||
-                  track.trackArtistNames == " " && track.albumArtist == null) {
-                results.add(track);
-              }
-            }
-          }
-          break;
-        case "Album":
-          {
-            for (var track in tracklist) {
-              if (event.value != "#") {
-                if (track.albumName != null &&
-                    track.albumName != "" &&
-                    track.albumName != " ") {
-                  if (track.albumName!.trim() == event.value) {
-                    results.add(track);
-                  }
-                }
-              } else if (track.albumName == null ||
-                  track.albumName == "" ||
-                  track.albumName == " ") {
-                results.add(track);
-              }
-            }
-          }
-          break;
-        case "Genre":
-          {
-            for (var track in tracklist) {
-              if (event.value != "#") {
-                if (track.genre != null && track.genre != "") {
-                  if (track.genre!.trim() == event.value) {
-                    results.add(track);
-                  }
-                }
-              } else if (track.genre == null || track.genre == "") {
-                results.add(track);
-              }
-            }
-          }
-          break;
-        case "Year":
-          {
-            for (var track in tracklist) {
-              if (event.value != "#") {
-                if (track.year != null &&
-                    track.year != 0 &&
-                    track.year.toString() != "null" &&
-                    track.year.toString() != "" &&
-                    track.year.toString() != " ") {
-                  if (track.year?.toString() == event.value) {
-                    results.add(track);
-                  }
-                }
-              } else if (track.year == null ||
-                  track.year == 0 ||
-                  track.year.toString() == "null" ||
-                  track.year.toString() == "" ||
-                  track.year.toString() == " ") {
-                results.add(track);
-              }
-            }
-          }
-          break;
-      }
+      List<TrackEntity> results = filteredList(state.tracks, event.filterBy, event.value);
       emit(state.copyWith(tracks: results));
     });
 
     on<PlaylistSearchedByKeyword>((event, emit) async {
-      List<TrackEntity> results = [];
-
-      if (event.keyword == null) {
-        for (TrackEntity track in globalLists.initialTracks) {
-          results.add(track);
-        }
-      } else {
-        for (var track in globalLists.initialTracks) {
-          if (track.filePath
-                  .toLowerCase()
-                  .contains(event.keyword!.toLowerCase()) ||
-              (track.trackArtistNames!
-                  .toLowerCase()
-                  .contains(event.keyword!.toLowerCase())) ||
-              track.trackName!
-                  .toLowerCase()
-                  .contains(event.keyword!.toLowerCase()) ||
-              (track.albumName != null &&
-                  track.albumName!
-                      .toLowerCase()
-                      .contains(event.keyword!.toLowerCase())) ||
-              (track.genre != null &&
-                  track.genre!
-                      .toLowerCase()
-                      .contains(event.keyword!.toLowerCase())) ||
-              (track.year != null &&
-                  track.year!
-                      .toString()
-                      .contains(event.keyword!.toLowerCase())) ||
-              event.keyword!.isEmpty) {
-            results.add(track);
-          }
-        }
-      }
-
+      List<TrackEntity> results = searchedList(event.keyword);
       emit(state.copyWith(tracks: results));
     });
     /// End sorting and filtering
