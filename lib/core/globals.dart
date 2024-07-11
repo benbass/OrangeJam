@@ -23,3 +23,17 @@ class GlobalLists {
   List<TrackEntity> initialTracks = [];
   List<TrackEntity> queue = [];
 }
+
+class ValuesForPlaylistDialogs{
+  static final ValuesForPlaylistDialogs _valuesForPlaylistDialogs = ValuesForPlaylistDialogs._internal();
+  factory ValuesForPlaylistDialogs(){
+    return _valuesForPlaylistDialogs;
+  }
+  ValuesForPlaylistDialogs._internal();
+
+  String selectedVal = "";
+  Map<int, String> playlistMap = {};
+  List<String> playlistNames = [];
+  int selectedIndex = 0;
+  final TextEditingController txtController = TextEditingController();
+}

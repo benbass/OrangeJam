@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
-import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../core/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
+import '../../custom_widgets/custom_widgets.dart';
 
 class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
@@ -23,7 +24,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            playlistHandler.createPlaylist(S.of(context).playlistsMenu_NewPlaylist, []);
+            dialogCreatePlaylist(S.of(context).playlistsMenu_NewPlaylist, [], playlistHandler);
           },
           icon: const Icon(
             Icons.add,

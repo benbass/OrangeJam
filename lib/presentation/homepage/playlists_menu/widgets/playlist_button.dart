@@ -3,7 +3,7 @@ import 'package:orange_player/presentation/homepage/custom_widgets/custom_widget
 
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../../core/playlist_handler_and_dialogs.dart';
+import '../../../../core/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 
 class ButtonOpenPlaylist extends StatelessWidget {

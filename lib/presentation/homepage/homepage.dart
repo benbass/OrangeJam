@@ -14,13 +14,15 @@ import 'package:orange_player/presentation/homepage/player_controls/player_contr
 import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../core/create_notification.dart';
 import '../../core/globals.dart';
 import '../../core/set_app_language.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/audiohandler.dart';
-import '../../core/playlist_handler_and_dialogs.dart';
+import '../../core/playlist_handler.dart';
 import 'appbar/appbar_content.dart';
+import 'custom_widgets/custom_widgets.dart';
 import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_icon_button.dart';
@@ -60,16 +62,16 @@ class MyHomePage extends StatelessWidget {
 
     // We update notification (Play/Pause)
     void onResumed() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? audioHandler.createNotification()
+        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
         : {};
     void onInactive() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? audioHandler.createNotification()
+        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
         : {};
     void onHidden() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? audioHandler.createNotification()
+        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
         : {};
     void onPaused() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? audioHandler.createNotification()
+        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
         : {};
 
     // Listen to the app lifecycle state changes
@@ -229,7 +231,7 @@ class MyHomePage extends StatelessWidget {
             BlocBuilder<PlaylistsBloc, PlaylistsState>(
               builder: (context, state) {
                 playlistHandler = PlaylistHandler(playlists: state.playlists);
-                playlistHandler.buildDropDownStrings();
+                buildPlaylistStringsForDropDownMenu(playlistHandler);
                 return Expanded(
                   child: MenuPlaylistsWidget(
                     playlistHandler: playlistHandler,
