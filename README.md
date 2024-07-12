@@ -2,7 +2,7 @@
 
 Player for local audio files
 
-## Getting Started
+## Features
 
 Beautiful player for audio files located in the device's music folder.
 
