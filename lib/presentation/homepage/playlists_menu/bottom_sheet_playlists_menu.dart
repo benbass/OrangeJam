@@ -6,7 +6,7 @@ import 'package:orange_player/presentation/homepage/playlists_menu/widgets/topba
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../core/playlist_handler.dart';
+import '../../../core/playlists/playlist_handler.dart';
 
 class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({

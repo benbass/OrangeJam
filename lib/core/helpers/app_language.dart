@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../generated/l10n.dart';
+import '../../generated/l10n.dart';
 
 Future<String?> getLangFromPrefs() async {
   final Future<SharedPreferences> langPrefs = SharedPreferences.getInstance();

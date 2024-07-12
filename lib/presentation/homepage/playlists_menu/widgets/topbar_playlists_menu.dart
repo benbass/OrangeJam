@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../custom_widgets/custom_widgets.dart';
 

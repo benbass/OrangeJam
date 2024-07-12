@@ -5,7 +5,7 @@ import 'package:orange_player/application/language/language_cubit.dart';
 import 'generated/l10n.dart';
 import 'package:orange_player/application/playlists/playlists_bloc.dart';
 import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 import 'application/listview/ui/is_comm_with_google_cubit.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'injection.dart' as di;

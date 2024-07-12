@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../../../application/listview/ui/is_scrolling_cubit.dart';
-import '../../../../core/animate_to_index.dart';
+import '../../../../core/manipulate_list/animate_to_index.dart';
 import '../../../../injection.dart';
 
 class GotoItemIcon extends StatelessWidget {

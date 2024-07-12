@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../../application/playercontrols/cubits/track_position_cubit.dart';
@@ -11,7 +11,7 @@ import '../../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../../application/listview/ui/is_scrolling_cubit.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../domain/entities/track_entity.dart';
-import '../../../core/playlist_handler.dart';
+import '../../../core/playlists/playlist_handler.dart';
 import 'widgets/list_item_slidable.dart';
 
 class MyListview extends StatelessWidget {

@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:diacritic/diacritic.dart';
 import 'package:path/path.dart' as aspath;
-import '../domain/entities/track_entity.dart';
-import '../injection.dart';
-import 'globals.dart';
+import '../../domain/entities/track_entity.dart';
+import '../../injection.dart';
+import '../globals.dart';
 
 final globalLists = GlobalLists();
 

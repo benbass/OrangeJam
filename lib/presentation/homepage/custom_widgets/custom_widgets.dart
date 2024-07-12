@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/core/playlist_handler.dart';
+import 'package:orange_player/core/playlists/playlist_handler.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../core/globals.dart';
-import 'package:orange_player/core/backup_restore_playlists.dart';
+import 'package:orange_player/core/playlists/backup_restore_playlists.dart';
 
 import '../../../generated/l10n.dart';
 

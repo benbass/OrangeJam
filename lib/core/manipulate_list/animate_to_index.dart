@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:orange_player/injection.dart' as di;
-import '../application/playlists/playlists_bloc.dart';
-import 'audiohandler.dart';
-import 'globals.dart';
+import '../../application/playlists/playlists_bloc.dart';
+import '../player/audiohandler.dart';
+import '../globals.dart';
 
 void gotoItem(double offset, ListObserverController observerController ) {
   // we need current index in case user sorted or filtered the list

@@ -4,7 +4,7 @@ import 'package:orange_player/application/playlists/playlists_bloc.dart';
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../../core/playlist_handler.dart';
+import '../../../../core/playlists/playlist_handler.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
 
 class MenuPlaylistsWidget extends StatelessWidget {

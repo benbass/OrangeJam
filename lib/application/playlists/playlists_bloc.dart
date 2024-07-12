@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:orange_player/core/sort_filter_search_tracklist.dart';
+import 'package:orange_player/core/manipulate_list/sort_filter_search_tracklist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/globals.dart';

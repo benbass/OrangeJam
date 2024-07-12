@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/playercontrols/bloc/playercontrols_bloc.dart';
 
-import '../../../../core/audiohandler.dart';
+import '../../../../core/player/audiohandler.dart';
 import '../../../../injection.dart';
 
 class ShowHidePlayerControls extends StatelessWidget {

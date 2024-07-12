@@ -12,7 +12,7 @@ import 'package:orange_player/infrastructure/datasources/tracklist_datasources.d
 import 'package:orange_player/infrastructure/repositories/playlists_repository_impl.dart';
 import 'package:orange_player/infrastructure/repositories/tracklist_repository_impl.dart';
 import 'package:orange_player/services/audio_session.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'domain/entities/track_entity.dart';

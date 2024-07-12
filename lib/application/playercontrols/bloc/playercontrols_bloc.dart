@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/domain/entities/track_entity.dart';
 
 import '../../../injection.dart';
-import '../../../core/audiohandler.dart';
+import '../../../core/player/audiohandler.dart';
 
 part 'playercontrols_event.dart';
 part 'playercontrols_state.dart';

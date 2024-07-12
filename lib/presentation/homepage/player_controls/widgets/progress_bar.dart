@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../injection.dart';
 import '../../../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../../../application/playercontrols/cubits/track_position_cubit.dart';
-import '../../../../core/audiohandler.dart';
+import '../../../../core/player/audiohandler.dart';
 
 class PlayerControlsProgressBar extends StatelessWidget {
   final Orientation orientation;

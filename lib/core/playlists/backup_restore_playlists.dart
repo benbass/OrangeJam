@@ -8,12 +8,12 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:google_sign_in/google_sign_in.dart' as sign_in;
 import 'package:file_picker/file_picker.dart';
 
-import '../application/listview/ui/is_comm_with_google_cubit.dart';
-import '../application/playlists/playlists_bloc.dart';
-import '../generated/l10n.dart';
-import '../presentation/homepage/custom_widgets/custom_widgets.dart';
-import '../services/google_auth_client.dart';
-import 'globals.dart';
+import '../../application/listview/ui/is_comm_with_google_cubit.dart';
+import '../../application/playlists/playlists_bloc.dart';
+import '../../generated/l10n.dart';
+import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
+import '../../services/google_auth_client.dart';
+import '../globals.dart';
 
 // extension requires import dart:io
 extension FileExtention on FileSystemEntity {

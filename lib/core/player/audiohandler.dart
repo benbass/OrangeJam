@@ -12,9 +12,9 @@ import 'package:orange_player/application/playercontrols/cubits/track_position_c
 import 'package:orange_player/services/audio_session.dart';
 import 'package:orange_player/injection.dart' as di;
 
-import '../domain/entities/track_entity.dart';
-import 'create_notification.dart';
-import 'globals.dart';
+import '../../domain/entities/track_entity.dart';
+import '../notifications/create_notification.dart';
+import '../globals.dart';
 
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();

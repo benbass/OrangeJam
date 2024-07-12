@@ -2,16 +2,16 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 
-import '../../../../injection.dart';
-import '../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
-import '../application/playercontrols/cubits/loop_mode_cubit.dart';
-import '../application/playercontrols/cubits/track_duration_cubit.dart';
-import '../application/playercontrols/cubits/track_position_cubit.dart';
-import 'format_duration.dart';
-import 'globals.dart';
+import '../../../../../injection.dart';
+import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
+import '../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../application/playercontrols/cubits/track_duration_cubit.dart';
+import '../../application/playercontrols/cubits/track_position_cubit.dart';
+import '../helpers/format_duration.dart';
+import '../globals.dart';
 
 startPositionMonitoring() {
   bool hasStoppedChanging = false;

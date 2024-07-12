@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:orange_player/domain/entities/track_entity.dart';
 import 'package:path/path.dart';
 
-import '../../../../core/format_duration.dart';
+import '../../../../core/helpers/format_duration.dart';
 import '../../../../generated/l10n.dart';
 
 class SizedBoxInfoText extends StatelessWidget {

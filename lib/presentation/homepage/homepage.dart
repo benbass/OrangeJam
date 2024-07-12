@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/language/language_cubit.dart';
-import 'package:orange_player/core/initialize_awesome_notifications.dart';
+import 'package:orange_player/core/notifications/initialize_awesome_notifications.dart';
 import 'package:orange_player/presentation/drawer/drawer.dart';
 import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
@@ -14,13 +14,13 @@ import 'package:orange_player/presentation/homepage/player_controls/player_contr
 import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/listview/tracklist/tracklist_bloc.dart';
-import '../../core/create_notification.dart';
+import '../../core/notifications/create_notification.dart';
 import '../../core/globals.dart';
-import '../../core/set_app_language.dart';
+import '../../core/helpers/app_language.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
-import '../../core/audiohandler.dart';
-import '../../core/playlist_handler.dart';
+import '../../core/player/audiohandler.dart';
+import '../../core/playlists/playlist_handler.dart';
 import 'appbar/appbar_content.dart';
 import 'custom_widgets/custom_widgets.dart';
 import 'extra_bar_under_appbar/extra_bar.dart';
