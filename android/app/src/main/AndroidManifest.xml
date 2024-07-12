@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="Orange Player"
+        android:label="Trackslice"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

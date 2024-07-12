@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../../../application/my_listview/ui/is_scroll_reverse_cubit.dart';
-import '../../../../application/my_listview/ui/is_scrolling_cubit.dart';
+import '../../../../application/listview/ui/is_scroll_reverse_cubit.dart';
+import '../../../../application/listview/ui/is_scrolling_cubit.dart';
+import '../../../../core/manipulate_list/animate_to_index.dart';
+import '../../../../injection.dart';
 
 class GotoItemIcon extends StatelessWidget {
   const GotoItemIcon({
     super.key,
     required this.isScrollReverseCubit,
     required this.isScrollingCubit,
-    required this.gotoItem,
+    required this.observerController,
   });
 
   final IsScrollReverseCubit isScrollReverseCubit;
   final IsScrollingCubit isScrollingCubit;
-  final Function gotoItem;
+  final ListObserverController observerController;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,8 @@ class GotoItemIcon extends StatelessWidget {
       return BlocBuilder<IsScrollReverseCubit, bool?>(
           builder: (context, reverseState) {
         return IconButton(
-          onPressed: () => gotoItem(72.0),
-          icon: scrollingState!
+          onPressed: () => gotoItem(72.0, observerController),
+          icon: scrollingState! && sl<MyAudioHandler>().selectedId != 0
               ? Transform.flip(
                       flipY: reverseState!,
                       child: Image.asset(

@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
+  objectbox_flutter_libs
   permission_handler_windows
 )
 

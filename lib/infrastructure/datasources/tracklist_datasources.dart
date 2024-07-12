@@ -6,6 +6,7 @@ import 'package:orange_player/domain/failures/tracklist_failures.dart';
 import 'package:orange_player/infrastructure/models/track_model.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:orange_player/infrastructure/datasources/audiofiles_datasources.dart';
+import '../../injection.dart';
 
 import '../../domain/entities/track_entity.dart';
 import '../exceptions/exceptions.dart';
@@ -23,42 +24,54 @@ class TrackListDatasourceImpl implements TrackListDatasource {
 
   @override
   Future<List<TrackEntity>> getTracksFromFiles() async {
-    List<TrackEntity> tracks = [];
-    int id = 0;
+    //List<TrackEntity> tracks = [];
 
-    // First we load the file from device storage
-    late List audioFiles;
+    /// if db is not empty, we work with its data: it speeds up the app start
+    if(!trackBox.isEmpty()){
+      return trackBox.getAll();
+      //return tracks;
+    } else {
+      /// if db is empty or if user rescan the device, we gets all files from device: time consuming!
+      List<TrackEntity> tracksFromFiles = [];
+      try {
+        // First we load the file from device storage
+        List audioFiles = await audioFilesDataSources.getAudioFiles();
+        // Then we create a track entity from track model based on retrieved metadata of each mp3 file
+        // and we add it to our list of tracks
+        for (File file in audioFiles) {
+          TrackEntity track = await Future.value(_createTrack(file));
+          tracksFromFiles.add(track);
+        }
 
-    try {
-      audioFiles = await audioFilesDataSources.getAudioFiles();
-    } catch (e) {
-      if (e is TracklistIoFailure) {
-        throw IOExceptionReadFiles();
+        // let initial list be sorted by track names asc
+        tracksFromFiles.sort((a, b) => removeDiacritics(a.trackName ?? a.trackName!.toLowerCase())
+            .compareTo(removeDiacritics(b.trackName ?? b.trackName!.toLowerCase()))
+        );
+
+        // We clear the objectBox store (we rebuild the db)
+        trackBox.removeAll();
+        // and add all tracks at once
+        trackBox.putMany(tracksFromFiles);
+        return trackBox.getAll();
+        //return tracks;
+      } catch (e) {
+        if (e is TracklistIoFailure) {
+          throw IOExceptionReadFiles();
+        }
       }
+      return [];
     }
-
-    // let initial list be sorted by track names asc
-    sort() {
-      tracks.sort((a, b) => removeDiacritics(a.trackName.toLowerCase())
-          .compareTo(removeDiacritics(b.trackName.toLowerCase())));
-    }
-
-    // Then we create a track entity from track model based on retrieved metadata of each mp3 file
-    // and we add it to our list of tracks
-    Future<TrackEntity> createTrack(File file) => MetadataGod.readMetadata(
-          file: file.path,
-        )
-            .then((value) async =>
-                  // value throws a parseErrorData from dependency package FlutterRustBridgeBase for some files: some metadata may be corrupt or package is buggy?
-                   await Future.sync(() => TrackModel.getMetaData(value, file, id++)).then((value) => value),
-                )
-            .whenComplete(() => sort());
-
-    for (File file in audioFiles) {
-      TrackEntity track = await Future.value(createTrack(file));
-      tracks.add(track);
-    }
-
-    return tracks;
   }
+  
+  Future<TrackEntity> _createTrack(File file) => MetadataGod.readMetadata(
+        file: file.path,
+      )
+          .then(
+            (value) async =>
+                // value throws a parseErrorData from dependency package FlutterRustBridgeBase for some files: some metadata may be corrupt or package is buggy?
+                await Future.sync(
+                        () => TrackModel.getMetaData(value, file))
+                    .then((value) => value),
+          );
+  
 }

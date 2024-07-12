@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -20,8 +19,7 @@ void main() {
 
   final tTracklist = [
     TrackModel(
-        id: 1,
-        file: File("filepath"),
+        filePath: "",
         trackName: "trackName",
         trackArtistNames: "trackArtistNames",
         albumName: null,
@@ -31,7 +29,7 @@ void main() {
         genre: null,
         trackDuration: null,
         albumArt: null,
-        albumArtist: null)
+        albumArtist: null).copyWith(id: 1)
   ];
 
   test("should return a tracklist when getAudioFiles successes", () async {

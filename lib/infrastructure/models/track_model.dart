@@ -6,8 +6,7 @@ import 'package:orange_player/domain/entities/track_entity.dart';
 
 class TrackModel extends TrackEntity {
   TrackModel({
-    required super.id,
-    required super.file,
+    required super.filePath,
     required super.trackName,
     required super.trackArtistNames,
     required super.albumName,
@@ -20,13 +19,12 @@ class TrackModel extends TrackEntity {
     required super.albumArtist,
   });
 
-  factory TrackModel.getMetaData(Metadata metadata, File file, int id) {
+  /// gets metadata from file
+  factory TrackModel.getMetaData(Metadata metadata, File file) {
     // track name: from metadata. If this field is null, we use the file name.
     return TrackModel(
-      id: id,
-      file: file,
-      trackName: metadata.title ?? aspath
-          .basenameWithoutExtension(file.path),
+      filePath: file.path,
+      trackName: metadata.title ?? aspath.basenameWithoutExtension(file.path),
       trackArtistNames: metadata.artist ?? "",
       albumName: metadata.album ?? "",
       trackNumber: metadata.trackNumber,
@@ -37,6 +35,5 @@ class TrackModel extends TrackEntity {
       albumArt: metadata.picture?.data,
       albumArtist: metadata.albumArtist,
     );
-
   }
 }

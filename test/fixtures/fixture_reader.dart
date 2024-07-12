@@ -1,3 +1,3 @@
 import 'dart:io';
 
-File fixture(String name) => File('test/fixtures/$name');
+String fixture(String name) => File('test/fixtures/$name').path;

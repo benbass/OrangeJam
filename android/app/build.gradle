@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "de.brbass.orange_player"
+    namespace "de.brbass.trackslice"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -51,11 +51,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "de.brbass.orange_player"
+        applicationId "de.brbass.trackslice"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 22//flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 22 //flutter.minSdkVersion -> 21
+        targetSdkVersion flutter.targetSdkVersion // -> 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -86,4 +86,11 @@ flutter {
 dependencies {
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
+}
+
+// Print targetSdkVersion! Change to android dir and call ./gradlew printTargetSdkVersion
+task printTargetSdkVersion {
+    doLast {
+        println("Target SDK Version: ${android.defaultConfig.targetSdkVersion}")
+    }
 }

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../core/globals.dart';
+
 abstract class Playlistsdatasource {
   Future<List> getPlaylistsFromM3uFiles();
 }
@@ -13,7 +15,7 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
     List list = [];
 
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/Orange_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     if (!plDir.existsSync()) {
       await plDir.create();
     }

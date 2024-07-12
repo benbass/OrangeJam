@@ -1,8 +1,9 @@
 import 'package:audio_session/audio_session.dart';
-import 'package:orange_player/core/audiohandler.dart';
+import 'package:orange_player/core/player/audiohandler.dart';
 import 'package:orange_player/injection.dart' as di;
 
 import '../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../core/notifications/create_notification.dart';
 
 
 class MyAudioSession {
@@ -35,7 +36,8 @@ class MyAudioSession {
             playInterrupted = false;
             break;
           case AudioInterruptionType.pause:
-            di.sl<MyAudioHandler>().createNotification();
+            var audioHandler = di.sl<MyAudioHandler>();
+            createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p);
             di.sl<PlayerControlsBloc>().add(PauseFromAudioSession());
             break;
           case AudioInterruptionType.unknown:

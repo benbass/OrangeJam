@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_player/application/playercontrols/bloc/playercontrols_bloc.dart';
 
+import '../../../../core/player/audiohandler.dart';
+import '../../../../injection.dart';
+
 class ShowHidePlayerControls extends StatelessWidget {
   const ShowHidePlayerControls({super.key,});
 
@@ -13,7 +16,7 @@ class ShowHidePlayerControls extends StatelessWidget {
         // Show player controls
         BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
           builder: (context, state) {
-            if (state.track.id != -1) {
+            if (sl<MyAudioHandler>().selectedId != 0) {
               return IconButton(
                 onPressed: () {
                   state.height > 0
