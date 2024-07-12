@@ -26,6 +26,9 @@ class MenuPlaylistsWidget extends StatelessWidget {
     return BlocBuilder<PlaylistsBloc, PlaylistsState>(
       builder: (context, state) {
         return IconButton(
+          // padding + constraints as following removes padding from IconButton!
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
           onPressed: () => {
             showModalBottomSheet(
               context: context,
@@ -43,7 +46,7 @@ class MenuPlaylistsWidget extends StatelessWidget {
           icon: Image.asset(
             "assets/playlist.png",
             color: const Color(0xFFCBD4C2),
-            height: 24,
+            height: 38,
           ),
         );
       },

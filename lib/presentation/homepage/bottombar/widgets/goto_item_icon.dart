@@ -34,7 +34,7 @@ class GotoItemIcon extends StatelessWidget {
                       child: Image.asset(
                         "assets/scroll.png",
                         color: const Color(0xFFCBD4C2),
-                        height: 24,
+                        height: 18,
                       ),
                     )
               : const Icon(null),

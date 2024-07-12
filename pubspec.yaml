@@ -55,7 +55,7 @@ dependencies:
   metadata_god: ^0.5.2+1
   dart_tags: ^0.4.1
   get_it: ^7.7.0
-  hive_flutter: ^1.1.0
+  #hive_flutter: ^1.1.0
   path_provider: ^2.1.3
   archive: ^3.4.10
   googleapis: ^13.1.0

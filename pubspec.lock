@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: audio_session
-      sha256: a49af9981eec5d7cd73b37bacb6ee73f8143a6a9f9bd5b6021e6c346b9b6cf4e
+      sha256: "4012d798e25a0ebfd4ad7203fefe7e386fdfedd2243afc52fa700b8bde6a3a4f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.19"
+    version: "0.1.20"
   audio_video_progress_bar:
     dependency: "direct main"
     description:
@@ -407,10 +407,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: edf39bcf4d74aca1eb2c1e43c3e445fd9f494013df7f0da752fefe72020eedc0
+      sha256: aa06fec78de2190f3db4319dd60fdc8d12b2626e93ef9828633928c2dcaea840
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -431,10 +431,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_slidable
-      sha256: "673403d2eeef1f9e8483bd6d8d92aae73b1d8bd71f382bc3930f699c731bc27c"
+      sha256: "2c5611c0b44e20d180e4342318e1bbc28b0a44ad2c442f5df16962606fd3e8e3"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   flutter_sound:
     dependency: "direct main"
     description:
@@ -521,10 +521,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: d3d38e0aefb518087e020a4d6d5c30fa29bdaf74f32b83dbdc64c997c3593e1d
+      sha256: d30fb34b659679ea74397e9748b4ab5d720720d57dcc79538f1b3c4a68654cb3
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.26"
+    version: "6.1.27"
   google_sign_in_ios:
     dependency: transitive
     description:
@@ -565,22 +565,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
-  hive:
-    dependency: transitive
-    description:
-      name: hive
-      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.3"
-  hive_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_flutter
-      sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   html:
     dependency: transitive
     description:
@@ -809,10 +793,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: bca87b0165ffd7cdb9cad8edd22d18d2201e886d9a9f19b4fb3452ea7df3a72a
+      sha256: "30c5aa827a6ae95ce2853cdc5fe3971daaac00f6f081c419c013f7f57bff2f5e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.6"
+    version: "2.2.7"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -841,10 +825,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: "8bc9f22eee8690981c22aa7fc602f5c85b497a6fb2ceb35ee5a5e5ed85ad8170"
+      sha256: bd6f00dbd873bfb70d0761682da2b3a2c2fccc2b9e84c495821639601d81afe7
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.3.0"
   permission_handler:
     dependency: "direct main"
     description:
@@ -969,10 +953,10 @@ packages:
     dependency: transitive
     description:
       name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
       url: "https://pub.dev"
     source: hosted
-    version: "0.27.7"
+    version: "0.28.0"
   scrollview_observer:
     dependency: "direct main"
     description:

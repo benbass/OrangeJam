@@ -25,12 +25,14 @@ class ShowHidePlayerControls extends StatelessWidget {
                       : BlocProvider.of<PlayerControlsBloc>(context)
                           .add(ShowHideControlsButtonPressed(height: 200));
                 },
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 icon: Transform.flip(
                   flipY: state.height == 200,
                   child: Image.asset(
                     "assets/arrow.png",
                     color: const Color(0xFFCBD4C2),
-                    height: 32,
+                    height: 40,
                   ),
                 ),
               );
