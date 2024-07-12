@@ -4,13 +4,10 @@ Player for local audio files
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Beautiful player for audio files located in the device's music folder.
 
-A few resources to get you started if this is your first Flutter project:
+Supported audio files with flutter_sound package: mp3, flac, m4a, ogg, opus, wav (https://pub.dev/packages/flutter_sound)
+Metadata with metadata_god package on mp3 (id3v2.4), m4a, flac, ogg and opus (https://pub.dev/packages/metadata_god)
+Player notifications provided by awesome_notifications package. (https://pub.dev/packages/awesome_notifications)
+Data persistence for playlists via m3u files and objectbox database package (https://pub.dev/packages/objectbox)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
