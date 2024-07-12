@@ -1,4 +1,4 @@
-# orange_player
+# Trackslice audio player
 
 Player for local audio files
 
