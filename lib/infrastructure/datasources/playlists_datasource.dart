@@ -28,6 +28,14 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
         for (String line in lines) {
           linesList.add(line);
         }
+        // We create a list of string, list as:
+    /*
+        [
+         [Playlist name1, [/path/to/Song1, /path/to/Song2, /path/to/Song3 ...]],
+         [Playlist name2, [/path/to/Song1, /path/to/Song2, /path/to/Song3 ...]],
+         [Playlist name3, [/path/to/Song1, /path/to/Song2, /path/to/Song3 ...]],
+         ]
+    */
         list.add([basenameWithoutExtension(file.path), linesList]);
       }
     }

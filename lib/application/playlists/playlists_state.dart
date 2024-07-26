@@ -1,6 +1,7 @@
 part of 'playlists_bloc.dart';
 
-class PlaylistsState {
+// with EquatableMixin only needed for unit test
+class PlaylistsState with EquatableMixin {
   final List<TrackEntity> tracks;
   final int playlistId;
   final List playlists;
@@ -28,4 +29,8 @@ class PlaylistsState {
       playlists: playlists ?? this.playlists,
     );
   }
+
+  @override
+  List<Object?> get props => [tracks, playlistId, playlists];
+
 }

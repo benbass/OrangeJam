@@ -7,7 +7,7 @@ class PermissionAndDirectory{
   late String path;
   late bool isGranted = false;
 
-  PermissionAndDirectory();
+  //PermissionAndDirectory();
   // Selbsterklärend: Permissions für den root directory
   // Unterschied dabei, ob sdk < 33, da ab sdk 33 nur noch einzelne permission abgefragt werden können.
   Future<void> getStoragePermission() async {

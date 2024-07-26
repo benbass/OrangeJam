@@ -17,4 +17,5 @@ class ObjectBox {
     final store = await openStore(directory: p.join(docsDir.path, "obx-trackslice"));
     return ObjectBox._create(store);
   }
+
 }

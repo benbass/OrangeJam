@@ -53,7 +53,7 @@ void main() {
       verifyNoMoreInteractions(mockTracklistUsecases);
     });
 
-    test("should emit loading then the loaded state after event is added", () async {
+    test("should emit loading then the loading state after event is added", () async {
       // arrange
       when(mockTracklistUsecases.getTracklistUsecases()).thenAnswer((_) async => Right(tTracklist));
       // act

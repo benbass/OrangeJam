@@ -13,8 +13,7 @@ part 'tracklist_state.dart';
 class TracklistBloc extends Bloc<TracklistEvent, TracklistState> {
   final TracklistUsecases tracklistUsecase;
 
-  TracklistBloc({required this.tracklistUsecase}) : super(TracklistInitial())  {
-
+  TracklistBloc({required this.tracklistUsecase}) : super(TracklistInitial()) {
     on<TrackListLoadingEvent>((event, emit) async {
       Either<TracklistFailure, List<TrackEntity>> failureOrTracklist =
           await tracklistUsecase.getTracklistUsecases();
@@ -34,11 +33,6 @@ class TracklistBloc extends Bloc<TracklistEvent, TracklistState> {
     on<TrackListLoadedEvent>((event, emit) async {
       emit(TracklistStateLoaded());
     });
-
-    on<PlayListLoadedEvent>((event, emit) async {
-      emit(PLaylistStateLoaded());
-    });
-
   }
 
   String _mapFailureToMessage(TracklistFailure failure) {

@@ -12,8 +12,6 @@ final class TracklistStateLoading extends TracklistState {
 
 final class TracklistStateLoaded extends TracklistState {}
 
-final class PLaylistStateLoaded extends TracklistState {}
-
 final class TracklistStateError extends TracklistState {
   final String message;
   TracklistStateError({required this.message});
@@ -37,11 +35,6 @@ final class TracklistStateLoading extends TracklistState with EquatableMixin {
 }
 
 final class TracklistStateLoaded extends TracklistState with EquatableMixin {
-  @override
-  List<Object?> get props => [];
-}
-
-final class PLaylistStateLoaded extends TracklistState with EquatableMixin  {
   @override
   List<Object?> get props => [];
 }

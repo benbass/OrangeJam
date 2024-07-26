@@ -10,5 +10,3 @@ final class TrackListLoadedEvent extends TracklistEvent{}
 
 final class TrackListRefreschingEvent extends TracklistEvent{}
 
-final class PlayListLoadedEvent extends TracklistEvent{}
-
