@@ -21,8 +21,8 @@ class MyAudioHandler {
   TrackDurationCubit trackDurationCubit = TrackDurationCubit();
   TrackPositionCubit trackPositionCubit = TrackPositionCubit();
 
-  /// we need the following vars for the notification
-  TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0); // we initialize an empty track for app start
+  /// we need the following vars with initial values for the notification handler at app start
+  TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0);
   bool isPausingState = false;
   int selectedId = 0;
   ///

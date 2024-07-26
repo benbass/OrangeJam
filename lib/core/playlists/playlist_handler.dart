@@ -104,13 +104,11 @@ class PlaylistHandler {
     }
   }
 
-  void writeNewTrackInPlaylistFile(String selectedPlaylist, String filePath) async {
+  void writeNewTrackInPlaylistFile(
+      String selectedPlaylist, String filePath) async {
     final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir =
-    Directory("${appDir.path}/${appName}_Playlists");
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
     final File file = File("${plDir.path}/$selectedPlaylist.m3u");
-    file.writeAsString("$filePath\n",
-        mode: FileMode.append, flush: true);
+    file.writeAsString("$filePath\n", mode: FileMode.append, flush: true);
   }
-
 }
