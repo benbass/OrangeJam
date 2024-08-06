@@ -72,9 +72,11 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
             }
           }
         }
-        // User selects the queue
+        // User selects the queue or queue content was modified while queue is current list
       } else if (event.id == -1) {
-        tracks = globalLists.queue;
+        for (TrackEntity track in globalLists.queue) {
+          tracks.add(track);
+        }
         // User selects all files
       } else {
         for (TrackEntity track in globalLists.initialTracks) {
@@ -136,14 +138,16 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       }
     });
 
+    /// the 2 following events occur only when queue is current list: we need to update UI with PlaylistChanged()
+    /// so view will show the new state of the queue
     on<TrackRemoveFromQueue>((event, emit) async {
       globalLists.queue.remove(event.track);
-      emit(state.copyWith(tracks: globalLists.queue));
+      add(PlaylistChanged(id: -1));
     });
 
-    on<ClearQueue>((event, emit) async {
+  on<ClearQueue>((event, emit) async {
       globalLists.queue.clear();
-      emit(state.copyWith(tracks: globalLists.queue));
+      add(PlaylistChanged(id: -1));
     });
 
     /// End queue

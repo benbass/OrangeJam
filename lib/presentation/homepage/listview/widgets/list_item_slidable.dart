@@ -116,11 +116,12 @@ class ListItemSlidable extends StatelessWidget {
                           playlistsBloc.state
                               .playlists[playlistsBloc.state.playlistId][0],
                           index);
+                      playlistsBloc.add(
+                          PlaylistChanged(id: playlistsBloc.state.playlistId));
                     } else {
                       playlistsBloc.add(TrackRemoveFromQueue(track: track));
+                      /// TrackRemoveFromQueue calls PlaylistChanged with id -1
                     }
-                    playlistsBloc.add(
-                        PlaylistChanged(id: playlistsBloc.state.playlistId));
                   },
                   backgroundColor: const Color(0xFFFF8100),
                   foregroundColor: const Color(0xFF202531),

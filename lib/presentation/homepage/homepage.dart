@@ -149,7 +149,7 @@ class MyHomePage extends StatelessWidget {
                               )
                             : const SizedBox.shrink(),
 
-                        /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id < 0)
+                        /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id >= 0)
                         Expanded(
                           child: RawScrollbar(
                             trackVisibility: true,
