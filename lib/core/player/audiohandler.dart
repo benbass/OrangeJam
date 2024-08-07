@@ -22,9 +22,9 @@ class MyAudioHandler {
   TrackPositionCubit trackPositionCubit = TrackPositionCubit();
 
   /// we need the following vars with initial values for the notification handler at app start
+  /// track id 0 is empty track
   TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0);
   bool isPausingState = false;
-  int selectedId = 0;
   ///
 
   void openAudioSession() {
@@ -45,10 +45,9 @@ class MyAudioHandler {
     p = Duration.zero;
     isPausingState = false;
     currentTrack = track;
-    selectedId = track.id;
     flutterSoundPlayer.startPlayer(fromURI: track.filePath);
     openAudioSession();
-    createNotification(selectedId, currentTrack, isPausingState, p);
+    createNotification(track, isPausingState, p);
     // Update progressbar in notification
     flutterSoundPlayer.onProgress?.listen((event) {
       p = event.position;
@@ -58,7 +57,6 @@ class MyAudioHandler {
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
     currentTrack = TrackEntity.empty().copyWith(id: 0);
-    selectedId = 0;
     AwesomeNotifications().cancel(10);
   }
 
@@ -66,7 +64,7 @@ class MyAudioHandler {
     flutterSoundPlayer.pausePlayer();
     isPausingState = true;
     // we update the button play/pause
-    createNotification(selectedId, currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, p);
   }
 
   void resumeTrack() {
@@ -74,7 +72,7 @@ class MyAudioHandler {
     isPausingState = false;
     openAudioSession();
     // we update the button play/pause
-    createNotification(selectedId, currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, p);
   }
 
   void gotoSeekPosition(Duration seekPosition) {
@@ -82,7 +80,7 @@ class MyAudioHandler {
     // We update the progress in notification:
     p = seekPosition;
     AwesomeNotifications().cancel(10);
-    createNotification(selectedId, currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, p);
   }
 
   Future<TrackEntity> getNextTrack(int plusMinusOne, TrackEntity currentTrack) async {

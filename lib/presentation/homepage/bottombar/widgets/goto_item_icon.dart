@@ -28,7 +28,7 @@ class GotoItemIcon extends StatelessWidget {
           builder: (context, reverseState) {
         return IconButton(
           onPressed: () => gotoItem(72.0, observerController),
-          icon: scrollingState! && sl<MyAudioHandler>().selectedId != 0
+          icon: scrollingState! && sl<MyAudioHandler>().currentTrack.id != 0
               ? Transform.flip(
                       flipY: reverseState!,
                       child: Image.asset(

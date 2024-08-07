@@ -25,6 +25,7 @@ void setAppLanguage(BuildContext context){
         S.load(const Locale('en'));
       }
     } else {
+      // as per Aug. 2024 value can only be "en", "de" or "fr" if not null
       S.load(Locale(value));
     }
   });

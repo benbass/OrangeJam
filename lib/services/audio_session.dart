@@ -37,7 +37,7 @@ class MyAudioSession {
             break;
           case AudioInterruptionType.pause:
             var audioHandler = di.sl<MyAudioHandler>();
-            createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p);
+            createNotification(audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p);
             di.sl<PlayerControlsBloc>().add(PauseFromAudioSession());
             break;
           case AudioInterruptionType.unknown:

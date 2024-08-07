@@ -9,7 +9,7 @@ import '../globals.dart';
 void gotoItem(double offset, ListObserverController observerController ) {
   // we need current index in case user sorted or filtered the list
   // 1. so first we get current track id
-  int selectedTrackId = di.sl<MyAudioHandler>().selectedId;
+  int selectedTrackId = di.sl<MyAudioHandler>().currentTrack.id;
 
   // 2. and we need index of this current track in current list state
   int index = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!).state.tracks

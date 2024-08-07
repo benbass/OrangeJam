@@ -11,11 +11,11 @@ import 'package:orange_player/injection.dart' as di;
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../helpers/format_duration.dart';
 
-void createNotification(int selectedId, TrackEntity currentTrack, bool isPausingState, Duration p) async {
+void createNotification(TrackEntity currentTrack, bool isPausingState, Duration p) async {
   // We create notification only if user tapped on a track.
   // This check is necessary in order to prevent errors when app is resumed or inactive and player is stopped,
   // in which case id == 0, which can causes issues... id 0 is the id of an empty track
-  if (selectedId != 0) {
+  if (currentTrack.id != 0) {
     Duration d = Duration(milliseconds: currentTrack.trackDuration!.toInt());
 
     final tempDir = await getTemporaryDirectory();

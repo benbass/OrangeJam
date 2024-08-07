@@ -37,8 +37,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // app language will be set based on shared prefs if set. Default lang. is en.
     setAppLanguage(context);
-
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
@@ -49,7 +49,7 @@ class MyHomePage extends StatelessWidget {
     final themeData = Theme.of(context);
     PlaylistHandler playlistHandler = PlaylistHandler(playlists: []);
 
-    // Suchfeld
+    // Search field
     final TextEditingController searchController = TextEditingController();
 
     final ScrollController sctr = ScrollController();
@@ -61,17 +61,21 @@ class MyHomePage extends StatelessWidget {
     void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
 
     // We update notification (Play/Pause)
-    void onResumed() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
+    void onResumed() => sl<PlayerControlsBloc>().state.track.id != 0
+        ? createNotification(audioHandler.currentTrack,
+            audioHandler.isPausingState, audioHandler.p)
         : {};
-    void onInactive() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
+    void onInactive() => sl<PlayerControlsBloc>().state.track.id != 0
+        ? createNotification(audioHandler.currentTrack,
+            audioHandler.isPausingState, audioHandler.p)
         : {};
-    void onHidden() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
+    void onHidden() => sl<PlayerControlsBloc>().state.track.id != 0
+        ? createNotification(audioHandler.currentTrack,
+            audioHandler.isPausingState, audioHandler.p)
         : {};
-    void onPaused() => sl<PlayerControlsBloc>().state.track.id != -1
-        ? createNotification(audioHandler.selectedId, audioHandler.currentTrack, audioHandler.isPausingState, audioHandler.p)
+    void onPaused() => sl<PlayerControlsBloc>().state.track.id != 0
+        ? createNotification(audioHandler.currentTrack,
+            audioHandler.isPausingState, audioHandler.p)
         : {};
 
     // Listen to the app lifecycle state changes
@@ -212,7 +216,7 @@ class MyHomePage extends StatelessWidget {
                   /// Animate to item
                   BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
                     builder: (context, state) {
-                      if (state.track.id != -1) {
+                      if (state.track.id != 0) {
                         return GotoItemIcon(
                           isScrollReverseCubit: isScrollReverseCubit,
                           isScrollingCubit: isScrollingCubit,
