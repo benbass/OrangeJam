@@ -61,6 +61,8 @@ class MyHomePage extends StatelessWidget {
     void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
 
     // We update notification (Play/Pause)
+    // track id 0 is empty track: occurs at app start or when player is stopped
+    // notification should live only when track is not empty
     void onResumed() => sl<PlayerControlsBloc>().state.track.id != 0
         ? createNotification(audioHandler.currentTrack,
             audioHandler.isPausingState, audioHandler.p)
@@ -108,7 +110,6 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           title: AppBarContent(themeData: themeData),
         ),
-
         endDrawer: MyDrawer(
           supportedLang: S.delegate.supportedLocales,
         ),
@@ -122,7 +123,7 @@ class MyHomePage extends StatelessWidget {
                     progressText: S.of(context).homePage_ScanningDevice,
                     themeData: themeData);
               } else if (tracklistState is TracklistStateLoading) {
-                /// we send the data from source to the playlist bloc so playlist can be built
+                /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
                 playlistsBloc
                     .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
                 tracklistBloc.add(TrackListLoadedEvent());
@@ -135,7 +136,7 @@ class MyHomePage extends StatelessWidget {
                   // Position for Progressbar in Player controls and behaviour at track end
                   audioHandler.flutterSoundPlayer.setSubscriptionDuration(
                       const Duration(milliseconds: 100));
-                  //init and check permission of awesomeNotifications
+                  //init and check permission for awesomeNotifications
                   initAwesomeNotifications();
                 }
                 return BlocBuilder<PlaylistsBloc, PlaylistsState>(
@@ -144,7 +145,7 @@ class MyHomePage extends StatelessWidget {
                       children: [
                         state.playlistId < 0
 
-                            /// Extra bar for all files and queue
+                            /// Extra bar for views all files and queue
                             ? SortFilterSearchAndQueueMenu(
                                 playlistsBloc: playlistsBloc,
                                 searchController: searchController,
@@ -175,6 +176,7 @@ class MyHomePage extends StatelessWidget {
                                 ),
                                 BlocBuilder<IsCommWithGoogleCubit, bool>(
                                   builder: (context, state) {
+                                    // progress indicator for backup/restore
                                     return Visibility(
                                       visible: state,
                                       child: Center(

@@ -22,68 +22,67 @@ class MyDrawer extends StatelessWidget {
       backgroundColor: themeData.colorScheme.primaryContainer,
       child: Column(
         children: [
-          /// Language
           const SizedBox(
             height: 50,
           ),
+          /// Language
           Text(S.of(context).drawer_language),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: supportedLang
                 .map(
-                  (locale) => TextButton(
-                      onPressed: () {
-                        BlocProvider.of<LanguageCubit>(context)
-                            .setLang(locale.languageCode);
-                      },
-                      child: Text(
-                        locale.languageCode.toUpperCase(),
-                      )),
+                  (locale) => SimpleButton(
+                    themeData: themeData,
+                    btnText: locale.languageCode.toUpperCase(),
+                    function: () {
+                      BlocProvider.of<LanguageCubit>(context)
+                          .setLang(locale.languageCode);
+                    },
+                  ),
                 )
                 .toList(),
           ),
           const SizedBox(
             height: 20,
           ),
+          /// Backup/Restore playlists
           const Text("Playlists"),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextButton(
-                onPressed: () {
+              SimpleButton(
+                themeData: themeData,
+                btnText: S.of(context).drawer_backup,
+                function: () {
                   Navigator.of(context).pop();
                   dialogActionRestoreOrBackupPlaylists(context, "backup");
                 },
-                child: Text(
-                  S.of(context).drawer_backup,
-                ),
               ),
-              TextButton(
-                onPressed: () {
+              SimpleButton(
+                themeData: themeData,
+                btnText: S.of(context).drawer_restore,
+                function: () {
                   Navigator.of(context).pop();
                   dialogActionRestoreOrBackupPlaylists(context, "restore");
                 },
-                child: Text(
-                  S.of(context).drawer_restore,
-                ),
               ),
             ],
           ),
           const SizedBox(
             height: 20,
           ),
-          TextButton(
-            onPressed: () {
+          /// Scan device
+          SimpleButton(
+            themeData: themeData,
+            btnText: S.of(context).drawer_scanDevice,
+            function: () {
               Navigator.of(context).pop();
               trackBox.removeAll();
               BlocProvider.of<TracklistBloc>(context)
                   .add(TrackListRefreschingEvent());
             },
-            child: Text(
-              S.of(context).drawer_scanDevice,
-            ),
           ),
         ],
       ),

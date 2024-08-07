@@ -8,6 +8,7 @@ import '../../../../injection.dart';
 class ShowHidePlayerControls extends StatelessWidget {
   const ShowHidePlayerControls({super.key,});
 
+  /// This widget allows to show/hide player controls when current track is not empty
   @override
   Widget build(BuildContext context) {
     return Row(

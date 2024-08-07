@@ -20,6 +20,7 @@ class GotoItemIcon extends StatelessWidget {
   final IsScrollingCubit isScrollingCubit;
   final ListObserverController observerController;
 
+  /// This widget allows to jump to current track after user scrolled the list
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IsScrollingCubit, bool?>(

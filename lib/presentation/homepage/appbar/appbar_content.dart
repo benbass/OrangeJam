@@ -22,6 +22,7 @@ class AppBarContent extends StatelessWidget {
             flex: 3,
             child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
               builder: (context, state) {
+                // Title of app bar depends on current list
                 if (state.playlistId == -2) {
                   return Text(
                     "${S.of(context).files} (${state.tracks.length})",
@@ -47,7 +48,7 @@ class AppBarContent extends StatelessWidget {
           width: 20,
         ),
 
-        /// This builder shows a sort of filtering hint: filtertext1 > filtertext2 > filtertext3...
+        /// This builder shows a filtering hint: filtertext1 > filtertext2 > filtertext3...
         BlocBuilder<AppbarFilterByCubit, String?>(
           builder: (context, appbarFilterByState) {
             return Expanded(
@@ -68,15 +69,6 @@ class AppBarContent extends StatelessWidget {
             );
           },
         ),
-        /*SizedBox(
-          height: 24,
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu),
-            alignment: Alignment.topRight,
-            padding: EdgeInsets.zero,
-          ),
-        ),*/
       ],
     );
   }

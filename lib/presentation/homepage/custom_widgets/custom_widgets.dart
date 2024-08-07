@@ -10,6 +10,7 @@ import 'package:orange_player/core/playlists/backup_restore_playlists.dart';
 
 import '../../../generated/l10n.dart';
 
+/// This is the main dialog widget:
 class CustomDialog extends StatelessWidget {
   final Widget content;
   final List<Widget> actions;
@@ -28,6 +29,7 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // BackdropFilter: creates a blur behinds the child (iOS like)
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
       child: AlertDialog(
@@ -49,6 +51,7 @@ class CustomDialog extends StatelessWidget {
   }
 }
 
+/// This is the dialog title
 class DescriptionText extends StatelessWidget {
   const DescriptionText({
     super.key,
@@ -68,6 +71,7 @@ class DescriptionText extends StatelessWidget {
   }
 }
 
+// this function just opens a dialog with a message and a button "Close"
 void dialogClose(BuildContext context, message) {
   final themeData = Theme.of(context);
   showDialog(
@@ -106,38 +110,35 @@ void dialogActionRestoreOrBackupPlaylists(
   String restore = S.of(context).buttonRestore;
   String backup = S.of(context).buttonBackup;
   showDialog(
-          builder: (context) => BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: AlertDialog(
-                  title: Text(
-                    restoreOrBackup == "restore" ? restore : backup,
-                    style: themeData.dialogTheme.titleTextStyle,
-                  ),
-                  backgroundColor:
-                      themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
-                  content: restoreOrBackup == "restore"
-                      ? Text(playlistsWillBeDeleted)
-                      : Text(zipWillBeCreated),
-                  actions: <Widget>[
-                    TextButton(
-                      style: themeData.textButtonTheme.style,
-                      child: Text(
-                        abort,
-                      ),
-                      onPressed: () => Navigator.pop(context, false),
-                    ),
-                    TextButton(
-                      style: themeData.textButtonTheme.style,
-                      child: Text(
-                        continu,
-                      ),
-                      onPressed: () => Navigator.pop(context, true),
-                    ),
-                  ],
-                ),
-              ),
-          context: context)
-      .then((exit) {
+    builder: (context) => CustomDialog(
+      content: restoreOrBackup == "restore"
+          ? Text(playlistsWillBeDeleted)
+          : Text(zipWillBeCreated),
+      actions: <Widget>[
+        TextButton(
+          style: themeData.textButtonTheme.style,
+          child: Text(
+            abort,
+          ),
+          onPressed: () => Navigator.pop(context, false),
+        ),
+        TextButton(
+          style: themeData.textButtonTheme.style,
+          child: Text(
+            continu,
+          ),
+          onPressed: () => Navigator.pop(context, true),
+        ),
+      ],
+      showDropdown: false,
+      titleWidget: DescriptionText(
+        themeData: themeData,
+        description: restoreOrBackup == "restore" ? restore : backup,
+      ),
+      themeData: themeData,
+    ),
+    context: context,
+  ).then((exit) {
     if (exit == null) return;
     if (exit) {
       restoreOrBackup == "restore"
@@ -200,7 +201,8 @@ class MyTextInput extends StatelessWidget {
   }
 }
 
-void buildPlaylistStringsForDropDownMenu(PlaylistHandler playlistHandler) async {
+void buildPlaylistStringsForDropDownMenu(
+    PlaylistHandler playlistHandler) async {
   ValuesForPlaylistDialogs().playlistNames.clear();
   for (var el in playlistHandler.playlists) {
     ValuesForPlaylistDialogs().playlistNames.add(el[0]);
@@ -210,11 +212,13 @@ void buildPlaylistStringsForDropDownMenu(PlaylistHandler playlistHandler) async 
 }
 
 // Dialog after tap on slidable action on list item
-Future dialogAddTrackToPlaylist(String filePath, PlaylistHandler playlistHandler) async {
+Future dialogAddTrackToPlaylist(
+    String filePath, PlaylistHandler playlistHandler) async {
   final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   String description = S
       .of(globalScaffoldKey.scaffoldKey.currentContext!)
       .playlistHandler_addThisTrackToPlaylist;
+  ValuesForPlaylistDialogs().selectedVal = "";
   buildPlaylistStringsForDropDownMenu(playlistHandler);
 
   if (playlistHandler.playlists.isNotEmpty) {
@@ -284,7 +288,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
                     .entries
                     .map((entry) {
                   return PopupMenuItem(
-                    value: entry.value,
+                    value:  entry.value,
                     child: InkWell(
                       splashColor: themeData.colorScheme.secondary,
                       onTap: () {
@@ -402,14 +406,15 @@ void closeDialogAddToPlaylist() {
       content: Text(S
           .of(globalScaffoldKey.scaffoldKey.currentContext!)
           .playlistHandler_theTrackWasAddedToThePlaylistSelectedval(
-          ValuesForPlaylistDialogs().selectedVal)),
+              ValuesForPlaylistDialogs().selectedVal)),
     ),
   );
   ValuesForPlaylistDialogs().selectedVal = "";
 }
 
 // Button Save for adding a track to a playlist
-StatefulBuilder buttonSaveAddTrackToPlaylist(String filePath, ThemeData themeData, PlaylistHandler playlistHandler) {
+StatefulBuilder buttonSaveAddTrackToPlaylist(
+    String filePath, ThemeData themeData, PlaylistHandler playlistHandler) {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
@@ -417,9 +422,14 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(String filePath, ThemeData themeDat
       onPressed: () async {
         if (ValuesForPlaylistDialogs().selectedVal != "") {
           String selectedPlaylist = ValuesForPlaylistDialogs().selectedVal;
-          if (!playlistHandler.playlists[ValuesForPlaylistDialogs().selectedIndex][1].contains(filePath)) {
-            playlistHandler.writeNewTrackInPlaylistFile(selectedPlaylist, filePath);
-            playlistsBloc.state.playlists[ValuesForPlaylistDialogs().selectedIndex][1].add(filePath);
+          if (!playlistHandler
+              .playlists[ValuesForPlaylistDialogs().selectedIndex][1]
+              .contains(filePath)) {
+            playlistHandler.writeNewTrackInPlaylistFile(
+                selectedPlaylist, filePath);
+            playlistsBloc
+                .state.playlists[ValuesForPlaylistDialogs().selectedIndex][1]
+                .add(filePath);
             closeDialogAddToPlaylist();
             setState(() {
               // Then we update UI in case we added a track to current playlist (based on current id)
@@ -436,7 +446,7 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(String filePath, ThemeData themeDat
                 content: Text(S
                     .of(context)
                     .playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack(
-                    ValuesForPlaylistDialogs().selectedVal)),
+                        ValuesForPlaylistDialogs().selectedVal)),
                 backgroundColor: themeData.colorScheme.primary,
               ),
             );
