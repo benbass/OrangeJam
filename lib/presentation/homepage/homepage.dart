@@ -22,7 +22,6 @@ import '../../injection.dart';
 import '../../core/player/audiohandler.dart';
 import '../../core/playlists/playlist_handler.dart';
 import 'appbar/appbar_content.dart';
-import 'custom_widgets/custom_widgets.dart';
 import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_icon_button.dart';
@@ -118,6 +117,9 @@ class MyHomePage extends StatelessWidget {
           child: BlocBuilder<TracklistBloc, TracklistState>(
             builder: (context, tracklistState) {
               if (tracklistState is TracklistInitial) {
+                // we get the tracks from the objectBox db. If db is empty, device will be scanned,
+                // files will be converted to entities with metadata and put into db (slow!).
+                // See tracklist_datasources.dart in infrastructure layer!
                 tracklistBloc.add(TrackListLoadingEvent());
                 return CustomProgressIndicator(
                     progressText: S.of(context).homePage_ScanningDevice,
@@ -133,7 +135,7 @@ class MyHomePage extends StatelessWidget {
               } else if (tracklistState is TracklistStateLoaded) {
                 // Player is open so we can subscribe
                 if (audioHandler.flutterSoundPlayer.isOpen()) {
-                  // Position for Progressbar in Player controls and behaviour at track end
+                  // Position for Progressbar in Player controls and behaviour at playback end
                   audioHandler.flutterSoundPlayer.setSubscriptionDuration(
                       const Duration(milliseconds: 100));
                   //init and check permission for awesomeNotifications
@@ -176,7 +178,7 @@ class MyHomePage extends StatelessWidget {
                                 ),
                                 BlocBuilder<IsCommWithGoogleCubit, bool>(
                                   builder: (context, state) {
-                                    // progress indicator for backup/restore
+                                    // progress indicator in case of backup/restore
                                     return Visibility(
                                       visible: state,
                                       child: Center(
@@ -208,17 +210,17 @@ class MyHomePage extends StatelessWidget {
         bottomNavigationBar: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            /// Go to item
+            /// jump to item button
             Expanded(
               flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  /// Animate to item
                   BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
                     builder: (context, state) {
                       if (state.track.id != 0) {
+                        // button is shown only if a track is playing && list is scrolled
                         return GotoItemIcon(
                           isScrollReverseCubit: isScrollReverseCubit,
                           isScrollingCubit: isScrollingCubit,
@@ -237,7 +239,8 @@ class MyHomePage extends StatelessWidget {
             BlocBuilder<PlaylistsBloc, PlaylistsState>(
               builder: (context, state) {
                 playlistHandler = PlaylistHandler(playlists: state.playlists);
-                buildPlaylistStringsForDropDownMenu(playlistHandler);
+                // we need the names of the playlists as strings
+                playlistHandler.buildPlaylistStrings();
                 return Expanded(
                   child: MenuPlaylistsWidget(
                     playlistHandler: playlistHandler,

@@ -23,15 +23,18 @@ class AppBarContent extends StatelessWidget {
             child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
               builder: (context, state) {
                 // Title of app bar depends on current list
+                // -2 -> all tracks
                 if (state.playlistId == -2) {
                   return Text(
                     "${S.of(context).files} (${state.tracks.length})",
                   );
                 } else if (state.playlistId == -1) {
+                  // -1 -> queue
                   return Text(
                     "${S.of(context).queue} (${state.tracks.length})",
                   );
                 } else if (state.playlistId > -1) {
+                  // > -1 -> the selected playlists
                   return Text(
                     "${state.playlists[state.playlistId][0]} (${state.tracks.length})",
                     overflow: TextOverflow.ellipsis,

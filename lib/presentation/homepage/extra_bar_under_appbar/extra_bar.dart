@@ -5,11 +5,10 @@ import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widge
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../core/globals.dart';
 import '../../../core/playlists/playlist_handler.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../generated/l10n.dart';
-import '../custom_widgets/custom_widgets.dart';
+import '../dialogs/dialogs.dart';
 
 class SortFilterSearchAndQueueMenu extends StatelessWidget {
   const SortFilterSearchAndQueueMenu({

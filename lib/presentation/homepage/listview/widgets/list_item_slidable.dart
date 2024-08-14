@@ -13,7 +13,7 @@ import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/player/audiohandler.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
-import '../../custom_widgets/custom_widgets.dart';
+import '../../dialogs/dialogs.dart';
 import 'item_leading.dart';
 import 'item_texts.dart';
 

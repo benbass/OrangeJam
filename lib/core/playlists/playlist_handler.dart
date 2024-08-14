@@ -3,13 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../generated/l10n.dart';
-import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
+import '../../presentation/homepage/dialogs/dialogs.dart';
 import '../globals.dart';
 
 class PlaylistHandler {
   final List playlists;
 
   PlaylistHandler({required this.playlists});
+
+  // this method is used in dialog dialogAddTrackToPlaylist() for the dropdown menu. And in homepage where the strings are needed for the playlists menu
+  void buildPlaylistStrings() async {
+    PlaylistsNamesAndSelectedVars().playlistNames.clear();
+    for (var el in playlists) {
+      PlaylistsNamesAndSelectedVars().playlistNames.add(el[0]);
+    }
+    PlaylistsNamesAndSelectedVars().playlistMap =
+        PlaylistsNamesAndSelectedVars().playlistNames.asMap();
+  }
 
   Future<void> reorderLinesInFile(
       String fileName, int oldIndex, int newIndex) async {
@@ -50,9 +60,9 @@ class PlaylistHandler {
   }
 
   Future<void> createPlaylistFile(List playlist) async {
-    if (ValuesForPlaylistDialogs().txtController.value.text.isNotEmpty) {
+    if (PlaylistsNamesAndSelectedVars().txtController.value.text.isNotEmpty) {
       final String name =
-          ValuesForPlaylistDialogs().txtController.value.text.trim();
+          PlaylistsNamesAndSelectedVars().txtController.value.text.trim();
       bool nameExists = playlists.any((element) => element[0] == name);
       if (!nameExists) {
         playlists.add([name, playlist]);
@@ -80,7 +90,7 @@ class PlaylistHandler {
             ),
           ),
         );
-        ValuesForPlaylistDialogs().txtController.clear();
+        PlaylistsNamesAndSelectedVars().txtController.clear();
       } else {
         Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
         dialogCreatePlaylist(

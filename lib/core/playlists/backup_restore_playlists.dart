@@ -11,7 +11,7 @@ import 'package:file_picker/file_picker.dart';
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playlists/playlists_bloc.dart';
 import '../../generated/l10n.dart';
-import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
+import '../../presentation/homepage/dialogs/dialogs.dart';
 import '../../services/google_auth_client.dart';
 import '../globals.dart';
 

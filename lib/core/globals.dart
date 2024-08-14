@@ -24,16 +24,19 @@ class GlobalLists {
   List<TrackEntity> queue = [];
 }
 
-class ValuesForPlaylistDialogs{
-  static final ValuesForPlaylistDialogs _valuesForPlaylistDialogs = ValuesForPlaylistDialogs._internal();
-  factory ValuesForPlaylistDialogs(){
-    return _valuesForPlaylistDialogs;
+class PlaylistsNamesAndSelectedVars {
+  static final PlaylistsNamesAndSelectedVars _playlistsNamesAndSelectedVars =
+      PlaylistsNamesAndSelectedVars._internal();
+  factory PlaylistsNamesAndSelectedVars() {
+    return _playlistsNamesAndSelectedVars;
   }
-  ValuesForPlaylistDialogs._internal();
+  PlaylistsNamesAndSelectedVars._internal();
 
   String selectedVal = "";
   Map<int, String> playlistMap = {};
   List<String> playlistNames = [];
   int selectedIndex = 0;
+  // we use a single instance of TextEditingController for the playlist_handler methods
+  // and the dialog dialogCreatePlaylist()
   final TextEditingController txtController = TextEditingController();
 }

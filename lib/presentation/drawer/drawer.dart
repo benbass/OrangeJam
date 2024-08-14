@@ -6,6 +6,7 @@ import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../homepage/custom_widgets/custom_widgets.dart';
+import '../homepage/dialogs/dialogs.dart';
 
 class MyDrawer extends StatelessWidget {
   final List<Locale> supportedLang;
