@@ -92,7 +92,7 @@ BEGIN
             VALUE "CompanyName", "de.brbass" "\0"
             VALUE "FileDescription", "orange_player" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "de.brbass.trackslice" "\0"
+            VALUE "InternalName", "de.brbass.orangejam" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 de.brbass. All rights reserved." "\0"
             VALUE "OriginalFilename", "orange_player.exe" "\0"
             VALUE "ProductName", "orange_player" "\0"

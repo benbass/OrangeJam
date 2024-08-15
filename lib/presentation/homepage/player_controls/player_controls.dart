@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/play_pause_button.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/progress_bar.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/track_info_text.dart';
-import 'package:orange_player/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
+import 'package:orangejam/presentation/homepage/player_controls/widgets/play_pause_button.dart';
+import 'package:orangejam/presentation/homepage/player_controls/widgets/progress_bar.dart';
+import 'package:orangejam/presentation/homepage/player_controls/widgets/track_info_text.dart';
+import 'package:orangejam/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../application/playercontrols/cubits/loop_mode_cubit.dart';
 import '../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';

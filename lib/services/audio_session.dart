@@ -1,6 +1,6 @@
 import 'package:audio_session/audio_session.dart';
-import 'package:orange_player/core/player/audiohandler.dart';
-import 'package:orange_player/injection.dart' as di;
+import 'package:orangejam/core/player/audiohandler.dart';
+import 'package:orangejam/injection.dart' as di;
 
 import '../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../core/notifications/create_notification.dart';

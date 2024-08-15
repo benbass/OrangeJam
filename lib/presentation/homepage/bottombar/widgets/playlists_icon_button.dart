@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
 
 import '../../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';

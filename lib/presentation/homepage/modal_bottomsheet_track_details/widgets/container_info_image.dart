@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
 
 class ContainerInfoImage extends StatelessWidget {
   final TrackEntity currentTrack;

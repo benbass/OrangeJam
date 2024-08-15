@@ -1,4 +1,4 @@
-# Trackslice audio player
+# OrangeJam audio player
 
 Player for local audio files
 

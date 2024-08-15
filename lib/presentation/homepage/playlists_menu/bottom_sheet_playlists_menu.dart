@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/presentation/homepage/playlists_menu/widgets/first_row_allfiles_and_queue_buttons.dart';
-import 'package:orange_player/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
-import 'package:orange_player/presentation/homepage/playlists_menu/widgets/topbar_playlists_menu.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/first_row_allfiles_and_queue_buttons.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/topbar_playlists_menu.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/listview/tracklist/tracklist_bloc.dart';

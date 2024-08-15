@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/core/player/audiohandler.dart';
+import 'package:orangejam/core/player/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../application/listview/ui/is_scroll_reverse_cubit.dart';

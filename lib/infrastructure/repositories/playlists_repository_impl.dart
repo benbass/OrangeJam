@@ -1,5 +1,5 @@
-import 'package:orange_player/domain/repositories/playlists_repository.dart';
-import 'package:orange_player/infrastructure/datasources/playlists_datasource.dart';
+import 'package:orangejam/domain/repositories/playlists_repository.dart';
+import 'package:orangejam/infrastructure/datasources/playlists_datasource.dart';
 
 class PlaylistsRepositoryImpl implements PlaylistsRepository{
   final Playlistsdatasource playlistsDatasource;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/filterby_popupmenubutton.dart';
-import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
-import 'package:orange_player/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
+import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/filterby_popupmenubutton.dart';
+import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
+import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';

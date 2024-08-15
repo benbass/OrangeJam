@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/infrastructure/datasources/audiofiles_datasources.dart';
+import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
 
 import '../../fixtures/fixture_reader.dart';
 import 'audiofiles_datasources_test.mocks.dart';

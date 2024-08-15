@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as i;
-import 'package:orange_player/injection.dart' as di;
+import 'package:orangejam/injection.dart' as di;
 
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../helpers/format_duration.dart';

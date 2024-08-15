@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:orange_player/application/language/language_cubit.dart';
+import 'package:orangejam/application/language/language_cubit.dart';
+import 'package:orangejam/core/globals.dart';
 
 import 'generated/l10n.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import 'package:orange_player/core/player/audiohandler.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
+import 'package:orangejam/core/player/audiohandler.dart';
 import 'application/listview/ui/is_comm_with_google_cubit.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/application/playercontrols/cubits/loop_mode_cubit.dart';
-import 'package:orange_player/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
-import 'package:orange_player/application/listview/tracklist/tracklist_bloc.dart';
-import 'package:orange_player/presentation/homepage/homepage.dart';
+import 'package:orangejam/application/playercontrols/cubits/loop_mode_cubit.dart';
+import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
+import 'package:orangejam/application/listview/tracklist/tracklist_bloc.dart';
+import 'package:orangejam/presentation/homepage/homepage.dart';
 import 'application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
-import 'package:orange_player/application/playercontrols/cubits/track_duration_cubit.dart';
-import 'package:orange_player/application/playercontrols/cubits/track_position_cubit.dart';
+import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
+import 'package:orangejam/application/playercontrols/cubits/track_position_cubit.dart';
 import 'application/listview/ui/is_scroll_reverse_cubit.dart';
 import 'application/listview/ui/is_scrolling_cubit.dart';
 import 'theme.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      title: 'Trackslice',
+      title: appName,
       theme: AppTheme.lightTheme,
       home: MultiBlocProvider(
         providers: [

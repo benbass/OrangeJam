@@ -1,6 +1,6 @@
 {
-    "name": "orange_player",
-    "short_name": "orange_player",
+    "name": "orangejam",
+    "short_name": "orangejam",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

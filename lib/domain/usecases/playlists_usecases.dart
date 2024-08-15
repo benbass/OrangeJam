@@ -1,4 +1,4 @@
-import 'package:orange_player/domain/repositories/playlists_repository.dart';
+import 'package:orangejam/domain/repositories/playlists_repository.dart';
 
 class PlaylistsUsecases{
   final PlaylistsRepository playlistsRepository;

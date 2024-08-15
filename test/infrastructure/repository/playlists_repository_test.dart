@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/domain/repositories/playlists_repository.dart';
-import 'package:orange_player/infrastructure/datasources/playlists_datasource.dart';
-import 'package:orange_player/infrastructure/repositories/playlists_repository_impl.dart';
+import 'package:orangejam/domain/repositories/playlists_repository.dart';
+import 'package:orangejam/infrastructure/datasources/playlists_datasource.dart';
+import 'package:orangejam/infrastructure/repositories/playlists_repository_impl.dart';
 
 import 'playlists_repository_test.mocks.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:orange_player/injection.dart' as di;
+import 'package:orangejam/injection.dart' as di;
 import '../../application/playlists/playlists_bloc.dart';
 import '../player/audiohandler.dart';
 import '../globals.dart';

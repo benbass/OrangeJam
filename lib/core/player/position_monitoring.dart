@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/core/player/audiohandler.dart';
+import 'package:orangejam/core/player/audiohandler.dart';
 
 import '../../../../../injection.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';

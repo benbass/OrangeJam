@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
-import 'package:orange_player/domain/usecases/playlists_usecases.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/usecases/playlists_usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'playlists_bloc_test.mocks.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:orange_player/presentation/homepage/listview/widgets/item_trailing.dart';
+import 'package:orangejam/presentation/homepage/listview/widgets/item_trailing.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/application/language/language_cubit.dart';
-import 'package:orange_player/core/notifications/initialize_awesome_notifications.dart';
-import 'package:orange_player/presentation/drawer/drawer.dart';
-import 'package:orange_player/presentation/homepage/progress_indicator/progress_indicator.dart';
+import 'package:orangejam/application/language/language_cubit.dart';
+import 'package:orangejam/core/notifications/initialize_awesome_notifications.dart';
+import 'package:orangejam/presentation/drawer/drawer.dart';
+import 'package:orangejam/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import 'package:orange_player/presentation/homepage/player_controls/player_controls.dart';
-import 'package:orange_player/application/listview/ui/is_scrolling_cubit.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
+import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
+import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../core/notifications/create_notification.dart';

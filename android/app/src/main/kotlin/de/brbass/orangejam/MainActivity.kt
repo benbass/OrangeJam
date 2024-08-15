@@ -1,4 +1,4 @@
-package de.brbass.trackslice
+package de.brbass.orangejam
 
 import io.flutter.embedding.android.FlutterActivity
 

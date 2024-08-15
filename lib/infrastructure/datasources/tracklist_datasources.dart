@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:diacritic/diacritic.dart';
-import 'package:orange_player/domain/failures/tracklist_failures.dart';
-import 'package:orange_player/infrastructure/models/track_model.dart';
+import 'package:orangejam/domain/failures/tracklist_failures.dart';
+import 'package:orangejam/infrastructure/models/track_model.dart';
 import 'package:metadata_god/metadata_god.dart';
-import 'package:orange_player/infrastructure/datasources/audiofiles_datasources.dart';
+import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
 import '../../injection.dart';
 
 import '../../domain/entities/track_entity.dart';

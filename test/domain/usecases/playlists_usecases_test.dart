@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/domain/repositories/playlists_repository.dart';
-import 'package:orange_player/domain/usecases/playlists_usecases.dart';
+import 'package:orangejam/domain/repositories/playlists_repository.dart';
+import 'package:orangejam/domain/usecases/playlists_usecases.dart';
 
 import 'playlists_usecases_test.mocks.dart';
 

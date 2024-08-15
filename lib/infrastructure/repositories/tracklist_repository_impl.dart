@@ -2,8 +2,8 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
-import 'package:orange_player/domain/repositories/tracklist_repository.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/repositories/tracklist_repository.dart';
 import '../../domain/failures/tracklist_failures.dart';
 import '../datasources/tracklist_datasources.dart';
 import '../exceptions/exceptions.dart';

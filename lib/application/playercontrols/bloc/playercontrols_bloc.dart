@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
 
 import '../../../injection.dart';
 import '../../../core/player/audiohandler.dart';

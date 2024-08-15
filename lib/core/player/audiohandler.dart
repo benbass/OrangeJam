@@ -5,12 +5,12 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/application/playercontrols/cubits/track_duration_cubit.dart';
-import 'package:orange_player/application/playercontrols/cubits/track_position_cubit.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
+import 'package:orangejam/application/playercontrols/cubits/track_position_cubit.dart';
 
-import 'package:orange_player/services/audio_session.dart';
-import 'package:orange_player/injection.dart' as di;
+import 'package:orangejam/services/audio_session.dart';
+import 'package:orangejam/injection.dart' as di;
 
 import '../../domain/entities/track_entity.dart';
 import '../notifications/create_notification.dart';

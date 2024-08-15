@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
-import 'package:orange_player/domain/repositories/tracklist_repository.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/repositories/tracklist_repository.dart';
 import '../failures/tracklist_failures.dart';
 
 class TracklistUsecases {

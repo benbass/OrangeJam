@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:orange_player/domain/usecases/tracklist_usecases.dart';
+import 'package:orangejam/domain/usecases/tracklist_usecases.dart';
 
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/failures/tracklist_failures.dart';

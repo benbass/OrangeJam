@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orange_player/application/playlists/playlists_bloc.dart';
-import 'package:orange_player/core/player/audiohandler.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/core/player/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../../application/playercontrols/cubits/track_position_cubit.dart';

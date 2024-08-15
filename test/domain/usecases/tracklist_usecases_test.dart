@@ -3,10 +3,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
-import 'package:orange_player/domain/failures/tracklist_failures.dart';
-import 'package:orange_player/domain/repositories/tracklist_repository.dart';
-import 'package:orange_player/domain/usecases/tracklist_usecases.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/failures/tracklist_failures.dart';
+import 'package:orangejam/domain/repositories/tracklist_repository.dart';
+import 'package:orangejam/domain/usecases/tracklist_usecases.dart';
 
 import 'tracklist_usecases_test.mocks.dart';
 

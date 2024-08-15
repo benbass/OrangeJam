@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:path/path.dart' as aspath;
 
 import 'package:metadata_god/metadata_god.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
 
 class TrackModel extends TrackEntity {
   TrackModel({

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
 import 'package:path/path.dart';
 
 import '../../../../core/helpers/format_duration.dart';

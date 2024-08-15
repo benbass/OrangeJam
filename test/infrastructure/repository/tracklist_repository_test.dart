@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orange_player/domain/entities/track_entity.dart';
-import 'package:orange_player/domain/failures/tracklist_failures.dart';
-import 'package:orange_player/domain/repositories/tracklist_repository.dart';
-import 'package:orange_player/infrastructure/datasources/tracklist_datasources.dart';
-import 'package:orange_player/infrastructure/exceptions/exceptions.dart';
-import 'package:orange_player/infrastructure/models/track_model.dart';
-import 'package:orange_player/infrastructure/repositories/tracklist_repository_impl.dart';
+import 'package:orangejam/domain/entities/track_entity.dart';
+import 'package:orangejam/domain/failures/tracklist_failures.dart';
+import 'package:orangejam/domain/repositories/tracklist_repository.dart';
+import 'package:orangejam/infrastructure/datasources/tracklist_datasources.dart';
+import 'package:orangejam/infrastructure/exceptions/exceptions.dart';
+import 'package:orangejam/infrastructure/models/track_model.dart';
+import 'package:orangejam/infrastructure/repositories/tracklist_repository_impl.dart';
 
 import 'tracklist_repository_test.mocks.dart';
 

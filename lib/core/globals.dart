@@ -12,7 +12,7 @@ class GlobalScaffoldKey {
   GlobalKey get scaffoldKey => _scaffoldKey;
 }
 
-const String appName = "Trackslice";
+const String appName = "OrangeJam";
 
 class GlobalLists {
   static final GlobalLists _globalLists = GlobalLists._internal();

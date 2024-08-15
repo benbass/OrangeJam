@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orange_player/presentation/homepage/playlists_menu/widgets/playlist_button.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/playlist_button.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
