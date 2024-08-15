@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "de.brbass.trackslice"
+    namespace "de.brbass.orangejam"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
