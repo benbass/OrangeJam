@@ -103,7 +103,12 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     /// Sorting and filtering (only on all files)
     on<PlaylistSorted>((event, emit) async {
-      List<TrackEntity> tracklist = sortedList(state.tracks, event.sortBy!);
+      List<TrackEntity> tracklistState = state.tracks;
+      // we replace current state with empty list
+      emit(state.copyWith(tracks: []));
+      // we sort copy of current list
+      List<TrackEntity> sortedTracklist = sortedList(tracklistState, event.sortBy!);
+
       bool wasReset = false;
 
       if(event.sortBy == "Reset"){
@@ -111,11 +116,10 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       }
 
       if (!event.ascending && wasReset == false) {
-        tracklist = tracklist.reversed.toList();
+        sortedTracklist = sortedTracklist.reversed.toList();
       }
-
-      emit(state.copyWith(tracks: tracklist));
-      //wasReset = false;
+      // we emit new list as new state
+      emit(state.copyWith(tracks: sortedTracklist));
     });
 
     on<PlaylistFiltered>((event, emit) async {

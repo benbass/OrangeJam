@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
+import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../generated/l10n.dart';
 
@@ -13,6 +14,7 @@ class SortByDropdown extends StatelessWidget {
     final themeData = Theme.of(context);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final SortByCubit sortByCubit = BlocProvider.of<SortByCubit>(context);
+    final AppbarFilterByCubit appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(context);
 
     // Vars für die Sortierung im DropdownButton (BottomNavigationBar)
     String? selectedOption; // Zustand für die ausgewählte Option
@@ -71,6 +73,8 @@ class SortByDropdown extends StatelessWidget {
                     }
                     if (newValue == S.of(context).sortByDropdown_reset) {
                       englishString = "Reset";
+                      // List may be filtered: we reset the filter string to null
+                      appbarFilterByCubit.setStringFilterBy(null);
                     }
 
                     if (sortbyState == newValue) {
