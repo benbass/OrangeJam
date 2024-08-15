@@ -58,7 +58,9 @@ class MyListview extends StatelessWidget {
 
     sctr.addListener(onScrollEvent);
 
-
+    // these 2 lines is the easiest way to get rid of slide panes, if any, when user changes playlist
+    observController.innerAnimateTo(index: 15, duration: const Duration(milliseconds: 100), curve: Curves.easeIn,);
+    observController.innerAnimateTo(index: 0, duration: const Duration(milliseconds: 100), curve: Curves.easeOut,);
 
     // Update progressbar and handle behaviour when track is completed
     audioHandler.flutterSoundPlayer.onProgress?.listen((event) {
