@@ -48,8 +48,8 @@ class MenuPlaylistsWidget extends StatelessWidget {
           },
           icon: Image.asset(
             "assets/playlist.png",
-            color: const Color(0xFFCBD4C2),
-            height: 38,
+            //color: const Color(0xFFCBD4C2),
+            height: 40,
           ),
         );
       },
