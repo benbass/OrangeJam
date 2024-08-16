@@ -10,11 +10,13 @@ import '../../../../generated/l10n.dart';
 class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
   const FirstRowAllFilesAndQueueButtons({
     super.key,
+    required this.scrollController,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
     required this.playlistHandler,
   });
 
+  final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
   final PlaylistHandler playlistHandler;
@@ -27,6 +29,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ButtonOpenPlaylist(
+            scrollController: scrollController,
             playlistsBloc: playlistsBloc,
             appbarFilterByCubit: appbarFilterByCubit,
             id: -2,
@@ -36,6 +39,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             playlistHandler: playlistHandler,
           ),
           ButtonOpenPlaylist(
+            scrollController: scrollController,
             playlistsBloc: playlistsBloc,
             appbarFilterByCubit: appbarFilterByCubit,
             id: -1,

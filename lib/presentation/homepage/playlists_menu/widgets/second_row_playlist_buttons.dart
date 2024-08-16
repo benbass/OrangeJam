@@ -8,11 +8,13 @@ import '../../../../core/playlists/playlist_handler.dart';
 class SecondRowPlaylistButtons extends StatelessWidget {
   const SecondRowPlaylistButtons({
     super.key,
+    required this.scrollController,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
     required this.playlistHandler,
   });
 
+  final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
   final PlaylistHandler playlistHandler;
@@ -31,6 +33,7 @@ class SecondRowPlaylistButtons extends StatelessWidget {
           final int length = playlistsBloc.state.playlists[index][1].length;
           if (playlistsBloc.state.playlists.isNotEmpty) {
             return ButtonOpenPlaylist(
+              scrollController: scrollController,
               playlistsBloc: playlistsBloc,
               appbarFilterByCubit: appbarFilterByCubit,
               id: index,

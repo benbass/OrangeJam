@@ -11,12 +11,14 @@ import '../../../core/playlists/playlist_handler.dart';
 class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({
     super.key,
+    required this.scrollController,
     required this.tracklistBlock,
     required this.playlistHandler,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
   });
 
+  final ScrollController scrollController;
   final TracklistBloc tracklistBlock;
   final PlaylistHandler playlistHandler;
   final PlaylistsBloc playlistsBloc;
@@ -50,11 +52,13 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
                 ),
               ),
               FirstRowAllFilesAndQueueButtons(
+                scrollController: scrollController,
                 playlistsBloc: playlistsBloc,
                 appbarFilterByCubit: appbarFilterByCubit,
                 playlistHandler: playlistHandler,
               ),
               SecondRowPlaylistButtons(
+                scrollController: scrollController,
                 playlistsBloc: playlistsBloc,
                 appbarFilterByCubit: appbarFilterByCubit,
                 playlistHandler: playlistHandler,
@@ -66,5 +70,3 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
     );
   }
 }
-
-

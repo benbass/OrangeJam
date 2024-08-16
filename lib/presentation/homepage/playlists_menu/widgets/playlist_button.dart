@@ -9,6 +9,7 @@ import '../../../../generated/l10n.dart';
 class ButtonOpenPlaylist extends StatelessWidget {
   const ButtonOpenPlaylist({
     super.key,
+    required this.scrollController,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
     required this.width,
@@ -18,6 +19,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
     required this.playlistHandler,
   });
 
+  final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
   final double width;
@@ -32,8 +34,27 @@ class ButtonOpenPlaylist extends StatelessWidget {
     return InkResponse(
       onTap: id != playlistsBloc.state.playlistId
           ? () async {
-              playlistsBloc.add(PlaylistChanged(id: id));
-              appbarFilterByCubit.setStringFilterBy(null);
+              /// This is the easiest way to remove slide panes from previous playlist, if any, when user changes playlist:
+              // scrolling just removes slide pane, even within same playlist
+              // And it adds a nice animation on playlist change :-)
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (scrollController.hasClients) {
+                  scrollController
+                      .animateTo(20,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn)
+                      .whenComplete(() {
+                    scrollController.animateTo(0,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeOut);
+
+                    /// END
+                  }).whenComplete(() {
+                    playlistsBloc.add(PlaylistChanged(id: id));
+                    appbarFilterByCubit.setStringFilterBy(null);
+                  });
+                }
+              });
               Navigator.pop(context);
             }
           : null,
@@ -64,7 +85,9 @@ class ButtonOpenPlaylist extends StatelessWidget {
                           SnackBar(
                             duration: const Duration(seconds: 2),
                             content: Text(
-                              S.of(context).playlistButton_SnackbarNameWasDeleted(name),
+                              S
+                                  .of(context)
+                                  .playlistButton_SnackbarNameWasDeleted(name),
                             ),
                           ),
                         );
@@ -72,8 +95,10 @@ class ButtonOpenPlaylist extends StatelessWidget {
                     ),
                   ],
                   showDropdown: false,
-                  titleWidget:
-                      Text(S.of(context).playlistButton_ThisWillDefinitelyDeleteThePlaylist(name)),
+                  titleWidget: Text(S
+                      .of(context)
+                      .playlistButton_ThisWillDefinitelyDeleteThePlaylist(
+                          name)),
                   themeData: themeData,
                 ),
               );

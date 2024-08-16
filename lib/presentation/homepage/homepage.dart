@@ -243,6 +243,7 @@ class MyHomePage extends StatelessWidget {
                 playlistHandler.buildPlaylistStrings();
                 return Expanded(
                   child: MenuPlaylistsWidget(
+                    scrollController: sctr,
                     playlistHandler: playlistHandler,
                     appbarFilterByCubit: appbarFilterByCubit,
                     themeData: themeData,

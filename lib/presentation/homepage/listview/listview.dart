@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +37,7 @@ class MyListview extends StatelessWidget {
   Widget build(BuildContext context) {
     final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(context);
     final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(context);
+    BlocProvider.of<PlayerControlsBloc>(context);
 
     final themeData = Theme.of(context);
 
@@ -58,17 +58,11 @@ class MyListview extends StatelessWidget {
 
     sctr.addListener(onScrollEvent);
 
-    // these 2 lines is the easiest way to get rid of slide panes, if any, when user changes playlist
-    observController.innerAnimateTo(index: 15, duration: const Duration(milliseconds: 100), curve: Curves.easeIn,);
-    observController.innerAnimateTo(index: 0, duration: const Duration(milliseconds: 100), curve: Curves.easeOut,);
-
     // Update progressbar and handle behaviour when track is completed
     audioHandler.flutterSoundPlayer.onProgress?.listen((event) {
       trackDurationCubit.setDuration(event.duration);
       trackPositionCubit.setPosition(event.position);
     });
-
-
 
     return Builder(builder: (context) {
       final playerControlsState = context.watch<PlayerControlsBloc>().state;

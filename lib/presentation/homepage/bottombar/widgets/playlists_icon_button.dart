@@ -8,12 +8,14 @@ import '../../../../core/playlists/playlist_handler.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
 
 class MenuPlaylistsWidget extends StatelessWidget {
+  final ScrollController scrollController;
   final PlaylistHandler playlistHandler;
   final AppbarFilterByCubit appbarFilterByCubit;
   final ThemeData themeData;
 
   const MenuPlaylistsWidget({
     super.key,
+    required this.scrollController,
     required this.playlistHandler,
     required this.appbarFilterByCubit,
     required this.themeData,
@@ -35,6 +37,7 @@ class MenuPlaylistsWidget extends StatelessWidget {
               shape: const ContinuousRectangleBorder(),
               builder: (context) {
                 return BottomSheetPlaylistsMenu(
+                  scrollController: scrollController,
                   tracklistBlock: tracklistBlock,
                   playlistHandler: playlistHandler,
                   playlistsBloc: playlistsBloc,
@@ -53,4 +56,3 @@ class MenuPlaylistsWidget extends StatelessWidget {
     );
   }
 }
-
