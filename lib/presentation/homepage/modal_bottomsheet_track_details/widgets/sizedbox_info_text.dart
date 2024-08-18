@@ -79,7 +79,8 @@ class SizedBoxInfoText extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    currentTrack.albumName == null || currentTrack.albumName == ""
+                    currentTrack.albumName == null ||
+                            currentTrack.albumName == ""
                         ? const TextSpan(
                             text: "?",
                             style: TextStyle(
@@ -187,47 +188,49 @@ class SizedBoxInfoText extends StatelessWidget {
                 ],
               ),
             ),
-            Text.rich(TextSpan(
-              children: [
-                TextSpan(
-                  text: S.of(context).trackNo,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF202531),
-                    fontWeight: FontWeight.w600,
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: S.of(context).trackNo,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF202531),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                currentTrack.trackNumber != null
-                    ? currentTrack.albumLength == null ||
-                            currentTrack.albumLength == 0
-                        ? TextSpan(
-                            children: [
-                              TextSpan(
-                                text: currentTrack.trackNumber.toString(),
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF202531),
+                  currentTrack.trackNumber != null
+                      ? currentTrack.albumLength == null ||
+                              currentTrack.albumLength == 0
+                          ? TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: currentTrack.trackNumber.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF202531),
+                                  ),
                                 ),
+                              ],
+                            )
+                          : TextSpan(
+                              text:
+                                  "${currentTrack.trackNumber}/${currentTrack.albumLength}",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF202531),
                               ),
-                            ],
-                          )
-                        : TextSpan(
-                            text:
-                                "${currentTrack.trackNumber}/${currentTrack.albumLength}",
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF202531),
-                            ),
-                          )
-                    : const TextSpan(
-                        text: "?",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF202531),
+                            )
+                      : const TextSpan(
+                          text: "?",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF202531),
+                          ),
                         ),
-                      ),
-              ],
-            )),
+                ],
+              ),
+            ),
             Text.rich(
               TextSpan(
                 children: [

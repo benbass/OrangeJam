@@ -63,6 +63,7 @@ class ListItemSlidable extends StatelessWidget {
         motion: const DrawerMotion(),
         children: [
           SlidableAction(
+            /// Add track to playlist
             onPressed: (_) {
               dialogAddTrackToPlaylist(track.filePath, playlistHandler);
             },
@@ -73,6 +74,7 @@ class ListItemSlidable extends StatelessWidget {
             label: 'Playlist',
             padding: EdgeInsets.zero,
           ),
+          /// Add track to queue
           SlidableAction(
             onPressed: (_) {
               if (!GlobalLists().queue.contains(track)) {
@@ -106,6 +108,7 @@ class ListItemSlidable extends StatelessWidget {
           ? ActionPane(
               motion: const DrawerMotion(),
               children: [
+                /// Remove track from playlist (not availabe on "Files" view (when playlistId == -2)
                 SlidableAction(
                   onPressed: (_) {
                     if (playlistsBloc.state.playlistId > -1) {

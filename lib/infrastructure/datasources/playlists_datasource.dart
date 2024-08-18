@@ -34,19 +34,22 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
           if (exists) {
             linesList.add(line); // only if file exists, its path is added to linesList
           } else {
+            // if not, we don't want to keep this path in file so we will update the file
             rewrite = true;
           }
         }
 
         // We re-write the m3u file with fresh linesList when at least one audio file does not exist anymore
         if(rewrite == true){
+          // we clear the file content
           await m3uFile.writeAsString('', mode: FileMode.write);
           for (String line in linesList) {
+            // we write each line to file
             await m3uFile.writeAsString('$line\n', mode: FileMode.append);
           }
         }
 
-        // We create a list of string, list as:
+        /// We create a list of string, list as:
         /*
         [
          [Playlist name1, [/path/to/Song1, /path/to/Song2, /path/to/Song3 ...]],

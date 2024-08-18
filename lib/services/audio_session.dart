@@ -8,7 +8,7 @@ import '../core/notifications/create_notification.dart';
 
 class MyAudioSession {
 
-  // Communicate with OS and pause playback when other app is playing sound
+  // Communicate with OS and pauses playback when other app is playing sound
   void handleInterruptions(
       AudioSession audioSession) async {
     bool playInterrupted = false;

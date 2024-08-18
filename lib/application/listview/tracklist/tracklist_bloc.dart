@@ -10,6 +10,7 @@ import '../../../domain/failures/tracklist_failures.dart';
 part 'tracklist_event.dart';
 part 'tracklist_state.dart';
 
+// first action on app start: we get the list of track entities
 class TracklistBloc extends Bloc<TracklistEvent, TracklistState> {
   final TracklistUsecases tracklistUsecase;
 

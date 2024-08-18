@@ -8,6 +8,8 @@ import '../../../core/playlists/playlist_handler.dart';
 import '../../../generated/l10n.dart';
 import '../custom_widgets/custom_widgets.dart';
 
+/// TODO: implement a file picker instead of saving backups directly to Google Drive
+
 /// a simple dialog for canceling actions (used only in file lib/core/playlists/backup_restore_playlists.dart)
 void dialogClose(BuildContext context, message) {
   final themeData = Theme.of(context);
@@ -169,7 +171,7 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
           if (!playlistHandler
               .playlists[PlaylistsNamesAndSelectedVars().selectedIndex][1]
               .contains(filePath)) {
-            // we update th m3u file
+            // we update the m3u file
             playlistHandler.writeNewTrackInPlaylistFile(
                 selectedPlaylist, filePath);
             // we update the selected playlist in bloc

@@ -8,6 +8,7 @@ import '../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../core/playlists/playlist_handler.dart';
 
+// The menu to access playlists
 class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({
     super.key,

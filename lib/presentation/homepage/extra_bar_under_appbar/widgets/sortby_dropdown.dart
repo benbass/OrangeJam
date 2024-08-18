@@ -16,8 +16,8 @@ class SortByDropdown extends StatelessWidget {
     final SortByCubit sortByCubit = BlocProvider.of<SortByCubit>(context);
     final AppbarFilterByCubit appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(context);
 
-    // Vars für die Sortierung im DropdownButton (BottomNavigationBar)
-    String? selectedOption; // Zustand für die ausgewählte Option
+    // Vars for sorting in DropdownButton (BottomNavigationBar)
+    String? selectedOption; // state for selected option
     bool ascending = true;
 
 

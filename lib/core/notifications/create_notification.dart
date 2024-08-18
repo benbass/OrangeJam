@@ -14,10 +14,11 @@ import '../helpers/format_duration.dart';
 void createNotification(TrackEntity currentTrack, bool isPausingState, Duration p) async {
   // We create notification only if user tapped on a track.
   // This check is necessary in order to prevent errors when app is resumed or inactive and player is stopped,
-  // in which case id == 0, which can causes issues... id 0 is the id of an empty track
+  // in which case id == 0, which can causes issues... id 0 is the id of an empty track which always stops the audio player
   if (currentTrack.id != 0) {
     Duration d = Duration(milliseconds: currentTrack.trackDuration!.toInt());
 
+    /// we create the image and its path (used by largeIcon) from the tracks album art
     final tempDir = await getTemporaryDirectory();
     String filePath = "";
 
@@ -37,8 +38,12 @@ void createNotification(TrackEntity currentTrack, bool isPausingState, Duration 
     } else {
       filePath = "asset://assets/album-placeholder.png";
     }
+    /// END image from cover
 
+    // part of string for correct icon depending on boolean provided by the audioHandler methods (playTrack, pauseTrack, resumeTrack...)
     String iconKey = !isPausingState ? 'pause' : 'play';
+
+    // notification state depending on boolean provided by the audioHandler methods (playTrack, pauseTrack, resumeTrack...)
     NotificationPlayState notificationPlayState = isPausingState
         ? NotificationPlayState.paused
         : NotificationPlayState.playing;

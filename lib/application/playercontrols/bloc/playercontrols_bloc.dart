@@ -13,6 +13,7 @@ class PlayerControlsBloc
     extends Bloc<PlayerControlsEvent, PlayerControlsState> {
   PlayerControlsBloc() : super(PlayerControlsState.initial()) {
 
+    // Initial state: empty track -> player controls not visible
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
           track: TrackEntity.empty().copyWith(id: 0),
@@ -20,7 +21,9 @@ class PlayerControlsBloc
           height: 0));
     });
 
+    // track was pressed:
     on<TrackItemPressed>((event, emit) {
+      // player controls visible and audioHandler plays track
       if (event.track != state.track) {
         // play new selected track
         emit(state.copyWith(
@@ -29,7 +32,7 @@ class PlayerControlsBloc
             height: 200));
         sl<MyAudioHandler>().playTrack(event.track);
       } else {
-        // stop current track
+        // same track: player controls not visible and audioHandler stops track
         emit(state.copyWith(
             track: TrackEntity.empty().copyWith(id: 0),
             isPausing: false,
@@ -83,10 +86,13 @@ class PlayerControlsBloc
       });
     });
 
+    // not used
     on<LoopButtonPressed>((event, emit) {});
 
+    // not used
     on<ContinuousButtonPressed>((event, emit) {});
 
+    // This event is triggered by the button on the right side of the bottomBar
     on<ShowHideControlsButtonPressed>((event, emit) {
       emit(state.copyWith(height: event.height));
     });

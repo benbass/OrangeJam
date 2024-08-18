@@ -6,6 +6,7 @@ import '../../application/playlists/playlists_bloc.dart';
 import '../player/audiohandler.dart';
 import '../globals.dart';
 
+// this is used to jump to currently playing track in list
 void gotoItem(double offset, ListObserverController observerController ) {
   // we need current index in case user sorted or filtered the list
   // 1. so first we get current track id
@@ -15,6 +16,7 @@ void gotoItem(double offset, ListObserverController observerController ) {
   int index = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!).state.tracks
       .indexWhere((element) => element.id == selectedTrackId);
 
+  // 3. we jump to index
   observerController.animateTo(
     alignment: 0,
     index: index,

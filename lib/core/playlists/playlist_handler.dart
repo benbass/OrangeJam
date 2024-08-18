@@ -11,6 +11,16 @@ class PlaylistHandler {
 
   PlaylistHandler({required this.playlists});
 
+  // get the correct m3u file
+  Future<File> getFile(String fileName) async {
+    final Directory appDir = await getApplicationDocumentsDirectory();
+    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
+    if (!plDir.existsSync()) {
+      await plDir.create();
+    }
+    return File("${plDir.path}/$fileName.m3u");
+  }
+
   // this method is used in dialog dialogAddTrackToPlaylist() for the dropdown menu. And in homepage where the strings are needed for the playlists menu
   void buildPlaylistStrings() async {
     PlaylistsNamesAndSelectedVars().playlistNames.clear();
@@ -23,15 +33,19 @@ class PlaylistHandler {
 
   Future<void> reorderLinesInFile(
       String fileName, int oldIndex, int newIndex) async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
-    final file = File("${plDir.path}/$fileName.m3u");
+    // we get the correct file
+    final file = await getFile(fileName);
+    // we save lines from file to list
     List<String> lines = await file.readAsLines();
 
+    // we manipulate the list
     String movedLine = lines[oldIndex];
     lines.removeAt(oldIndex);
     lines.insert(newIndex, movedLine);
+
+    // we clear the file
     await file.writeAsString('', mode: FileMode.write);
+    // we write lines from list to file
     for (String line in lines) {
       await file.writeAsString('$line\n', mode: FileMode.append);
     }
@@ -39,9 +53,7 @@ class PlaylistHandler {
   }
 
   Future<void> deleteLineInFile(String fileName, int index) async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
-    final file = File("${plDir.path}/$fileName.m3u");
+    final file = await getFile(fileName);
     List<String> lines = await file.readAsLines();
 
     lines.removeAt(index);
@@ -53,9 +65,7 @@ class PlaylistHandler {
   }
 
   Future<void> deleteFile(String fileName) async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
-    final file = File("${plDir.path}/$fileName.m3u");
+    final file = await getFile(fileName);
     await file.delete();
   }
 
@@ -67,13 +77,8 @@ class PlaylistHandler {
       if (!nameExists) {
         playlists.add([name, playlist]);
 
-        final Directory appDir = await getApplicationDocumentsDirectory();
-        final Directory plDir =
-            Directory("${appDir.path}/${appName}_Playlists");
-        if (!plDir.existsSync()) {
-          await plDir.create();
-        }
-        final File file = await File("${plDir.path}/$name.m3u").create();
+        final File file = await getFile(name).then((value) => value.create());
+
         for (String s in playlist) {
           await file.writeAsString("$s\n", mode: FileMode.append);
         }
@@ -114,11 +119,10 @@ class PlaylistHandler {
     }
   }
 
+  // filePath == audio file path
   void writeNewTrackInPlaylistFile(
       String selectedPlaylist, String filePath) async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final Directory plDir = Directory("${appDir.path}/${appName}_Playlists");
-    final File file = File("${plDir.path}/$selectedPlaylist.m3u");
+    final File file = await getFile(selectedPlaylist);
     file.writeAsString("$filePath\n", mode: FileMode.append, flush: true);
   }
 }

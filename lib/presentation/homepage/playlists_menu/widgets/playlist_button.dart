@@ -36,23 +36,24 @@ class ButtonOpenPlaylist extends StatelessWidget {
           ? () async {
               /// This is the easiest way to remove slide panes from previous playlist, if any, when user changes playlist:
               // scrolling just removes slide pane, even within same playlist
-              // And it adds a nice animation on playlist change :-)
+              // And it could create a nice animation on playlist change but only with higher offset and longer durations
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (scrollController.hasClients) {
                   scrollController
-                      .animateTo(20,
-                          duration: const Duration(milliseconds: 300),
+                      .animateTo(5,
+                          duration: const Duration(milliseconds: 100),
                           curve: Curves.easeIn)
-                      .whenComplete(() {
-                    scrollController.animateTo(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeOut);
 
-                    /// END
-                  }).whenComplete(() {
+                      /// END
+                      .whenComplete(() {
                     playlistsBloc.add(PlaylistChanged(id: id));
                     appbarFilterByCubit.setStringFilterBy(null);
                   });
+
+                  // we want the new list with offset 0
+                  scrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 50),
+                      curve: Curves.easeOut);
                 }
               });
               Navigator.pop(context);

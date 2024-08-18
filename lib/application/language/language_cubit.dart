@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LanguageCubit extends Cubit<String> {
   LanguageCubit() : super("");
 
+  // we save new language pref in SharedPrefs AND we emit the new lang atate
   void setLang(String lang) async {
     final Future<SharedPreferences> langPrefsI =
     SharedPreferences.getInstance();

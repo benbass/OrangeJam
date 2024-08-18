@@ -10,6 +10,7 @@ import '../../../domain/entities/track_entity.dart';
 import '../../../generated/l10n.dart';
 import '../dialogs/dialogs.dart';
 
+// this extra bar is displayed only if playlistId == -2 (Files) or -1 (Queue)
 class SortFilterSearchAndQueueMenu extends StatelessWidget {
   const SortFilterSearchAndQueueMenu({
     super.key,

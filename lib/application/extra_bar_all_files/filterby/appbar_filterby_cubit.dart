@@ -4,6 +4,8 @@ class AppbarFilterByCubit extends Cubit<String?> {
   AppbarFilterByCubit() : super(null);
 
   void setStringFilterBy(String? stringFilterby){
+    // Depending on current state we build an output == null or "String" or "String1 > String2 ..."
+    // The output string will be display in the appBar (only on all tracks view)
     String? output = "";
     if(stringFilterby == null){
       output = stringFilterby;

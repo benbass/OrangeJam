@@ -26,6 +26,7 @@ extension FileExtention on FileSystemEntity {
   }
 }
 
+/// TODO: use a file picker instead of saving directly to cloud
 class BackupRestorePlaylists {
 
   /// BACKUP
@@ -34,17 +35,17 @@ class BackupRestorePlaylists {
         globalScaffoldKey.scaffoldKey.currentContext!);
     var encoder = ZipFileEncoder();
     String messageNotSignedIn =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_youAreNotSignedInToYourGoogleAccount; //AppLocalizations.of(context)!.notSignedIn;
-    String theFile = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theFile; //AppLocalizations.of(context)!.theFile;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_youAreNotSignedInToYourGoogleAccount;
+    String theFile = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theFile;
     String hasBeenUploaded =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_hasBeenUploadedToYourGoogleDrive; //AppLocalizations.of(context)!.hasBeeUploaded;
-    String error = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_error; //AppLocalizations.of(context)!.error;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_hasBeenUploadedToYourGoogleDrive;
+    String error = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_error;
     String backupNotCreated =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_backupFileNotCreated; //AppLocalizations.of(context)!.backupFileNotCreated;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_backupFileNotCreated;
     String pleaseTryAgain =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_pleaseTryAgain; //AppLocalizations.of(context)!.pleaseTryAgain;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_pleaseTryAgain;
     String successCreated =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_wasSuccessfullyCreatedIn; //AppLocalizations.of(context)!.fileSuccessCreated;
+        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_wasSuccessfullyCreatedIn;
 
     dynamic dir;
     String folderName = "$appName user data";

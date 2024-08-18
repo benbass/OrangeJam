@@ -40,7 +40,13 @@ void initAwesomeNotifications() {
     */
   );
 
+  void closeDialog(){
+    Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+  }
+
+  // Check if user granted permmission for notification
   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    // if not, dialog informs user app wants to sent notifications
     if (!isAllowed) {
       showDialog(
         context: globalScaffoldKey.scaffoldKey.currentContext!,
@@ -55,10 +61,11 @@ void initAwesomeNotifications() {
               },
             ),
             SimpleButton(
+              // AwesomeNotifications shows new dialog for permission
               themeData: themeData,
               function: () => AwesomeNotifications()
                   .requestPermissionToSendNotifications()
-                  .then((_) => Navigator.pop(context)),
+                  .then((_) => closeDialog()),
               btnText: S.of(context).buttonOk,
             ),
           ],
@@ -72,4 +79,5 @@ void initAwesomeNotifications() {
       );
     }
   });
+
 }

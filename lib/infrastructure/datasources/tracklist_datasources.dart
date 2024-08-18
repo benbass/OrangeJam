@@ -11,6 +11,8 @@ import '../../injection.dart';
 import '../../domain/entities/track_entity.dart';
 import '../exceptions/exceptions.dart';
 
+// this transforms the files from AudioFilesDataSources to track entities including metadata and saves them to db then return the tracks from db
+// unless it was already done then it just returns tracks from existing db
 abstract class TrackListDatasource {
   /// Requests a track from files list
   /// May throw exception if file cannot be read
@@ -50,6 +52,7 @@ class TrackListDatasourceImpl implements TrackListDatasource {
     }
   }
 
+  // creates a sorted list of track entities (default is sorted by track name)
   Future<List<TrackEntity>> _handleFiles(List audioFiles) async {
     List<TrackEntity> tracksFromFiles = [];
     for (File file in audioFiles) {
@@ -63,6 +66,7 @@ class TrackListDatasourceImpl implements TrackListDatasource {
     return tracksFromFiles;
   }
 
+  // creates a track entity with metadata from file
   Future<TrackEntity> _createTrack(File file) => MetadataGod.readMetadata(
         file: file.path,
       ).then(

@@ -7,6 +7,7 @@ import '../../../../core/globals.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 
+// row of 2 buttons for "Files" and "Queue"
 class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
   const FirstRowAllFilesAndQueueButtons({
     super.key,

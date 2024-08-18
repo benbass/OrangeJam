@@ -5,6 +5,7 @@ import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 
+// list of buttons for each playlist
 class SecondRowPlaylistButtons extends StatelessWidget {
   const SecondRowPlaylistButtons({
     super.key,

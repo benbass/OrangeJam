@@ -19,12 +19,16 @@ void setAppLanguage(BuildContext context){
   final List<Locale> supportedLang = S.delegate.supportedLocales;
   getLangFromPrefs().then((value) {
     if(value == null){
+      /// no saved language pref:
+      // we set app language == device language
       if(supportedLang.contains(Locale(deviceLang))){
         S.load(Locale(deviceLang));
       } else {
+        // or we set to default "en"
         S.load(const Locale('en'));
       }
     } else {
+      /// saved language pref:
       // as per Aug. 2024 value can only be "en", "de" or "fr" if not null
       S.load(Locale(value));
     }

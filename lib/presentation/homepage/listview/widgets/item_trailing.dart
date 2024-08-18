@@ -3,7 +3,7 @@ import 'package:audio_wave/audio_wave.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/playercontrols/bloc/playercontrols_bloc.dart';
 
-// Hervorhebung des current tracks mit Animation
+// animation on list item for current track
 class ItemTrailing extends StatelessWidget {
   final int id;
   final int? currentId;

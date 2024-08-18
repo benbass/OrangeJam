@@ -5,6 +5,7 @@ import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
 
+// Icon + : create a new playlist
 class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
     super.key,

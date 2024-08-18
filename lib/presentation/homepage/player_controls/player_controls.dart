@@ -54,7 +54,7 @@ class PlayerControls extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            /// 2 text lines for track info
+            /// 2 text lines for track info + button to open bottomSheet for track details
             OrientationBuilder(builder: (context, orientation) {
               return SizedBox(
                 width: orientation == Orientation.portrait ? 620 : 372,

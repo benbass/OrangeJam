@@ -1,4 +1,4 @@
-// Umwandle milliseconds in hh:mm:ss
+// converts milliseconds to string hh:mm:ss
 String formatedDuration(Duration duration) {
   String hours = duration.inHours.toString().padLeft(2, '0');
   String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
@@ -9,6 +9,7 @@ String formatedDuration(Duration duration) {
   return '$hours:$minutes:$seconds';
 }
 
+// converts duration to milliseconds
 int unformatedDuration(Duration duration){
   String formattedDuration = duration.toString();
   List<String> parts = formattedDuration.split(':');

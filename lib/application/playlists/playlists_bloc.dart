@@ -88,8 +88,8 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       myStart.setInt("startWith", event.id);
     });
 
+    // If current playlist is deleted we change view to all files
     on<PlaylistDeleted>((event, emit) async {
-      // If current playlist is deleted we change view to all files
       List<TrackEntity> tracks = [];
       if (event.id == state.playlistId) {
         for (TrackEntity track in globalLists.initialTracks) {
@@ -142,10 +142,12 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       }
     });
 
-    /// the 2 following events occur only when queue is current list: we need to update UI with PlaylistChanged()
+    /// the 2 following events occur only when queue is current view: we need to update UI with event PlaylistChanged()
     /// so view will show the new state of the queue
     on<TrackRemoveFromQueue>((event, emit) async {
+      // first we remove the track from the global list
       globalLists.queue.remove(event.track);
+      // then we update ui
       add(PlaylistChanged(id: -1));
     });
 

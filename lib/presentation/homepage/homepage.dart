@@ -159,8 +159,11 @@ class MyHomePage extends StatelessWidget {
                         /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id >= 0)
                         Expanded(
                           child: RawScrollbar(
-                            trackVisibility: true,
-                            thickness: 8.0,
+                            //trackVisibility: true,
+                            thumbVisibility: false,
+                            fadeDuration: const Duration(milliseconds: 0),
+                            timeToFade: const Duration(milliseconds: 0),
+                            thickness: 4.5,
                             thumbColor:
                                 const Color(0xFFFF8100).withOpacity(0.7),
                             controller: sctr,

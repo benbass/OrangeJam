@@ -4,6 +4,7 @@ import '../domain/entities/track_entity.dart';
 
 GlobalScaffoldKey globalScaffoldKey = GlobalScaffoldKey();
 
+// we need to access the scaffold key from a lot of methods and wigets so we make it global
 class GlobalScaffoldKey {
   late GlobalKey _scaffoldKey;
   GlobalScaffoldKey() {
@@ -14,6 +15,7 @@ class GlobalScaffoldKey {
 
 const String appName = "OrangeJam";
 
+// we save the tracklist and make it globally accessible
 class GlobalLists {
   static final GlobalLists _globalLists = GlobalLists._internal();
   factory GlobalLists() {
@@ -24,6 +26,7 @@ class GlobalLists {
   List<TrackEntity> queue = [];
 }
 
+// we save the playlists' names and the currently selected playlist and make all this globally accessible
 class PlaylistsNamesAndSelectedVars {
   static final PlaylistsNamesAndSelectedVars _playlistsNamesAndSelectedVars =
       PlaylistsNamesAndSelectedVars._internal();

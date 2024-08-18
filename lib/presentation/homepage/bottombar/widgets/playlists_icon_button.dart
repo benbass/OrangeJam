@@ -7,6 +7,7 @@ import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cub
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
 
+// This button opens the playlist menu
 class MenuPlaylistsWidget extends StatelessWidget {
   final ScrollController scrollController;
   final PlaylistHandler playlistHandler;

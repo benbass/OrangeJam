@@ -5,6 +5,7 @@ import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../generated/l10n.dart';
 
+// the appBar shows the name of the list + (the list length) + if list is filtered: filter keywords (if many separated by ">")
 class AppBarContent extends StatelessWidget {
   const AppBarContent({
     super.key,
