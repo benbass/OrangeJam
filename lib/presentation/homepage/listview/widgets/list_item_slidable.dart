@@ -14,6 +14,7 @@ import '../../../../core/player/audiohandler.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
+import '../../dialogs/writer_view.dart';
 import 'item_leading.dart';
 import 'item_texts.dart';
 
@@ -156,6 +157,14 @@ class ListItemSlidable extends StatelessWidget {
               } else {
                 snackBarFileNotExist();
               }
+            },
+            onDoubleTap: () {
+              showDialog(
+                builder: (context) => WriterView(
+                  track: track,
+                ),
+                context: context,
+              );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

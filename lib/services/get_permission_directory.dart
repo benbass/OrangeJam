@@ -34,7 +34,7 @@ class PermissionAndDirectory{
     }
   }
 
-  // Hole Pfad der Music Library im root ordner
+  // Get path of music library folder
   Future<String> getPublicMusicDirectoryPath() async {
     path = await ExternalPath.getExternalStoragePublicDirectory(
         ExternalPath.DIRECTORY_MUSIC);

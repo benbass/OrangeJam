@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:media_store_plus/media_store_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 import 'package:orangejam/core/globals.dart';
@@ -24,11 +26,40 @@ import 'application/listview/ui/is_scroll_reverse_cubit.dart';
 import 'application/listview/ui/is_scrolling_cubit.dart';
 import 'theme.dart';
 
+// We will use this plugin to be able to overwrite audio files in music library with updated metadata
+final mediaStorePlugin = MediaStore();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   await di.sl<MyAudioHandler>().flutterSoundPlayer.openPlayer();
   MetadataGod.initialize();
+
+  /// media_store_plus plugin
+  await MediaStore.ensureInitialized();
+  // From API 33, we request photos, audio, videos permission to read these files. This the new way
+  // From API 29, we request storage permission only to read access all files
+  // API lower than 30, we request storage permission to read & write access access all files
+
+  // For writing purpose, we are using [MediaStore] plugin. It will use MediaStore or java File based on API level.
+  // It will use MediaStore for writing files from API level 30 or use java File lower than 30
+  List<Permission> permissions = [
+    Permission.storage,
+  ];
+
+  if ((await mediaStorePlugin.getPlatformSDKInt()) >= 33) {
+    // permissions.add(Permission.photos); // NOT NEEDED
+    permissions.add(Permission.audio);
+    // permissions.add(Permission.videos); // NOT NEEDED
+  }
+
+  await permissions.request();
+  // we are not checking the status as it is an example app. You should (must) check it in a production app
+  /// the check is performed in AudioFilesDataSources!
+  // You have set this otherwise it throws AppFolderNotSetException
+  MediaStore.appFolder = "MediaStorePlugin";
+  /// END media_store_plus plugin
+  ///
   runApp(const MyApp());
 }
 

@@ -26,7 +26,7 @@ extension FileExtention on FileSystemEntity {
   }
 }
 
-/// TODO: use a file picker instead of saving directly to cloud
+/// TODO: optionally use a file picker for saving the backup file to device storage
 class BackupRestorePlaylists {
 
   /// BACKUP
@@ -48,27 +48,36 @@ class BackupRestorePlaylists {
         S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_wasSuccessfullyCreatedIn;
 
     dynamic dir;
+
+    // Folder in app storage with playlist m3u files
     String folderName = "$appName user data";
+
+    // temp folder where zip file will stored. Will be deleted after backup is completed.
+    String backupFolder = "$appName backup dir";
+
+    // Date as string for backup file name
     final now = DateTime.now();
     final convertedDateTime =
         "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    String backupFolder =
-        "$appName backup dir"; // temp dir for files backup. Will be deleted after backup is completed.
     final dateTimeForReuse = convertedDateTime;
 
+    // List of m3u files where files from user data folder will be stored
     List<File> files = [];
 
     if (Platform.isAndroid) {
+      // create the temp backup folder
       dir = await getTemporaryDirectory();
       final backupPath = dir.path + '/' + backupFolder;
       // Create the folder if it doesn't exist
       if (!await Directory(backupPath).exists()) {
         await Directory(backupPath).create(recursive: true);
       }
+      // get the app folder where m3u files are stored
       dynamic appDir = await getApplicationDocumentsDirectory();
       var userData = Directory('${appDir.path}/${appName}_Playlists');
 
       try {
+        // fill the list 'files' with the detected m3u files in user data folder
         var dirList = userData.list();
         await for (final FileSystemEntity f in dirList) {
           if (f is File && f.path.endsWith('.m3u')) {
@@ -77,10 +86,14 @@ class BackupRestorePlaylists {
             print('Found dir ${f.path}');
           }*/
         }
+        // copy files form list to temp backup folder
         for (var element in files) {
           String fileName = element.extractFileNameFromPath;
           await element.copy('$backupPath/$fileName');
         }
+
+        // encode temp backup folder to zip and save zip file to device temp directory
+        // the zip file will be deleted after upload is completed
         encoder.zipDirectory(Directory(backupPath),
             filename:
                 '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip');
@@ -111,6 +124,7 @@ class BackupRestorePlaylists {
           //print('User account id: '+account.id);
 
           uploadFileToGoogleDrive() async {
+            // UI will display the progress indicator
             isCommunicating.isCommunicatingWithGoogleDrive(true);
             // file
             drive.File fileToUpload = drive.File();
@@ -122,6 +136,7 @@ class BackupRestorePlaylists {
             dirMetadata.name = '$appName Playlists';
             dirMetadata.mimeType = 'application/vnd.google-apps.folder';
             try {
+              // save file to Google drive folder we just created
               var dir = await driveApi.files.create(dirMetadata);
               //print('Folder ID: ${dir.id}');
               //return dir.id;
@@ -143,6 +158,7 @@ class BackupRestorePlaylists {
 
           String message =
               "$theFile '${appName}_Playlists_$dateTimeForReuse.zip' $hasBeenUploaded";
+
           uploadFileToGoogleDrive()
               .whenComplete(() => deleteZipFile(
                   '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip'))

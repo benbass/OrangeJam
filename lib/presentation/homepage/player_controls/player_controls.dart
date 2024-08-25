@@ -11,6 +11,7 @@ import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../domain/entities/track_entity.dart';
 
 import '../modal_bottomsheet_track_details/bottomsheet_track_details.dart';
+import '../dialogs/writer_view.dart';
 import 'widgets/continuous_playback_button.dart';
 import 'widgets/loop_button.dart';
 
@@ -67,9 +68,31 @@ class PlayerControls extends StatelessWidget {
                       width: 38,
                     ),
                     TrackInfoText(track: track, themeData: themeData),
-                    BottomSheetTrackDetails(
-                      themeData: themeData,
-                      track: track,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              builder: (context) => WriterView(
+                                track: track,
+                              ),
+                              context: context,
+                            );
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Color(0xFF202531),
+                          ),
+                          iconSize: 22,
+                        ),
+                        BottomSheetTrackDetails(
+                          themeData: themeData,
+                          track: track,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -78,6 +101,7 @@ class PlayerControls extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
+
             /// Progressbar
             OrientationBuilder(builder: (context, orientation) {
               return PlayerControlsProgressBar(orientation: orientation);
@@ -90,15 +114,29 @@ class PlayerControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 /// Loop button
-                LoopButton(continuousPlaybackModeCubit: continuousPlaybackModeCubit, isLoopModeCubit: isLoopModeCubit),
+                LoopButton(
+                    continuousPlaybackModeCubit: continuousPlaybackModeCubit,
+                    isLoopModeCubit: isLoopModeCubit),
+
                 /// Skip to previous button
-                SkipToNextOrPrevious(observerController: observerController, value: 0,),
+                SkipToNextOrPrevious(
+                  observerController: observerController,
+                  value: 0,
+                ),
+
                 /// Play/Pause button
                 const PlayPause(),
+
                 /// Skip to next button
-                SkipToNextOrPrevious(observerController: observerController, value: 1,),
+                SkipToNextOrPrevious(
+                  observerController: observerController,
+                  value: 1,
+                ),
+
                 /// Continuous playback button
-                ContinuousPlayback(isLoopModeCubit: isLoopModeCubit, continuousPlaybackModeCubit: continuousPlaybackModeCubit),
+                ContinuousPlayback(
+                    isLoopModeCubit: isLoopModeCubit,
+                    continuousPlaybackModeCubit: continuousPlaybackModeCubit),
               ],
             ),
           ],
@@ -107,10 +145,3 @@ class PlayerControls extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-

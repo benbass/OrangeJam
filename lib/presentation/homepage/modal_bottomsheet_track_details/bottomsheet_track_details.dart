@@ -68,6 +68,8 @@ class BottomSheetTrackDetails extends StatelessWidget {
               //buildColumnInfo();
             }),
       ),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
       icon: const Icon(
         Icons.info_outline_rounded,
         color: Color(0xFF202531),

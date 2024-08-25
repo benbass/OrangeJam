@@ -16,7 +16,7 @@ class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
     final PermissionAndDirectory permissionAndDirectory =
         PermissionAndDirectory();
 
-    await permissionAndDirectory.getStoragePermission();
+    await permissionAndDirectory.getStoragePermission(); // check permissions
 
     if (permissionAndDirectory.isGranted) {
       String path = await permissionAndDirectory.getPublicMusicDirectoryPath();

@@ -72,7 +72,7 @@ class TrackListDatasourceImpl implements TrackListDatasource {
       ).then(
         (value) async =>
             // value throws a parseErrorData from dependency package FlutterRustBridgeBase for some files: some metadata may be corrupt or package is buggy?
-            await Future.sync(() => TrackModel.getMetaData(value, file))
+            await Future.sync(() => TrackModel.metaData(value, file))
                 .then((value) => value),
       );
 }
