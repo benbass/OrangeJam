@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
+import 'package:orangejam/core/globals.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:orangejam/domain/entities/track_entity.dart';
+import '../../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../../injection.dart';
 import '../../../main.dart';
 
 class WriterView extends StatefulWidget {
@@ -34,30 +38,31 @@ class _WriterViewState extends State<WriterView> {
   late File file;
   late TrackEntity trackForDb;
   late String fileName;
+  final tracklistBloc = BlocProvider.of<TracklistBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
 
   // mediastore
   final DirType dirType = DirType.audio;
 
-  updateFileMetadataAndDbObject() async {
-    /// TODO: solve duplicate instead of update issue
+  _updateFileMetadataAndDbObject() async {
     // Update DB object
-    /*
-    trackBox.put(
-      widget.track.copyWith(
-        trackName: titleController.text,
-        trackArtistNames: artistController.text,
-        albumName: albumController.text,
-        trackNumber: int.tryParse(trackNumberController.text),
-        albumLength: int.tryParse(trackTotalController.text),
-        year: int.tryParse(yearController.text),
-        genre: genreController.text,
+    final track = trackBox.get(widget.track.id)!;
+    track.trackName = titleController.text;
+    track.trackArtistNames = artistController.text;
+    track.albumName = albumController.text;
+    track.trackNumber = int.tryParse(trackNumberController.text);
+    track.albumLength = int.tryParse(trackTotalController.text);
+    track.year = int.tryParse(yearController.text);
+    track.genre = genreController.text;
+    track.trackDuration = widget.track.trackDuration;
 
-        /// Todo: update picture!!!
-        //albumArt: widget.track.albumArt,
-        albumArtist: albumArtistController.text,
-      ),
-    );
-    */
+    /// Todo: update picture!!!
+    track.albumArt = widget.track.albumArt;
+    track.albumArtist = albumArtistController.text;
+
+    trackBox.put(track);
+
+    // Update the UI
+    tracklistBloc.add(TrackListLoadingEvent());
   }
 
   /// We cannot write to a file in the music library that is not owned by the app.
@@ -99,12 +104,18 @@ class _WriterViewState extends State<WriterView> {
     final File tempFile = await _saveUpdatedFileToTemporaryFile();
 
     // we overwrite the original file with temp file
-    await mediaStorePlugin.saveFile(
+    SaveInfo? saveInfo = await mediaStorePlugin.saveFile(
       relativePath: FilePath.root,
       tempFilePath: tempFile.path,
       dirType: dirType,
       dirName: DirName.music,
     );
+
+    // if success, we update the objectBox object
+    if(saveInfo?.uri != null){
+      _updateFileMetadataAndDbObject();
+    }
+
   }
 
 
