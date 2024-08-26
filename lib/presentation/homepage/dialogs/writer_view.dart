@@ -1,17 +1,22 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:orangejam/core/globals.dart';
+import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart';
 import 'package:path/path.dart' as path;
+import 'package:mime/mime.dart';
 
 import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../application/listview/tracklist/tracklist_bloc.dart';
-import '../../../injection.dart';
+import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../../generated/l10n.dart';
+import '../../../injection.dart' as di;
 import '../../../main.dart';
 
 class WriterView extends StatefulWidget {
@@ -34,18 +39,22 @@ class _WriterViewState extends State<WriterView> {
   late TextEditingController trackTotalController;
   late TextEditingController yearController;
   late TextEditingController genreController;
-  late TextEditingController pictureController;
+  File? imgFromPicker;
   late File file;
   late TrackEntity trackForDb;
   late String fileName;
-  final tracklistBloc = BlocProvider.of<TracklistBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+  final tracklistBloc = BlocProvider.of<TracklistBloc>(
+      globalScaffoldKey.scaffoldKey.currentContext!);
+  final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
+      globalScaffoldKey.scaffoldKey.currentContext!);
+  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
 
-  // mediastore
+  // mediastore var
   final DirType dirType = DirType.audio;
 
-  _updateFileMetadataAndDbObject() async {
-    // Update DB object
-    final track = trackBox.get(widget.track.id)!;
+// Update DB object
+  _updateDbObject() async {
+    final track = di.trackBox.get(widget.track.id)!;
     track.trackName = titleController.text;
     track.trackArtistNames = artistController.text;
     track.albumName = albumController.text;
@@ -54,15 +63,24 @@ class _WriterViewState extends State<WriterView> {
     track.year = int.tryParse(yearController.text);
     track.genre = genreController.text;
     track.trackDuration = widget.track.trackDuration;
-
-    /// Todo: update picture!!!
-    track.albumArt = widget.track.albumArt;
+    if (imgFromPicker != null) {
+      track.albumArt = await imgFromPicker!.readAsBytes();
+    }
     track.albumArtist = albumArtistController.text;
 
-    trackBox.put(track);
+    di.trackBox.put(track);
 
     // Update the UI
+    _updateUi(track);
+  }
+
+  _updateUi(TrackEntity track) {
+    // list
     tracklistBloc.add(TrackListLoadingEvent());
+    // player controls and track details if updated track is playback track
+    if (track.id == playerControlsBloc.state.track.id) {
+      playerControlsBloc.add(TrackMetaTagUpdated());
+    }
   }
 
   /// We cannot write to a file in the music library that is not owned by the app.
@@ -77,25 +95,42 @@ class _WriterViewState extends State<WriterView> {
     // we copy original file to temp dir:
     await file.copy(filePath);
 
+    /// TODO: picture is not being written! WHY?
     // Then we write metadata to the copy
-    await MetadataGod.writeMetadata(
-      file: filePath,
-      metadata: Metadata(
-        album: albumController.text,
-        albumArtist: albumArtistController.text,
-        artist: artistController.text,
-        genre: genreController.text,
+    if(imgFromPicker != null){
+      final mimeType = lookupMimeType(imgFromPicker!.path);
+      await MetadataGod.writeMetadata(
+        file: filePath,
+        metadata: Metadata(
+          album: albumController.text,
+          albumArtist: albumArtistController.text,
+          artist: artistController.text,
+          genre: genreController.text,
+          picture: Picture(mimeType: mimeType!, data: imgFromPicker!.readAsBytesSync()),
+          title: titleController.text,
+          trackNumber: int.tryParse(trackNumberController.text),
+          trackTotal: int.tryParse(trackTotalController.text),
+          year: int.tryParse(yearController.text),
+          fileSize: file.lengthSync(),
+        ),
+      );
+    } else {
+      await MetadataGod.writeMetadata(
+        file: filePath,
+        metadata: Metadata(
+          album: albumController.text,
+          albumArtist: albumArtistController.text,
+          artist: artistController.text,
+          genre: genreController.text,
+          title: titleController.text,
+          trackNumber: int.tryParse(trackNumberController.text),
+          trackTotal: int.tryParse(trackTotalController.text),
+          year: int.tryParse(yearController.text),
+          fileSize: file.lengthSync(),
+        ),
+      );
+    }
 
-        /// Todo: update picture
-        picture: widget.track.albumArt != null
-            ? Picture(mimeType: '', data: widget.track.albumArt!)
-            : null,
-        title: titleController.text,
-        trackNumber: int.tryParse(trackNumberController.text),
-        trackTotal: int.tryParse(trackTotalController.text),
-        year: int.tryParse(yearController.text),
-      ),
-    );
     return File(filePath);
   }
 
@@ -103,7 +138,7 @@ class _WriterViewState extends State<WriterView> {
     // we need the temp file (file name is identical with original file)
     final File tempFile = await _saveUpdatedFileToTemporaryFile();
 
-    // we overwrite the original file with temp file
+    // we overwrite the original file with temp file via mediaStore
     SaveInfo? saveInfo = await mediaStorePlugin.saveFile(
       relativePath: FilePath.root,
       tempFilePath: tempFile.path,
@@ -112,12 +147,18 @@ class _WriterViewState extends State<WriterView> {
     );
 
     // if success, we update the objectBox object
-    if(saveInfo?.uri != null){
-      _updateFileMetadataAndDbObject();
+    if (saveInfo?.uri != null) {
+      _updateDbObject();
+      ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+          .showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(
+              "The tags of the $fileName file have been successfully updated."),
+        ),
+      );
     }
-
   }
-
 
   @override
   void initState() {
@@ -134,8 +175,6 @@ class _WriterViewState extends State<WriterView> {
     trackTotalController =
         TextEditingController(text: widget.track.albumLength.toString());
     yearController = TextEditingController(text: widget.track.year.toString());
-    pictureController =
-        TextEditingController(text: widget.track.albumArt.toString());
     file = File(widget.track.filePath);
     fileName = basename(file.path);
   }
@@ -150,7 +189,6 @@ class _WriterViewState extends State<WriterView> {
     trackTotalController.dispose();
     yearController.dispose();
     genreController.dispose();
-    pictureController.dispose();
     super.dispose();
   }
 
@@ -160,70 +198,158 @@ class _WriterViewState extends State<WriterView> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: AlertDialog(
+      child: CustomDialog(
         scrollable: true,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    image: imgFromPicker != null
+                        ? DecorationImage(
+                            image: MemoryImage(imgFromPicker!.readAsBytesSync()),
+                            fit: BoxFit.cover,
+                          )
+                        : widget.track.albumArt != null
+                            ? DecorationImage(
+                                image: MemoryImage(widget.track.albumArt!),
+                                fit: BoxFit.cover,
+                              )
+                            : const DecorationImage(
+                                image:
+                                    AssetImage("assets/album-placeholder.png"),
+                                fit: BoxFit.cover,
+                              ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SimpleButton(
+                      themeData: themeData,
+                      btnText: "Select a picture",
+                      function: () async {
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles(
+                          type: FileType.image,
+                        );
+
+                        if (result != null) {
+                          imgFromPicker = File(result.files.single.path!);
+                          setState(() {});
+                        }
+                      },
+                    ),
+                    /*
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        // We remove the inner padding with the next 3 lines
+                        minimumSize: const Size(54, 30),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+                        textStyle: themeData.textTheme.bodyMedium,
+                      ),
+                      child: const Text("Device"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size(40, 30),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        textStyle: themeData.textTheme.bodyMedium,
+                      ),
+                      child: const Text("Web"),
+                      onPressed: () {},
+                    ),
+                    */
+                  ],
+                ),
+                const Spacer(),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            MyTextInput(
+                txtController: titleController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Title"),
+            MyTextInput(
+                txtController: artistController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Artist"),
+            MyTextInput(
+                txtController: albumController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Album"),
+            MyTextInput(
+                txtController: albumArtistController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Album artist"),
+            MyTextInput(
+                txtController: trackNumberController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Track number"),
+            MyTextInput(
+                txtController: trackTotalController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Tracks total"),
+            MyTextInput(
+                txtController: yearController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Year"),
+            MyTextInput(
+                txtController: genreController,
+                themeData: themeData,
+                autoFocus: false,
+                labelText: "Genre"),
+          ],
+        ),
         actions: [
-          OutlinedButton(
-            onPressed: () {
+          SimpleButton(
+            themeData: themeData,
+            btnText: "Cancel",
+            function: () {
               Navigator.of(context).pop();
             },
-            child: const Text("Cancel"),
           ),
-          ElevatedButton(
-            onPressed: () {
+          SimpleButton(
+            themeData: themeData,
+            btnText: "Save",
+            function: () {
               _saveFileWithMediaStore();
               Navigator.of(context).pop();
             },
-            child: const Text("Save"),
           ),
         ],
-        title: const Text("Write Metadata"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: "title"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: artistController,
-              decoration: const InputDecoration(labelText: "artist"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: albumController,
-              decoration: const InputDecoration(labelText: "album"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: albumArtistController,
-              decoration: const InputDecoration(labelText: "albumArtist"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: trackNumberController,
-              decoration: const InputDecoration(labelText: "trackNumber"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: trackTotalController,
-              decoration: const InputDecoration(labelText: "trackTotal"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: yearController,
-              decoration: const InputDecoration(labelText: "year"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              controller: genreController,
-              decoration: const InputDecoration(labelText: "genre"),
-            ),
-          ],
+        showDropdown: false,
+        titleWidget: DescriptionText(
+          themeData: themeData,
+          description: "Edit tags",
         ),
+        themeData: themeData,
       ),
     );
   }
-
 }

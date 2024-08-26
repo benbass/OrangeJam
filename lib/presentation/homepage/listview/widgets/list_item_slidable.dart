@@ -47,14 +47,17 @@ class ListItemSlidable extends StatelessWidget {
           .add(TrackItemPressed(track: track));
     }
 
-    final playlistsBloc =
-        BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
 
     void snackBarFileNotExist() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
-          content: Text(S.of(context).listItemSlidable_upsTheFileTrackfilepathWasNotFound(track.filePath)),
+          content: Text(S
+              .of(context)
+              .listItemSlidable_upsTheFileTrackfilepathWasNotFound(
+                  track.filePath)),
         ),
       );
     }
@@ -75,6 +78,7 @@ class ListItemSlidable extends StatelessWidget {
             label: 'Playlist',
             padding: EdgeInsets.zero,
           ),
+
           /// Add track to queue
           SlidableAction(
             onPressed: (_) {
@@ -83,15 +87,19 @@ class ListItemSlidable extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     duration: const Duration(seconds: 2),
-                    content: Text(
-                        S.of(context).listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue(track.trackName!)),
+                    content: Text(S
+                        .of(context)
+                        .listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue(
+                            track.trackName!)),
                   ),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     duration: const Duration(seconds: 2),
-                    content: Text(S.of(context).listItemSlidable_theQueueAlreadyContainsThisTrack),
+                    content: Text(S
+                        .of(context)
+                        .listItemSlidable_theQueueAlreadyContainsThisTrack),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                 );
@@ -105,36 +113,55 @@ class ListItemSlidable extends StatelessWidget {
           ),
         ],
       ),
-      endActionPane: playlistsBloc.state.playlistId > -2
-          ? ActionPane(
-              motion: const DrawerMotion(),
-              children: [
-                /// Remove track from playlist (not availabe on "Files" view (when playlistId == -2)
-                SlidableAction(
-                  onPressed: (_) {
-                    if (playlistsBloc.state.playlistId > -1) {
-                      playlistsBloc
-                          .state.playlists[playlistsBloc.state.playlistId][1]
-                          .remove(track.filePath);
-                      playlistHandler.deleteLineInFile(
-                          playlistsBloc.state
-                              .playlists[playlistsBloc.state.playlistId][0],
-                          index);
-                      playlistsBloc.add(
-                          PlaylistChanged(id: playlistsBloc.state.playlistId));
-                    } else {
-                      playlistsBloc.add(TrackRemoveFromQueue(track: track));
-                      /// TrackRemoveFromQueue calls PlaylistChanged with id -1
-                    }
-                  },
-                  backgroundColor: const Color(0xFFFF8100),
-                  foregroundColor: const Color(0xFF202531),
-                  icon: Icons.delete,
-                  label: S.of(context).listItemSlidable_remove,
+      endActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        children: [
+          SlidableAction(
+            /// Edit tags
+            onPressed: (_) {
+              showDialog(
+                builder: (context) => WriterView(
+                  track: track,
                 ),
-              ],
-            )
-          : null,
+                context: context,
+              );
+            },
+            flex: 20,
+            backgroundColor: const Color(0xFFFF8100),
+            foregroundColor: const Color(0xFF202531),
+            icon: Icons.edit,
+            label: 'Tags',
+            padding: EdgeInsets.zero,
+          ),
+
+          /// Remove track from playlist (not available on "Files" view (when playlistId == -2)
+          if (playlistsBloc.state.playlistId > -2)
+            SlidableAction(
+              onPressed: (_) {
+                if (playlistsBloc.state.playlistId > -1) {
+                  playlistsBloc
+                      .state.playlists[playlistsBloc.state.playlistId][1]
+                      .remove(track.filePath);
+                  playlistHandler.deleteLineInFile(
+                      playlistsBloc
+                          .state.playlists[playlistsBloc.state.playlistId][0],
+                      index);
+                  playlistsBloc
+                      .add(PlaylistChanged(id: playlistsBloc.state.playlistId));
+                } else {
+                  playlistsBloc.add(TrackRemoveFromQueue(track: track));
+
+                  /// TrackRemoveFromQueue calls PlaylistChanged with id -1
+                }
+              },
+              flex: 20,
+              backgroundColor: const Color(0xFF202531),
+              foregroundColor: const Color(0xFFFF8100),
+              icon: Icons.delete,
+              label: S.of(context).listItemSlidable_remove,
+            ),
+        ],
+      ),
       child: Card(
         key: ValueKey(track),
         color: backgroundColor,
@@ -152,19 +179,11 @@ class ListItemSlidable extends StatelessWidget {
               if (await File(track.filePath).exists()) {
                 playTrack(track);
                 // we delay to ensure that trackPositionCubit.state != null
-                Future.delayed(const Duration(milliseconds: 200)).whenComplete(() => startPositionMonitoring());
-
+                Future.delayed(const Duration(milliseconds: 200))
+                    .whenComplete(() => startPositionMonitoring());
               } else {
                 snackBarFileNotExist();
               }
-            },
-            onDoubleTap: () {
-              showDialog(
-                builder: (context) => WriterView(
-                  track: track,
-                ),
-                context: context,
-              );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -178,7 +197,8 @@ class ListItemSlidable extends StatelessWidget {
                 const SizedBox(
                   width: 8.0,
                 ),
-                ItemTexts(track: track, themeData: themeData, textColor: textColor),
+                ItemTexts(
+                    track: track, themeData: themeData, textColor: textColor),
                 SizedBox(
                   height: 66,
                   child: ItemTrailing(
@@ -197,5 +217,3 @@ class ListItemSlidable extends StatelessWidget {
     );
   }
 }
-
-

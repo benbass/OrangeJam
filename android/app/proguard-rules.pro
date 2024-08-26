@@ -1,5 +1,4 @@
-### THIS FILE IS NEEDED BY PACKAGE media_store_plus only!!!
-# can be deleted if package is not needed aynmore
+### THIS FILE IS NEEDED BY PACKAGE media_store_plus!!!
 
 ## Gson rules
 # Gson uses generic type information stored in a class file when working with fields. Proguard

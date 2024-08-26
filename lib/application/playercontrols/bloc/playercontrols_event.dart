@@ -33,4 +33,6 @@ class ShowHideControlsButtonPressed extends PlayerControlsEvent {
   ShowHideControlsButtonPressed({required this.height});
 }
 
+class TrackMetaTagUpdated extends PlayerControlsEvent{}
+
 

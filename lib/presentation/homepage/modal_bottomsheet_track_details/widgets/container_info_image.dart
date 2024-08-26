@@ -32,10 +32,6 @@ class ContainerInfoImage extends StatelessWidget {
           ),
         ],
       ),
-
-
-
-
     );
   }
 }

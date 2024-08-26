@@ -92,6 +92,12 @@ class PlayerControlsBloc
     // not used
     on<ContinuousButtonPressed>((event, emit) {});
 
+    // Update track info after metatag update: this event will be called only if updated track is currently playing track
+    on<TrackMetaTagUpdated>((event, emit) {
+      TrackEntity? track = trackBox.get(state.track.id);
+      emit(state.copyWith(track: track));
+    });
+
     // This event is triggered by the button on the right side of the bottomBar
     on<ShowHideControlsButtonPressed>((event, emit) {
       emit(state.copyWith(height: event.height));
