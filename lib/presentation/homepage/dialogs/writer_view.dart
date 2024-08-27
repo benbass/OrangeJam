@@ -1,22 +1,23 @@
 import 'dart:io';
 
+import 'package:audiotags/audiotags.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:metadata_god/metadata_god.dart';
 import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart';
 import 'package:path/path.dart' as path;
-import 'package:mime/mime.dart';
 
 import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../../core/metatags/metatags_handler.dart';
 import '../../../generated/l10n.dart';
 import '../../../injection.dart' as di;
+import '../../../injection.dart';
 import '../../../main.dart';
 
 class WriterView extends StatefulWidget {
@@ -91,45 +92,39 @@ class _WriterViewState extends State<WriterView> {
     final dir = await path_provider.getTemporaryDirectory();
     final filePath = path.join(dir.path, fileName);
 
-    // MetadataGod.writeMetadata() needs file to exist before it can write metadata to it so
+    // file must exist before we can write metadata to it so
     // we copy original file to temp dir:
     await file.copy(filePath);
 
-    /// TODO: picture is not being written! WHY?
-    // Then we write metadata to the copy
-    if(imgFromPicker != null){
-      final mimeType = lookupMimeType(imgFromPicker!.path);
-      await MetadataGod.writeMetadata(
-        file: filePath,
-        metadata: Metadata(
-          album: albumController.text,
-          albumArtist: albumArtistController.text,
-          artist: artistController.text,
-          genre: genreController.text,
-          picture: Picture(mimeType: mimeType!, data: imgFromPicker!.readAsBytesSync()),
-          title: titleController.text,
-          trackNumber: int.tryParse(trackNumberController.text),
-          trackTotal: int.tryParse(trackTotalController.text),
-          year: int.tryParse(yearController.text),
-          fileSize: file.lengthSync(),
-        ),
-      );
-    } else {
-      await MetadataGod.writeMetadata(
-        file: filePath,
-        metadata: Metadata(
-          album: albumController.text,
-          albumArtist: albumArtistController.text,
-          artist: artistController.text,
-          genre: genreController.text,
-          title: titleController.text,
-          trackNumber: int.tryParse(trackNumberController.text),
-          trackTotal: int.tryParse(trackTotalController.text),
-          year: int.tryParse(yearController.text),
-          fileSize: file.lengthSync(),
-        ),
-      );
-    }
+    // we create metaTag from form
+    Tag metaData = Tag(
+      title: titleController.text,
+      trackArtist: artistController.text,
+      album: albumController.text,
+      albumArtist: albumArtistController.text,
+      genre: genreController.text,
+      year: int.tryParse(yearController.text),
+      trackNumber: int.tryParse(trackNumberController.text),
+      trackTotal: int.tryParse(trackTotalController.text),
+      pictures: imgFromPicker != null // User picked new image
+          ? [
+              Picture(
+                  bytes: imgFromPicker!.readAsBytesSync(),
+                  mimeType: null,
+                  pictureType: PictureType.other)
+            ]
+          : widget.track.albumArt != null // User didn't pick new image: we keep the existing one, if any
+              ? [
+                  Picture(
+                      bytes: widget.track.albumArt!,
+                      mimeType: null,
+                      pictureType: PictureType.other)
+                ]
+              : [],
+    );
+
+    // we write metaTag to temp file
+    await sl<MetaTagsHandler>().writeTags(filePath, metaData);
 
     return File(filePath);
   }
@@ -165,16 +160,16 @@ class _WriterViewState extends State<WriterView> {
     super.initState();
     titleController = TextEditingController(text: widget.track.trackName);
     artistController =
-        TextEditingController(text: widget.track.trackArtistNames);
-    albumController = TextEditingController(text: widget.track.albumName);
+        TextEditingController(text: widget.track.trackArtistNames?.toString());
+    albumController = TextEditingController(text: widget.track.albumName?.toString());
     albumArtistController =
-        TextEditingController(text: widget.track.albumArtist);
-    genreController = TextEditingController(text: widget.track.genre);
+        TextEditingController(text: widget.track.albumArtist?.toString());
+    genreController = TextEditingController(text: widget.track.genre?.toString());
     trackNumberController =
-        TextEditingController(text: widget.track.trackNumber.toString());
+        TextEditingController(text: widget.track.trackNumber?.toString());
     trackTotalController =
-        TextEditingController(text: widget.track.albumLength.toString());
-    yearController = TextEditingController(text: widget.track.year.toString());
+        TextEditingController(text: widget.track.albumLength?.toString());
+    yearController = TextEditingController(text: widget.track.year?.toString());
     file = File(widget.track.filePath);
     fileName = basename(file.path);
   }
@@ -213,7 +208,8 @@ class _WriterViewState extends State<WriterView> {
                   decoration: BoxDecoration(
                     image: imgFromPicker != null
                         ? DecorationImage(
-                            image: MemoryImage(imgFromPicker!.readAsBytesSync()),
+                            image:
+                                MemoryImage(imgFromPicker!.readAsBytesSync()),
                             fit: BoxFit.cover,
                           )
                         : widget.track.albumArt != null

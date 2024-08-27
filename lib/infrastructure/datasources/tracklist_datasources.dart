@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:diacritic/diacritic.dart';
+import 'package:orangejam/core/metatags/metatags_handler.dart';
 import 'package:orangejam/domain/failures/tracklist_failures.dart';
-import 'package:orangejam/infrastructure/models/track_model.dart';
-import 'package:metadata_god/metadata_god.dart';
 import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
 import '../../injection.dart';
 
@@ -56,7 +55,8 @@ class TrackListDatasourceImpl implements TrackListDatasource {
   Future<List<TrackEntity>> _handleFiles(List audioFiles) async {
     List<TrackEntity> tracksFromFiles = [];
     for (File file in audioFiles) {
-      TrackEntity track = await Future.value(_createTrack(file));
+      // creates a track entity with metadata from file
+      TrackEntity track = await Future.value(sl<MetaTagsHandler>().readTags(file));
       tracksFromFiles.add(track);
     }
     // let initial list be sorted by track names asc
@@ -65,14 +65,4 @@ class TrackListDatasourceImpl implements TrackListDatasource {
             removeDiacritics(b.trackName ?? b.trackName!.toLowerCase())));
     return tracksFromFiles;
   }
-
-  // creates a track entity with metadata from file
-  Future<TrackEntity> _createTrack(File file) => MetadataGod.readMetadata(
-        file: file.path,
-      ).then(
-        (value) async =>
-            // value throws a parseErrorData from dependency package FlutterRustBridgeBase for some files: some metadata may be corrupt or package is buggy?
-            await Future.sync(() => TrackModel.metaData(value, file))
-                .then((value) => value),
-      );
 }

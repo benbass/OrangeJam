@@ -19,7 +19,7 @@ class TrackModel extends TrackEntity {
     required super.albumArtist,
   });
 
-  /// creates a track with metadata: used in tracklist_datasources.dart
+  /// creates a track with metadata: used in metaTagsHandler
   factory TrackModel.metaData(Metadata metadata, File file) {
     // track name: from metadata. If this field is null, we use the file name.
     return TrackModel(

@@ -9,6 +9,7 @@ import 'package:orangejam/domain/usecases/tracklist_usecases.dart';
 import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
 import 'package:orangejam/infrastructure/datasources/playlists_datasource.dart';
 import 'package:orangejam/infrastructure/datasources/tracklist_datasources.dart';
+import 'package:orangejam/core/metatags/metatags_handler.dart';
 import 'package:orangejam/infrastructure/repositories/playlists_repository_impl.dart';
 import 'package:orangejam/infrastructure/repositories/tracklist_repository_impl.dart';
 import 'package:orangejam/services/audio_session.dart';
@@ -29,25 +30,34 @@ Future<void> init() async {
   sl.registerLazySingleton(() => TracklistUsecases(tracklistRepository: sl()));
   sl.registerLazySingleton(() => PlaylistsUsecases(playlistsRepository: sl()));
   // Repos
-  sl.registerLazySingleton<TracklistRepository>(() => TracklistRepositoryImpl(tracklistDataSources: sl()));
-  sl.registerLazySingleton<PlaylistsRepository>(() => PlaylistsRepositoryImpl(playlistsDatasource: sl()));
+  sl.registerLazySingleton<TracklistRepository>(
+      () => TracklistRepositoryImpl(tracklistDataSources: sl()));
+  sl.registerLazySingleton<PlaylistsRepository>(
+      () => PlaylistsRepositoryImpl(playlistsDatasource: sl()));
   // Datasources
-  sl.registerLazySingleton<TrackListDatasource>(() => TrackListDatasourceImpl(audioFilesDataSources: sl()));
+  sl.registerLazySingleton<TrackListDatasource>(
+      () => TrackListDatasourceImpl(audioFilesDataSources: sl()));
 
   /// Provides access to the ObjectBox Store throughout the app.
   ObjectBox objectbox = await ObjectBox.create();
   trackBox = objectbox.store.box<TrackEntity>();
   sl.registerSingleton(() => trackBox);
   // Intern
-  sl.registerLazySingleton<AudioFilesDataSources>(() => AudioFilesDataSourcesImpl());
-  sl.registerLazySingleton<Playlistsdatasource>(() => PlaylistsDatasourceImpl());
+  sl.registerLazySingleton<AudioFilesDataSources>(
+      () => AudioFilesDataSourcesImpl());
+  sl.registerLazySingleton<Playlistsdatasource>(
+      () => PlaylistsDatasourceImpl());
+
+  final metaTagsHandler = MetaTagsHandler();
+  sl.registerLazySingleton<MetaTagsHandler>(() => metaTagsHandler);
+
   final audioHandler = MyAudioHandler();
   sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+
   final audioSession = MyAudioSession();
   sl.registerLazySingleton<MyAudioSession>(() => audioSession);
   // state management
   final playerControls = PlayerControlsBloc();
   sl.registerLazySingleton(() => playerControls);
   //sl.registerFactory(() => PlayerControlsBloc());
-
 }
