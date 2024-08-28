@@ -806,6 +806,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit tags`
+  String get edit_tags_editTags {
+    return Intl.message(
+      'Edit tags',
+      name: 'edit_tags_editTags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select\npicture`
+  String get edit_tags_selectPicture {
+    return Intl.message(
+      'Select\npicture',
+      name: 'edit_tags_selectPicture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get edit_tags_trackTitle {
+    return Intl.message(
+      'Title',
+      name: 'edit_tags_trackTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tracks total`
+  String get edit_tags_tracksTotal {
+    return Intl.message(
+      'Tracks total',
+      name: 'edit_tags_tracksTotal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The tags of {fileName} have been successfully updated.`
+  String edit_tags_snackBarUpdateSuccess(Object fileName) {
+    return Intl.message(
+      'The tags of $fileName have been successfully updated.',
+      name: 'edit_tags_snackBarUpdateSuccess',
+      desc: '',
+      args: [fileName],
+    );
+  }
+
+  /// `An error occurred when writing to the file.\nCheck the file and try again.`
+  String get edit_tags_snackBarUpdateError {
+    return Intl.message(
+      'An error occurred when writing to the file.\nCheck the file and try again.',
+      name: 'edit_tags_snackBarUpdateError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

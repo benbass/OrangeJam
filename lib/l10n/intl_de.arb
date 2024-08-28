@@ -73,5 +73,11 @@
   "drawer_language": "Sprache",
   "drawer_backup": "Sicherung",
   "drawer_restore": "Wiederherstellung",
-  "drawer_scanDevice": "Gerät durchsuchen"
+  "drawer_scanDevice": "Gerät durchsuchen",
+  "edit_tags_editTags": "Tags bearbeiten",
+  "edit_tags_selectPicture": "Bild\nauswählen",
+  "edit_tags_trackTitle": "Titel",
+  "edit_tags_tracksTotal": "Titel gesamt",
+  "edit_tags_snackBarUpdateSuccess": "Die Tags von {fileName} wurden aktualisiert.",
+  "edit_tags_snackBarUpdateError": "Beim Schreiben in die Datei ist ein Fehler aufgetreten.\nÜberprüfe die Datei und versuche es erneut."
 }

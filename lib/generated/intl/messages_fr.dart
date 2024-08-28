@@ -23,32 +23,34 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(appName) =>
       "Choisis le fichier ZIP qui contient le backup dans le dossier \'${appName} Playlists\' dans ton Google Drive.";
 
-  static String m1(trackName) =>
+  static String m1(fileName) => "Les tags de ${fileName} ont été actualisés.";
+
+  static String m2(trackName) =>
       "Le titre \'${trackName}\' a été ajouté à la queue.";
 
-  static String m2(filePath) =>
+  static String m3(filePath) =>
       "Ups, le fichier \'${filePath}\' n\'existe pas!";
 
-  static String m3(name) => "La playlist \'${name}\' a été supprimée.";
-
-  static String m4(name) =>
-      "La playlist \'${name}\' va être définitivement supprimée";
+  static String m4(name) => "La playlist \'${name}\' a été supprimée.";
 
   static String m5(name) =>
+      "La playlist \'${name}\' va être définitivement supprimée";
+
+  static String m6(name) =>
       "La playlist \'${name}\' existe déjà.\nChoisis un autre nom.";
 
-  static String m6(name) => "La playlist \'${name}\' a été créée.";
-
-  static String m7(selectedVal) =>
-      "La playlist \'${selectedVal}\' contient déjà ce titre.";
+  static String m7(name) => "La playlist \'${name}\' a été créée.";
 
   static String m8(selectedVal) =>
+      "La playlist \'${selectedVal}\' contient déjà ce titre.";
+
+  static String m9(selectedVal) =>
       "Le titre a été ajouté à la playlist \'${selectedVal}\'.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "album": MessageLookupByLibrary.simpleMessage("Album: "),
-        "albumArtist": MessageLookupByLibrary.simpleMessage("Artist album: "),
+        "albumArtist": MessageLookupByLibrary.simpleMessage("Artiste album: "),
         "artist": MessageLookupByLibrary.simpleMessage("Artiste: "),
         "backupRestore_backupFileNotCreated":
             MessageLookupByLibrary.simpleMessage(
@@ -102,6 +104,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "drawer_scanDevice":
             MessageLookupByLibrary.simpleMessage("Recherche de fichiers"),
         "duration": MessageLookupByLibrary.simpleMessage("Durée: "),
+        "edit_tags_editTags":
+            MessageLookupByLibrary.simpleMessage("Éditer les tags"),
+        "edit_tags_selectPicture":
+            MessageLookupByLibrary.simpleMessage("Choisir\nimage"),
+        "edit_tags_snackBarUpdateError": MessageLookupByLibrary.simpleMessage(
+            "Une erreur s\'est produite lors de l\'écriture dans le fichier.\nVérifie le fichier et essaie à nouveau."),
+        "edit_tags_snackBarUpdateSuccess": m1,
+        "edit_tags_trackTitle": MessageLookupByLibrary.simpleMessage("Titre"),
+        "edit_tags_tracksTotal":
+            MessageLookupByLibrary.simpleMessage("Total de titres"),
         "extraBar_clear": MessageLookupByLibrary.simpleMessage("Vider"),
         "extraBar_saveTheQueueAsAPlaylist":
             MessageLookupByLibrary.simpleMessage(
@@ -131,14 +143,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "listItemSlidable_theQueueAlreadyContainsThisTrack":
             MessageLookupByLibrary.simpleMessage(
                 "la queue contient déjà ce titre."),
-        "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m1,
-        "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m2,
+        "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m2,
+        "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m3,
         "loopButton_LoopPlaybackIsOff":
             MessageLookupByLibrary.simpleMessage("Lecture en boucle activée"),
         "loopButton_LoopPlaybackIsOn": MessageLookupByLibrary.simpleMessage(
             "Lecture en boucle désactivée"),
-        "playlistButton_SnackbarNameWasDeleted": m3,
-        "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m4,
+        "playlistButton_SnackbarNameWasDeleted": m4,
+        "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m5,
         "playlistHandler_addThisTrackToPlaylist":
             MessageLookupByLibrary.simpleMessage(
                 "Ajoute ce titre à la playlist: "),
@@ -150,10 +162,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "playlistHandler_pickAPlaylist":
             MessageLookupByLibrary.simpleMessage("Choisis une playlist!"),
         "playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName":
-            m5,
-        "playlistHandler_thePlaylistNameWasCreated": m6,
-        "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": m7,
-        "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": m8,
+            m6,
+        "playlistHandler_thePlaylistNameWasCreated": m7,
+        "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": m8,
+        "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": m9,
         "playlistHandler_youDontHaveAnyPlaylistYet":
             MessageLookupByLibrary.simpleMessage(
                 "Tu n\'as pas encore de playlist!"),

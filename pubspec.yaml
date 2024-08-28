@@ -70,13 +70,13 @@ dependencies:
   image: ^4.2.0
   objectbox: ^4.0.1
   objectbox_flutter_libs: any
-  intl: ^0.19.0
   flutter_translate: ^4.1.0
   flutter_native_splash: ^2.4.0
   bloc_test: ^9.1.7
   media_store_plus: ^0.1.2
   mime: ^1.0.5
   audiotags: ^1.4.1
+  intl: ^0.19.0
   #flutter_local_notifications: ^17.1.1
   #firebase_core: ^2.30.0
   #googleapis_auth: ^1.6.0

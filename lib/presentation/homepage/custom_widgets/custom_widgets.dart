@@ -86,6 +86,7 @@ class SimpleButton extends StatelessWidget {
       style: themeData.textButtonTheme.style,
       child: Text(
         btnText,
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -132,7 +133,7 @@ class MyTextInput extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white54),
           ),
         ),
-        style: themeData.textTheme.bodyLarge!,
+        style: themeData.textTheme.bodyMedium!.copyWith(fontSize: 14),
       ),
     );
   }

@@ -23,24 +23,27 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(appName) =>
       "Pick the ZIP file that contains your backup in the \'${appName} Playlists\' folder in your Google Drive.";
 
-  static String m1(trackName) =>
+  static String m1(fileName) =>
+      "The tags of ${fileName} have been successfully updated.";
+
+  static String m2(trackName) =>
       "The track \'${trackName}\' is now added to the queue.";
 
-  static String m2(filePath) => "Ups, the file \'${filePath}\' was not found!";
+  static String m3(filePath) => "Ups, the file \'${filePath}\' was not found!";
 
-  static String m3(name) => "The playlist \'${name}\' was deleted.";
+  static String m4(name) => "The playlist \'${name}\' was deleted.";
 
-  static String m4(name) => "This will definitely delete the playlist: ${name}";
+  static String m5(name) => "This will definitely delete the playlist: ${name}";
 
-  static String m5(name) =>
+  static String m6(name) =>
       "The playlist \'${name}\' already exists.\nPlease choose another name.";
 
-  static String m6(name) => "The playlist \'${name}\' was created.";
-
-  static String m7(selectedVal) =>
-      "The playlist \'${selectedVal}\' already contains this track.";
+  static String m7(name) => "The playlist \'${name}\' was created.";
 
   static String m8(selectedVal) =>
+      "The playlist \'${selectedVal}\' already contains this track.";
+
+  static String m9(selectedVal) =>
       "The track was added to the playlist \'${selectedVal}\'.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -99,6 +102,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "drawer_scanDevice":
             MessageLookupByLibrary.simpleMessage("Scan device"),
         "duration": MessageLookupByLibrary.simpleMessage("Duration: "),
+        "edit_tags_editTags": MessageLookupByLibrary.simpleMessage("Edit tags"),
+        "edit_tags_selectPicture":
+            MessageLookupByLibrary.simpleMessage("Select\npicture"),
+        "edit_tags_snackBarUpdateError": MessageLookupByLibrary.simpleMessage(
+            "An error occurred when writing to the file.\nCheck the file and try again."),
+        "edit_tags_snackBarUpdateSuccess": m1,
+        "edit_tags_trackTitle": MessageLookupByLibrary.simpleMessage("Title"),
+        "edit_tags_tracksTotal":
+            MessageLookupByLibrary.simpleMessage("Tracks total"),
         "extraBar_clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "extraBar_saveTheQueueAsAPlaylist":
             MessageLookupByLibrary.simpleMessage(
@@ -128,14 +140,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "listItemSlidable_theQueueAlreadyContainsThisTrack":
             MessageLookupByLibrary.simpleMessage(
                 "The queue already contains this track."),
-        "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m1,
-        "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m2,
+        "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m2,
+        "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m3,
         "loopButton_LoopPlaybackIsOff":
             MessageLookupByLibrary.simpleMessage("Loop playback is off"),
         "loopButton_LoopPlaybackIsOn":
             MessageLookupByLibrary.simpleMessage("Loop playback is on"),
-        "playlistButton_SnackbarNameWasDeleted": m3,
-        "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m4,
+        "playlistButton_SnackbarNameWasDeleted": m4,
+        "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m5,
         "playlistHandler_addThisTrackToPlaylist":
             MessageLookupByLibrary.simpleMessage("Add this track to playlist:"),
         "playlistHandler_enterANameForYourNewPlaylist":
@@ -145,10 +157,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "playlistHandler_pickAPlaylist":
             MessageLookupByLibrary.simpleMessage("Pick a playlist!"),
         "playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName":
-            m5,
-        "playlistHandler_thePlaylistNameWasCreated": m6,
-        "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": m7,
-        "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": m8,
+            m6,
+        "playlistHandler_thePlaylistNameWasCreated": m7,
+        "playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack": m8,
+        "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": m9,
         "playlistHandler_youDontHaveAnyPlaylistYet":
             MessageLookupByLibrary.simpleMessage(
                 "You don\'t have any playlist yet!"),

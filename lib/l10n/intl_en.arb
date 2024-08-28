@@ -73,5 +73,11 @@
   "drawer_language": "Language",
   "drawer_backup": "Backup",
   "drawer_restore": "Restore",
-  "drawer_scanDevice": "Scan device"
+  "drawer_scanDevice": "Scan device",
+  "edit_tags_editTags": "Edit tags",
+  "edit_tags_selectPicture": "Select\npicture",
+  "edit_tags_trackTitle": "Title",
+  "edit_tags_tracksTotal": "Tracks total",
+  "edit_tags_snackBarUpdateSuccess": "The tags of {fileName} have been successfully updated.",
+  "edit_tags_snackBarUpdateError": "An error occurred when writing to the file.\nCheck the file and try again."
 }

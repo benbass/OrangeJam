@@ -3,22 +3,17 @@ import 'dart:io';
 import 'package:audiotags/audiotags.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_store_plus/media_store_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:orangejam/core/globals.dart';
+import 'package:orangejam/core/metatags/overwrite_file.dart';
 import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart';
-import 'package:path/path.dart' as path;
 
 import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../../core/metatags/metatags_handler.dart';
 import '../../../generated/l10n.dart';
 import '../../../injection.dart' as di;
-import '../../../injection.dart';
-import '../../../main.dart';
 
 class WriterView extends StatefulWidget {
   final TrackEntity track;
@@ -42,7 +37,6 @@ class _WriterViewState extends State<WriterView> {
   late TextEditingController genreController;
   File? imgFromPicker;
   late File file;
-  late TrackEntity trackForDb;
   late String fileName;
   final tracklistBloc = BlocProvider.of<TracklistBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
@@ -50,12 +44,11 @@ class _WriterViewState extends State<WriterView> {
       globalScaffoldKey.scaffoldKey.currentContext!);
   final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
 
-  // mediastore var
-  final DirType dirType = DirType.audio;
-
 // Update DB object
   _updateDbObject() async {
+    // Get the obj
     final track = di.trackBox.get(widget.track.id)!;
+    // Modify obj properties
     track.trackName = titleController.text;
     track.trackArtistNames = artistController.text;
     track.albumName = albumController.text;
@@ -69,6 +62,7 @@ class _WriterViewState extends State<WriterView> {
     }
     track.albumArtist = albumArtistController.text;
 
+    // Update the obj
     di.trackBox.put(track);
 
     // Update the UI
@@ -81,77 +75,6 @@ class _WriterViewState extends State<WriterView> {
     // player controls and track details if updated track is playback track
     if (track.id == playerControlsBloc.state.track.id) {
       playerControlsBloc.add(TrackMetaTagUpdated());
-    }
-  }
-
-  /// We cannot write to a file in the music library that is not owned by the app.
-  /// That's why we need first to create a file with updated metadata in the temp dir.
-  /// Then we will use the MediaStore Plus plugin to overwrite the original file with this file
-  Future<File> _saveUpdatedFileToTemporaryFile() async {
-    // We create a new file and save it to temp dir:
-    final dir = await path_provider.getTemporaryDirectory();
-    final filePath = path.join(dir.path, fileName);
-
-    // file must exist before we can write metadata to it so
-    // we copy original file to temp dir:
-    await file.copy(filePath);
-
-    // we create metaTag from form
-    Tag metaData = Tag(
-      title: titleController.text,
-      trackArtist: artistController.text,
-      album: albumController.text,
-      albumArtist: albumArtistController.text,
-      genre: genreController.text,
-      year: int.tryParse(yearController.text),
-      trackNumber: int.tryParse(trackNumberController.text),
-      trackTotal: int.tryParse(trackTotalController.text),
-      pictures: imgFromPicker != null // User picked new image
-          ? [
-              Picture(
-                  bytes: imgFromPicker!.readAsBytesSync(),
-                  mimeType: null,
-                  pictureType: PictureType.other)
-            ]
-          : widget.track.albumArt != null // User didn't pick new image: we keep the existing one, if any
-              ? [
-                  Picture(
-                      bytes: widget.track.albumArt!,
-                      mimeType: null,
-                      pictureType: PictureType.other)
-                ]
-              : [],
-    );
-
-    // we write metaTag to temp file
-    await sl<MetaTagsHandler>().writeTags(filePath, metaData);
-
-    return File(filePath);
-  }
-
-  _saveFileWithMediaStore() async {
-    // we need the temp file (file name is identical with original file)
-    final File tempFile = await _saveUpdatedFileToTemporaryFile();
-
-    // we overwrite the original file with temp file via mediaStore
-    SaveInfo? saveInfo = await mediaStorePlugin.saveFile(
-      relativePath: FilePath.root,
-      tempFilePath: tempFile.path,
-      dirType: dirType,
-      dirName: DirName.music,
-    );
-
-    // if success, we update the objectBox object
-    if (saveInfo?.uri != null) {
-      _updateDbObject();
-      ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
-          .showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          content: Text(
-              "The tags of the $fileName file have been successfully updated."),
-        ),
-      );
     }
   }
 
@@ -199,6 +122,7 @@ class _WriterViewState extends State<WriterView> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 12,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -232,7 +156,7 @@ class _WriterViewState extends State<WriterView> {
                   children: [
                     SimpleButton(
                       themeData: themeData,
-                      btnText: "Select a picture",
+                      btnText: S.of(context).edit_tags_selectPicture,
                       function: () async {
                         FilePickerResult? result =
                             await FilePicker.platform.pickFiles(
@@ -245,33 +169,6 @@ class _WriterViewState extends State<WriterView> {
                         }
                       },
                     ),
-                    /*
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        // We remove the inner padding with the next 3 lines
-                        minimumSize: const Size(54, 30),
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
-                        textStyle: themeData.textTheme.bodyMedium,
-                      ),
-                      child: const Text("Device"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(40, 30),
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        textStyle: themeData.textTheme.bodyMedium,
-                      ),
-                      child: const Text("Web"),
-                      onPressed: () {},
-                    ),
-                    */
                   ],
                 ),
                 const Spacer(),
@@ -284,68 +181,123 @@ class _WriterViewState extends State<WriterView> {
                 txtController: titleController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Title"),
+                labelText: S.of(context).edit_tags_trackTitle),
             MyTextInput(
                 txtController: artistController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Artist"),
+                labelText: S.of(context).artist),
             MyTextInput(
                 txtController: albumController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Album"),
+                labelText: S.of(context).album),
             MyTextInput(
                 txtController: albumArtistController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Album artist"),
+                labelText: S.of(context).albumArtist),
             MyTextInput(
                 txtController: trackNumberController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Track number"),
+                labelText: S.of(context).trackNo),
             MyTextInput(
                 txtController: trackTotalController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Tracks total"),
+                labelText: S.of(context).edit_tags_tracksTotal),
             MyTextInput(
                 txtController: yearController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Year"),
+                labelText: S.of(context).year),
             MyTextInput(
                 txtController: genreController,
                 themeData: themeData,
                 autoFocus: false,
-                labelText: "Genre"),
+                labelText: S.of(context).genre),
           ],
         ),
         actions: [
           SimpleButton(
             themeData: themeData,
-            btnText: "Cancel",
+            btnText: S.of(context).buttonCancel,
             function: () {
               Navigator.of(context).pop();
             },
           ),
           SimpleButton(
             themeData: themeData,
-            btnText: "Save",
-            function: () {
-              _saveFileWithMediaStore();
-              Navigator.of(context).pop();
-            },
+            btnText: S.of(context).save,
+            function: saveUpdatedTrack,
           ),
         ],
         showDropdown: false,
         titleWidget: DescriptionText(
           themeData: themeData,
-          description: "Edit tags",
+          description: S.of(context).edit_tags_editTags,
         ),
         themeData: themeData,
       ),
     );
   }
+
+  void saveUpdatedTrack() async {
+            // we create metaTag from form
+            Tag metaData = Tag(
+              title: titleController.text,
+              trackArtist: artistController.text,
+              album: albumController.text,
+              albumArtist: albumArtistController.text,
+              genre: genreController.text,
+              year: int.tryParse(yearController.text),
+              trackNumber: int.tryParse(trackNumberController.text),
+              trackTotal: int.tryParse(trackTotalController.text),
+              pictures: imgFromPicker != null // User picked new image
+                  ? [
+                Picture(
+                    bytes: imgFromPicker!.readAsBytesSync(),
+                    mimeType: null,
+                    pictureType: PictureType.other)
+              ]
+                  : widget.track.albumArt != null // User didn't pick new image: we keep the existing one, if any
+                  ? [
+                Picture(
+                    bytes: widget.track.albumArt!,
+                    mimeType: null,
+                    pictureType: PictureType.other)
+              ]
+                  : [],
+            );
+
+            // We send metadata to method where copy of original file will be created,
+            // copy's metadata updated and this copy used to overwrite the original file
+            OverwriteFile overwriteFile = OverwriteFile(metaData: metaData, file: file, fileName: fileName);
+            bool? fileIsSaved = await overwriteFile.saveFileWithMediaStore();
+            // Handle success / error writing to file
+            if(fileIsSaved != null && fileIsSaved){
+              Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+              ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+                  .showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                      S.of(globalScaffoldKey.scaffoldKey.currentContext!).edit_tags_snackBarUpdateSuccess(fileName)),
+                ),
+              );
+              // ObjectBox item must also be updated so we avoid scanning device
+              _updateDbObject();
+            } else {
+              Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+              ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+                  .showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                      S.of(globalScaffoldKey.scaffoldKey.currentContext!).edit_tags_snackBarUpdateError),
+                ),
+              );
+            }
+          }
 }

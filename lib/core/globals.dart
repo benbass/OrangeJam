@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 
 import '../domain/entities/track_entity.dart';
 
 GlobalScaffoldKey globalScaffoldKey = GlobalScaffoldKey();
+
+// We will use this plugin to be able to overwrite audio files in music library with updated metadata
+final mediaStorePlugin = MediaStore();
 
 // we need to access the scaffold key from a lot of methods and wigets so we make it global
 class GlobalScaffoldKey {

@@ -15,7 +15,7 @@
   "track": "Titre: ",
   "artist": "Artiste: ",
   "album": "Album: ",
-  "albumArtist": "Artist album: ",
+  "albumArtist": "Artiste album: ",
   "year": "Année: ",
   "genre": "Genre: ",
   "trackNo": "No. titre: ",
@@ -73,5 +73,11 @@
   "drawer_language": "Langue",
   "drawer_backup": "Backup",
   "drawer_restore": "Restaurer",
-  "drawer_scanDevice": "Recherche de fichiers"
+  "drawer_scanDevice": "Recherche de fichiers",
+  "edit_tags_editTags": "Éditer les tags",
+  "edit_tags_selectPicture": "Choisir\nimage",
+  "edit_tags_trackTitle": "Titre",
+  "edit_tags_tracksTotal": "Total de titres",
+  "edit_tags_snackBarUpdateSuccess": "Les tags de {fileName} ont été actualisés.",
+  "edit_tags_snackBarUpdateError": "Une erreur s'est produite lors de l'écriture dans le fichier.\nVérifie le fichier et essaie à nouveau."
 }

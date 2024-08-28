@@ -26,9 +26,6 @@ import 'application/listview/ui/is_scroll_reverse_cubit.dart';
 import 'application/listview/ui/is_scrolling_cubit.dart';
 import 'theme.dart';
 
-// We will use this plugin to be able to overwrite audio files in music library with updated metadata
-final mediaStorePlugin = MediaStore();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
