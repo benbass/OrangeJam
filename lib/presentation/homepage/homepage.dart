@@ -6,6 +6,7 @@ import 'package:orangejam/presentation/drawer/drawer.dart';
 import 'package:orangejam/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
+import '../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
@@ -13,7 +14,6 @@ import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filter
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
-import '../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../core/notifications/create_notification.dart';
 import '../../core/globals.dart';
 import '../../core/helpers/app_language.dart';
@@ -40,7 +40,7 @@ class MyHomePage extends StatelessWidget {
     setAppLanguage(context);
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
-    final tracklistBloc = BlocProvider.of<TracklistBloc>(context);
+    final tracksBloc = BlocProvider.of<TracksBloc>(context);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
@@ -114,25 +114,25 @@ class MyHomePage extends StatelessWidget {
         ),
         body: SizedBox(
           height: double.infinity,
-          child: BlocBuilder<TracklistBloc, TracklistState>(
+          child: BlocBuilder<TracksBloc, TracksState>(
             builder: (context, tracklistState) {
-              if (tracklistState is TracklistInitial) {
+              if (tracklistState is TracksInitial) {
                 // we get the tracks from the objectBox db. If db is empty, device will be scanned,
                 // files will be converted to entities with metadata and put into db (slow!).
-                // See tracklist_datasources.dart in infrastructure layer!
-                tracklistBloc.add(TrackListLoadingEvent());
+                // See tracks_datasources.dart in infrastructure layer!
+                tracksBloc.add(TracksLoadingEvent());
                 return CustomProgressIndicator(
                     progressText: S.of(context).homePage_ScanningDevice,
                     themeData: themeData);
-              } else if (tracklistState is TracklistStateLoading) {
+              } else if (tracklistState is TracksStateLoading) {
                 /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
                 playlistsBloc
                     .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
-                tracklistBloc.add(TrackListLoadedEvent());
+                tracksBloc.add(TracksLoadedEvent());
                 return CustomProgressIndicator(
                     progressText: S.of(context).homePage_LoadingTracks,
                     themeData: themeData);
-              } else if (tracklistState is TracklistStateLoaded) {
+              } else if (tracklistState is TracksStateLoaded) {
                 // Player is open so we can subscribe
                 if (audioHandler.flutterSoundPlayer.isOpen()) {
                   // Position for Progressbar in Player controls and behaviour at playback end
@@ -201,7 +201,7 @@ class MyHomePage extends StatelessWidget {
                     );
                   },
                 );
-              } else if (tracklistState is TracklistStateError) {
+              } else if (tracklistState is TracksStateError) {
                 return ErrorMessage(
                   message: tracklistState.message,
                 );

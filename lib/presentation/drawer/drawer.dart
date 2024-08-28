@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 
-import '../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../homepage/custom_widgets/custom_widgets.dart';
@@ -81,8 +81,8 @@ class MyDrawer extends StatelessWidget {
             function: () {
               Navigator.of(context).pop();
               trackBox.removeAll();
-              BlocProvider.of<TracklistBloc>(context)
-                  .add(TrackListRefreschingEvent());
+              BlocProvider.of<TracksBloc>(context)
+                  .add(TracksRefreshingEvent());
             },
           ),
         ],

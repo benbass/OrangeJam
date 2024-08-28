@@ -10,7 +10,7 @@ import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.da
 import 'package:path/path.dart';
 
 import 'package:orangejam/domain/entities/track_entity.dart';
-import '../../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../generated/l10n.dart';
 import '../../../injection.dart' as di;
@@ -38,7 +38,7 @@ class _WriterViewState extends State<WriterView> {
   File? imgFromPicker;
   late File file;
   late String fileName;
-  final tracklistBloc = BlocProvider.of<TracklistBloc>(
+  final tracksBloc = BlocProvider.of<TracksBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
   final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
@@ -71,7 +71,7 @@ class _WriterViewState extends State<WriterView> {
 
   _updateUi(TrackEntity track) {
     // list
-    tracklistBloc.add(TrackListLoadingEvent());
+    tracksBloc.add(TracksLoadingEvent());
     // player controls and track details if updated track is playback track
     if (track.id == playerControlsBloc.state.track.id) {
       playerControlsBloc.add(TrackMetaTagUpdated());

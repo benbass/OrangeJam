@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 
-import '../../../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
@@ -25,7 +25,7 @@ class MenuPlaylistsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
-    final tracklistBlock = BlocProvider.of<TracklistBloc>(context);
+    final tracksBlock = BlocProvider.of<TracksBloc>(context);
     return BlocBuilder<PlaylistsBloc, PlaylistsState>(
       builder: (context, state) {
         return IconButton(
@@ -39,7 +39,7 @@ class MenuPlaylistsWidget extends StatelessWidget {
               builder: (context) {
                 return BottomSheetPlaylistsMenu(
                   scrollController: scrollController,
-                  tracklistBlock: tracklistBlock,
+                  tracksBlock: tracksBlock,
                   playlistHandler: playlistHandler,
                   playlistsBloc: playlistsBloc,
                   appbarFilterByCubit: appbarFilterByCubit,

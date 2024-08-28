@@ -3,8 +3,8 @@ import 'package:orangejam/presentation/homepage/playlists_menu/widgets/first_row
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/topbar_playlists_menu.dart';
 
+import '../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../application/playlists/playlists_bloc.dart';
-import '../../../application/listview/tracklist/tracklist_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../core/playlists/playlist_handler.dart';
 
@@ -13,14 +13,14 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({
     super.key,
     required this.scrollController,
-    required this.tracklistBlock,
+    required this.tracksBlock,
     required this.playlistHandler,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
   });
 
   final ScrollController scrollController;
-  final TracklistBloc tracklistBlock;
+  final TracksBloc tracksBlock;
   final PlaylistHandler playlistHandler;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
@@ -48,7 +48,7 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: TopBarPlaylistsMenu(
-                  tracklistBlock: tracklistBlock,
+                  tracksBlock: tracksBlock,
                   playlistHandler: playlistHandler,
                 ),
               ),

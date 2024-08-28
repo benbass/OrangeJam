@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../application/listview/tracklist/tracklist_bloc.dart';
+import '../../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
@@ -9,11 +9,11 @@ import '../../dialogs/dialogs.dart';
 class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
     super.key,
-    required this.tracklistBlock,
+    required this.tracksBlock,
     required this.playlistHandler,
   });
 
-  final TracklistBloc tracklistBlock;
+  final TracksBloc tracksBlock;
   final PlaylistHandler playlistHandler;
 
   @override

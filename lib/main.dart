@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 import 'package:orangejam/core/globals.dart';
 
+import 'application/listview/list_of_tracks/tracks_bloc.dart';
 import 'generated/l10n.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
@@ -17,7 +18,6 @@ import 'package:metadata_god/metadata_god.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/playercontrols/cubits/loop_mode_cubit.dart';
 import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
-import 'package:orangejam/application/listview/tracklist/tracklist_bloc.dart';
 import 'package:orangejam/presentation/homepage/homepage.dart';
 import 'application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
 import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
           /// permissions, data source, getting metadata from audio files and putting the whole via model into a track entity,
           /// saving track entities in database (objectBox), serving the list of track entities to UI
           BlocProvider(
-            create: (BuildContext context) => sl<TracklistBloc>(),
+            create: (BuildContext context) => sl<TracksBloc>(),
           ),
 
           /// handles player controls

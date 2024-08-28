@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:diacritic/diacritic.dart';
 import 'package:orangejam/core/metatags/metatags_handler.dart';
-import 'package:orangejam/domain/failures/tracklist_failures.dart';
+import 'package:orangejam/domain/failures/tracks_failures.dart';
 import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
 import '../../injection.dart';
 
@@ -12,16 +12,16 @@ import '../exceptions/exceptions.dart';
 
 // this transforms the files from AudioFilesDataSources to track entities including metadata and saves them to db then return the tracks from db
 // unless it was already done then it just returns tracks from existing db
-abstract class TrackListDatasource {
+abstract class TracksDatasource {
   /// Requests a track from files list
   /// May throw exception if file cannot be read
   Future<List<TrackEntity>> getTracksFromFiles();
 }
 
-class TrackListDatasourceImpl implements TrackListDatasource {
+class TracksDatasourceImpl implements TracksDatasource {
   final AudioFilesDataSources audioFilesDataSources;
 
-  TrackListDatasourceImpl({required this.audioFilesDataSources});
+  TracksDatasourceImpl({required this.audioFilesDataSources});
 
   @override
   Future<List<TrackEntity>> getTracksFromFiles() async {
@@ -43,7 +43,7 @@ class TrackListDatasourceImpl implements TrackListDatasource {
         trackBox.putMany(tracksFromFiles);
         return trackBox.getAll();
       } catch (e) {
-        if (e is TracklistIoFailure) {
+        if (e is TracksIoFailure) {
           throw IOExceptionReadFiles();
         }
       }
