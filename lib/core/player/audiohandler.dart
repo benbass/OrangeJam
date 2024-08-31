@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
-import 'package:orangejam/application/playercontrols/cubits/track_position_cubit.dart';
+import 'package:orangejam/core/player/position_update.dart';
 
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
@@ -18,8 +17,7 @@ import '../globals.dart';
 
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
-  TrackDurationCubit trackDurationCubit = TrackDurationCubit();
-  TrackPositionCubit trackPositionCubit = TrackPositionCubit();
+  final PositionUpdate positionUpdate = PositionUpdate();
 
   /// we need the following vars with initial values for the notification handler at app start
   /// track id 0 is empty track
@@ -48,16 +46,24 @@ class MyAudioHandler {
     flutterSoundPlayer.startPlayer(fromURI: track.filePath);
     openAudioSession();
     createNotification(track, isPausingState, p);
+
     // Update progressbar in notification
     flutterSoundPlayer.onProgress?.listen((event) {
       p = event.position;
     });
+
+    // check position with timer for app's behaviour at end of playback
+    // we delay to ensure that this track's trackPositionCubit.state != null
+    Future.delayed(const Duration(milliseconds: 200))
+        .whenComplete(() =>
+        positionUpdate.startPositionCheckTimer());
   }
 
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
     currentTrack = TrackEntity.empty().copyWith(id: 0);
     AwesomeNotifications().cancel(10);
+    positionUpdate.positionCheckTimer?.cancel();
   }
 
   void pauseTrack() {

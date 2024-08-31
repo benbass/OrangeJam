@@ -49,7 +49,7 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
           }
         }
 
-        /// We create a list of string, list as:
+        /// We create a list of lists of string, list as:
         /*
         [
          [Playlist name1, [/path/to/Song1, /path/to/Song2, /path/to/Song3 ...]],

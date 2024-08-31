@@ -31,7 +31,7 @@ class TracksDatasourceImpl implements TracksDatasource {
     } else {
       /// if db is empty or if user rescan the device, we gets all files from device: time consuming!
       try {
-        // First we load the file from device storage
+        // First we load the files from device storage
         List audioFiles = await audioFilesDataSources.getAudioFiles();
 
         // Then we create a list of track entities from list of audio files

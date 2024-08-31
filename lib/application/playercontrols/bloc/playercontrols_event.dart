@@ -23,8 +23,10 @@ class NextButtonPressed extends PlayerControlsEvent {}
 
 class PreviousButtonPressed extends PlayerControlsEvent {}
 
+// NOT used
 class LoopButtonPressed extends PlayerControlsEvent {}
 
+// NOT used
 class ContinuousButtonPressed extends PlayerControlsEvent {}
 
 class ShowHideControlsButtonPressed extends PlayerControlsEvent {

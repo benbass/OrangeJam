@@ -302,14 +302,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
-  dart_tags:
-    dependency: "direct main"
-    description:
-      name: dart_tags
-      sha256: "2dbe297845ff979581b404bf6fac9278466cecac20b8e5ae3c3d30a46f418632"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.1"
   dartz:
     dependency: "direct main"
     description:
@@ -1030,10 +1022,10 @@ packages:
     dependency: transitive
     description:
       name: rxdart
-      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.28.0"
+    version: "0.27.7"
   scrollview_observer:
     dependency: "direct main"
     description:
@@ -1271,14 +1263,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
-  utf_convert:
-    dependency: transitive
-    description:
-      name: utf_convert
-      sha256: c9f84e1165735eb13f643cbaace89a34e72db5f9f224f0ffa8931b6f58aa56fe
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.0+1"
   uuid:
     dependency: transitive
     description:

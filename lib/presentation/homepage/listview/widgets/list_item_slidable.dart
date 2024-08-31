@@ -8,7 +8,6 @@ import 'package:orangejam/presentation/homepage/listview/widgets/item_trailing.d
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../../core/globals.dart';
-import '../../../../core/player/position_monitoring.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/player/audiohandler.dart';
 import '../../../../core/playlists/playlist_handler.dart';
@@ -178,9 +177,6 @@ class ListItemSlidable extends StatelessWidget {
               // The Bloc will decide if track is to be played (tap on new track) or stopped (tap on current track)
               if (await File(track.filePath).exists()) {
                 playTrack(track);
-                // we delay to ensure that trackPositionCubit.state != null
-                Future.delayed(const Duration(milliseconds: 200))
-                    .whenComplete(() => startPositionMonitoring());
               } else {
                 snackBarFileNotExist();
               }

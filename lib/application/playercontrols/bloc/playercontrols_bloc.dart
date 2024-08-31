@@ -1,3 +1,4 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,6 @@ part 'playercontrols_state.dart';
 class PlayerControlsBloc
     extends Bloc<PlayerControlsEvent, PlayerControlsState> {
   PlayerControlsBloc() : super(PlayerControlsState.initial()) {
-
     // Initial state: empty track -> player controls not visible
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
@@ -26,10 +26,7 @@ class PlayerControlsBloc
       // player controls visible and audioHandler plays track
       if (event.track != state.track) {
         // play new selected track
-        emit(state.copyWith(
-            track: event.track,
-            isPausing: false,
-            height: 200));
+        emit(state.copyWith(track: event.track, isPausing: false, height: 200));
         sl<MyAudioHandler>().playTrack(event.track);
       } else {
         // same track: player controls not visible and audioHandler stops track
@@ -42,12 +39,12 @@ class PlayerControlsBloc
     });
 
     on<StopButtonPressed>((event, emit) {
-        // This is used by the notification only
-        emit(state.copyWith(
-            track: TrackEntity.empty().copyWith(id: 0),
-            isPausing: false,
-            height: 0));
-        sl<MyAudioHandler>().stopTrack();
+      // This is used by the notification only
+      emit(state.copyWith(
+          track: TrackEntity.empty().copyWith(id: 0),
+          isPausing: false,
+          height: 0));
+      sl<MyAudioHandler>().stopTrack();
     });
 
     on<PausePlayButtonPressed>((event, emit) {
@@ -60,17 +57,17 @@ class PlayerControlsBloc
       }
     });
 
-    // Following event is called when other app starts audio. The event just update UI.
+    // Following event is called when other app starts audio. The event just updates UI.
     // Logic: Audio is paused by audioSession.
     on<PauseFromAudioSession>((event, emit) {
-        emit(state.copyWith(isPausing: true));
+      emit(state.copyWith(isPausing: true));
     });
 
     on<NextButtonPressed>((event, emit) async {
       await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
-        if(value.id != 0){
-          emit(PlayerControlsState(
-              track: value, isPausing: false, height: 200));
+        if (value.id != 0) {
+          emit(
+              PlayerControlsState(track: value, isPausing: false, height: 200));
           sl<MyAudioHandler>().playTrack(value);
         }
       });
@@ -78,19 +75,19 @@ class PlayerControlsBloc
 
     on<PreviousButtonPressed>((event, emit) async {
       await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
-        if(value.id != 0){
+        if (value.id != 0) {
           sl<MyAudioHandler>().playTrack(value);
-          emit(PlayerControlsState(
-              track: value, isPausing: false, height: 200));
+          emit(
+              PlayerControlsState(track: value, isPausing: false, height: 200));
         }
       });
     });
 
-    // not used
+    // not used: loop playback is handled by timer in PositionUpdate()
     on<LoopButtonPressed>((event, emit) {});
 
-    // not used
-    on<ContinuousButtonPressed>((event, emit) {});
+    // Not used: continuous playback is handled by timer in PositionUpdate()
+    on<ContinuousButtonPressed>((event, emit) async {});
 
     // Update track info after metatag update: this event will be called only if updated track is currently playing track
     on<TrackMetaTagUpdated>((event, emit) {
@@ -102,6 +99,5 @@ class PlayerControlsBloc
     on<ShowHideControlsButtonPressed>((event, emit) {
       emit(state.copyWith(height: event.height));
     });
-
   }
 }
