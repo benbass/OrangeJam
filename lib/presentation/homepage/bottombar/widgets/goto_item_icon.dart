@@ -31,13 +31,19 @@ class GotoItemIcon extends StatelessWidget {
           onPressed: () => gotoItem(72.0, observerController),
           icon: scrollingState! && sl<MyAudioHandler>().currentTrack.id != 0
               ? Transform.flip(
-                      flipY: reverseState!,
-                      child: Image.asset(
+                  flipY: reverseState!,
+                  child: const Icon(
+                    Icons.move_up,
+                    size: 20,
+                  ),
+                  /*
+                      Image.asset(
                         "assets/scroll.png",
                         color: const Color(0xFFCBD4C2),
                         height: 18,
                       ),
-                    )
+            */
+                )
               : const Icon(null),
         );
       });

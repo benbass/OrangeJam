@@ -6,7 +6,9 @@ import '../../../../core/player/audiohandler.dart';
 import '../../../../injection.dart';
 
 class ShowHidePlayerControls extends StatelessWidget {
-  const ShowHidePlayerControls({super.key,});
+  const ShowHidePlayerControls({
+    super.key,
+  });
 
   /// This widget allows to show/hide player controls when current track is not empty
   @override
@@ -30,11 +32,17 @@ class ShowHidePlayerControls extends StatelessWidget {
                 constraints: const BoxConstraints(),
                 icon: Transform.flip(
                   flipY: state.height == 200,
-                  child: Image.asset(
+                  child: const Icon(
+                    Icons.keyboard_arrow_up,
+                    size: 26,
+                  ),
+                  /*
+                  Image.asset(
                     "assets/arrow.png",
                     color: const Color(0xFFCBD4C2),
                     height: 40,
                   ),
+                  */
                 ),
               );
             } else {
