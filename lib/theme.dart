@@ -68,7 +68,8 @@ class AppTheme {
       ),
       backgroundColor: _appbarColor,
       toolbarHeight: 60,
-      elevation: 5,
+      elevation: 0,
+      scrolledUnderElevation: 0,
       shadowColor: _primaryVariantColor,
     ),
     bottomAppBarTheme: const BottomAppBarTheme(

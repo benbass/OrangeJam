@@ -43,28 +43,29 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
       ),
       child: Wrap(
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: TopBarPlaylistsMenu(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Column(
+              children: [
+                TopBarPlaylistsMenu(
                   tracksBlock: tracksBlock,
                   playlistHandler: playlistHandler,
                 ),
-              ),
-              FirstRowAllFilesAndQueueButtons(
-                scrollController: scrollController,
-                playlistsBloc: playlistsBloc,
-                appbarFilterByCubit: appbarFilterByCubit,
-                playlistHandler: playlistHandler,
-              ),
-              SecondRowPlaylistButtons(
-                scrollController: scrollController,
-                playlistsBloc: playlistsBloc,
-                appbarFilterByCubit: appbarFilterByCubit,
-                playlistHandler: playlistHandler,
-              ),
-            ],
+                FirstRowAllFilesAndQueueButtons(
+                  scrollController: scrollController,
+                  playlistsBloc: playlistsBloc,
+                  appbarFilterByCubit: appbarFilterByCubit,
+                  playlistHandler: playlistHandler,
+                ),
+                const SizedBox(height: 15,),
+                SecondRowPlaylistButtons(
+                  scrollController: scrollController,
+                  playlistsBloc: playlistsBloc,
+                  appbarFilterByCubit: appbarFilterByCubit,
+                  playlistHandler: playlistHandler,
+                ),
+              ],
+            ),
           )
         ],
       ),

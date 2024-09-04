@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,6 +58,15 @@ void main() async {
   MediaStore.appFolder = "MediaStorePlugin";
   /// END media_store_plus plugin
   ///
+
+  // Design status and bottom bar
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color(0xFF202531), // Color of Status Bar
+    statusBarIconBrightness: Brightness.light, // Brightness of Icons in Status Bar
+    systemNavigationBarColor: Color(0xFF202531), // Color of Bottom Bar
+    systemNavigationBarIconBrightness: Brightness.dark, // Brightness of Icons in Bottom Bar
+  ));
+
   runApp(const MyApp());
 }
 

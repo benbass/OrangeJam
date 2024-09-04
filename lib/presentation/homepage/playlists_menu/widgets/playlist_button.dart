@@ -106,7 +106,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
             }
           : null,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+        padding: const EdgeInsets.only(left: 6),
         child: Material(
           color: id == playlistsBloc.state.playlistId
               ? const Color(0xFF181C25).withOpacity(0.6)
