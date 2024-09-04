@@ -74,6 +74,8 @@
   "drawer_backup": "Sicherung",
   "drawer_restore": "Wiederherstellung",
   "drawer_scanDevice": "Gerät durchsuchen",
+  "drawer_playlists": "Playliste",
+  "drawer_automaticPlayback": "Automatische Wiedergabe\nvon Playlisten",
   "edit_tags_editTags": "Tags bearbeiten",
   "edit_tags_selectPicture": "Bild\nauswählen",
   "edit_tags_trackTitle": "Titel",

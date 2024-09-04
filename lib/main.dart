@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:media_store_plus/media_store_plus.dart';
+import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
@@ -135,6 +136,11 @@ class MyApp extends StatelessWidget {
           /// handles continuous playback mode
           BlocProvider(
             create: (BuildContext context) => ContinuousPlaybackModeCubit(),
+          ),
+
+          /// handles automatic playback
+          BlocProvider(
+            create: (BuildContext context) => AutomaticPlaybackCubit(),
           ),
 
           /// handles filterBy menu in extra bar

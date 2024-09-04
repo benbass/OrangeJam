@@ -807,6 +807,26 @@ class S {
     );
   }
 
+  /// `Playlists`
+  String get drawer_playlists {
+    return Intl.message(
+      'Playlists',
+      name: 'drawer_playlists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatic playback\nof playlists`
+  String get drawer_automaticPlayback {
+    return Intl.message(
+      'Automatic playback\nof playlists',
+      name: 'drawer_automaticPlayback',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Edit tags`
   String get edit_tags_editTags {
     return Intl.message(

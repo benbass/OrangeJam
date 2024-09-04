@@ -74,6 +74,8 @@
   "drawer_backup": "Backup",
   "drawer_restore": "Restaurer",
   "drawer_scanDevice": "Recherche de fichiers",
+  "drawer_playlists": "Playlistes",
+  "drawer_automaticPlayback": "Lecture automatique\ndes playlistes",
   "edit_tags_editTags": "Éditer les tags",
   "edit_tags_selectPicture": "Choisir\nimage",
   "edit_tags_trackTitle": "Titre",

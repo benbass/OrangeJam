@@ -14,6 +14,7 @@ import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filter
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
+import '../../application/playlists/automatic_playback_cubit.dart';
 import '../../core/notifications/create_notification.dart';
 import '../../core/globals.dart';
 import '../../core/helpers/app_language.dart';
@@ -128,8 +129,8 @@ class MyHomePage extends StatelessWidget {
                       themeData: themeData);
                 } else if (tracklistState is TracksStateLoading) {
                   /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
-                  playlistsBloc
-                      .add(PlaylistsLoadingEvent(tracks: tracklistState.tracks));
+                  playlistsBloc.add(
+                      PlaylistsLoadingEvent(tracks: tracklistState.tracks));
                   tracksBloc.add(TracksLoadedEvent());
                   return CustomProgressIndicator(
                       progressText: S.of(context).homePage_LoadingTracks,
@@ -143,6 +144,13 @@ class MyHomePage extends StatelessWidget {
                     //init and check permission for awesomeNotifications
                     initAwesomeNotifications();
                   }
+
+                  // Check sharedPrefs for automatic playback and emit state according to result
+                  final automaticPlaybackCubit =
+                      BlocProvider.of<AutomaticPlaybackCubit>(context);
+                  automaticPlaybackCubit.getAutomaticPlaybackFromPrefs();
+                  //
+
                   return BlocBuilder<PlaylistsBloc, PlaylistsState>(
                     builder: (context, state) {
                       return Column(

@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
 import 'package:orangejam/core/manipulate_list/sort_filter_search_tracklist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/usecases/playlists_usecases.dart';
+import '../playercontrols/bloc/playercontrols_bloc.dart';
 
 part 'playlists_event.dart';
 part 'playlists_state.dart';
@@ -86,6 +89,12 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       emit(state.copyWith(tracks: tracks, playlistId: event.id));
       SharedPreferences myStart = await startPrefs;
       myStart.setInt("startWith", event.id);
+
+      // Play first track automatically if prefs is set
+      if(BlocProvider.of<AutomaticPlaybackCubit>(globalScaffoldKey.scaffoldKey.currentContext!).state == true){
+        BlocProvider.of<PlayerControlsBloc>(globalScaffoldKey.scaffoldKey.currentContext!)
+            .add(TrackItemPressed(track: tracks[0]));
+      }
     });
 
     // If current playlist is deleted we change view to all files
