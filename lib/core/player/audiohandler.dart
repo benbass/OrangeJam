@@ -53,8 +53,8 @@ class MyAudioHandler {
     });
 
     // check position with timer for app's behaviour at end of playback
-    // we delay to ensure that this track's trackPositionCubit.state != null
-    Future.delayed(const Duration(milliseconds: 200))
+    // we delay to ensure that this track's trackPositionCubit.state != null and currentPosition != lastPosition ( in startPositionCheckTimer() )
+    Future.delayed(const Duration(seconds: 1))
         .whenComplete(() =>
         positionUpdate.startPositionCheckTimer());
   }
