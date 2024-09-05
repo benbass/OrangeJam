@@ -31,7 +31,7 @@ class SortByDropdown extends StatelessWidget {
               //S.of(context).sortByDropdown_artist,
               //S.of(context).sortByDropdown_genre,
               S.of(context).sortByDropdown_creationDate,
-              S.of(context).sortByDropdown_shuffle,
+              //S.of(context).sortByDropdown_shuffle,
               S.of(context).sortByDropdown_reset,
             ];
             return ButtonTheme(
@@ -68,9 +68,9 @@ class SortByDropdown extends StatelessWidget {
                     if (newValue == S.of(context).sortByDropdown_creationDate) {
                       englishString = "Creation date";
                     }
-                    if (newValue == S.of(context).sortByDropdown_shuffle) {
+                   /* if (newValue == S.of(context).sortByDropdown_shuffle) {
                       englishString = "Shuffle";
-                    }
+                    }*/
                     if (newValue == S.of(context).sortByDropdown_reset) {
                       englishString = "Reset";
                       // List may be filtered: we reset the filter string to null

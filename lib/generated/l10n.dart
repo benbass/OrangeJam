@@ -797,10 +797,10 @@ class S {
     );
   }
 
-  /// `Scan device`
+  /// `Refresh database`
   String get drawer_scanDevice {
     return Intl.message(
-      'Scan device',
+      'Refresh database',
       name: 'drawer_scanDevice',
       desc: '',
       args: [],
@@ -817,10 +817,10 @@ class S {
     );
   }
 
-  /// `Automatic playback\nof playlists`
+  /// `Automatic playback`
   String get drawer_automaticPlayback {
     return Intl.message(
-      'Automatic playback\nof playlists',
+      'Automatic playback',
       name: 'drawer_automaticPlayback',
       desc: '',
       args: [],

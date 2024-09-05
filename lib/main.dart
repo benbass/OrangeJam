@@ -21,7 +21,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/playercontrols/cubits/loop_mode_cubit.dart';
 import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import 'package:orangejam/presentation/homepage/homepage.dart';
-import 'application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
 import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
 import 'package:orangejam/application/playercontrols/cubits/track_position_cubit.dart';
 import 'application/listview/ui/is_scroll_reverse_cubit.dart';
@@ -131,11 +130,6 @@ class MyApp extends StatelessWidget {
           /// handles loop playback mode
           BlocProvider(
             create: (BuildContext context) => LoopModeCubit(),
-          ),
-
-          /// handles continuous playback mode
-          BlocProvider(
-            create: (BuildContext context) => ContinuousPlaybackModeCubit(),
           ),
 
           /// handles automatic playback

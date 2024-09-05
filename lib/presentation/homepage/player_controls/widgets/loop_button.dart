@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/playercontrols/cubits/continuousplayback_mode_cubit.dart';
 import '../../../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../../../application/playlists/automatic_playback_cubit.dart';
 import '../../../../generated/l10n.dart';
 
 class LoopButton extends StatelessWidget {
   const LoopButton({
     super.key,
-    required this.continuousPlaybackModeCubit,
     required this.isLoopModeCubit,
   });
 
-  final ContinuousPlaybackModeCubit continuousPlaybackModeCubit;
   final LoopModeCubit isLoopModeCubit;
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<AutomaticPlaybackCubit>(context);
+
     return BlocBuilder<LoopModeCubit, bool>(
       builder: (context, loopMode) {
         return IconButton(
           onPressed: () {
-            continuousPlaybackModeCubit
-                .setContinuousPlaybackMode(false);
             loopMode
                 ? isLoopModeCubit.setLoopMode(false)
                 : isLoopModeCubit.setLoopMode(true);
