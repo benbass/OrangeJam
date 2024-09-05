@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 import 'package:orangejam/core/notifications/initialize_awesome_notifications.dart';
 import 'package:orangejam/presentation/drawer/drawer.dart';
-import 'package:orangejam/presentation/homepage/progress_indicator/progress_indicator.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/listview/list_of_tracks/tracks_bloc.dart';
@@ -23,11 +22,12 @@ import '../../injection.dart';
 import '../../core/player/audiohandler.dart';
 import '../../core/playlists/playlist_handler.dart';
 import 'appbar/appbar_content.dart';
+import 'custom_widgets/error/error_message.dart';
+import 'custom_widgets/progress_indicator/progress_indicator.dart';
 import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_icon_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
-import 'error/error_message.dart';
 import 'listview/listview.dart';
 
 class MyHomePage extends StatelessWidget {
