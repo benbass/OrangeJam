@@ -39,7 +39,6 @@ class PlayerControlsBloc
     });
 
     on<StopButtonPressed>((event, emit) {
-      // This is used by the notification only
       emit(state.copyWith(
           track: TrackEntity.empty().copyWith(id: 0),
           isPausing: false,

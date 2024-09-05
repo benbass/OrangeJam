@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/play_pause_button.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/progress_bar.dart';
+import 'package:orangejam/presentation/homepage/player_controls/widgets/stop_button.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/track_info_text.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
@@ -111,8 +112,7 @@ class PlayerControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 /// Loop button
-                LoopButton(
-                    isLoopModeCubit: isLoopModeCubit),
+                LoopButton(isLoopModeCubit: isLoopModeCubit),
 
                 /// Skip to previous button
                 SkipToNextOrPrevious(
@@ -120,8 +120,20 @@ class PlayerControls extends StatelessWidget {
                   value: 0,
                 ),
 
-                /// Play/Pause button
-                const PlayPause(),
+                const SizedBox(
+                  width: 128,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      /// Play/Pause button
+                      PlayPause(),
+
+                      /// Stop button
+                      Stop(),
+                    ],
+                  ),
+                ),
 
                 /// Skip to next button
                 SkipToNextOrPrevious(

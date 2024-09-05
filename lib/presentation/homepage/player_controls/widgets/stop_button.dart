@@ -4,8 +4,8 @@ import '../../../../injection.dart' as di;
 
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 
-class PlayPause extends StatelessWidget {
-  const PlayPause({
+class Stop extends StatelessWidget {
+  const Stop({
     super.key,
   });
 
@@ -15,20 +15,15 @@ class PlayPause extends StatelessWidget {
       builder: (context, state) {
         return IconButton(
           onPressed: () {
-            di.sl<PlayerControlsBloc>().add(PausePlayButtonPressed());
+            di.sl<PlayerControlsBloc>().add(StopButtonPressed());
           },
-          icon: !state.isPausing
-              ? const Icon(
-                  Icons.pause_rounded,
-                  color: Color(0xFF202531),
-                )
-              : const Icon(
-                  Icons.play_arrow_rounded,
-                  color: Color(0xFF202531),
-                ),
+          icon: const Icon(
+            Icons.stop_rounded,
+            color: Color(0xFF202531),
+          ),
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
-          iconSize: 80,
+          iconSize: 44,
         );
       },
     );
