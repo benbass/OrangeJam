@@ -10,8 +10,6 @@
   "queue": "Queue",
   "loopButton_LoopPlaybackIsOff": "Loop playback is off",
   "loopButton_LoopPlaybackIsOn": "Loop playback is on",
-  "continuousPlaybackButton_ContinuousPlaybackIsOn": "Continuous playback is on",
-  "continuousPlaybackButton_ContinuousPlaybackIsOff": "Continuous playback is off",
   "track": "Track: ",
   "artist": "Artist: ",
   "album": "Album: ",

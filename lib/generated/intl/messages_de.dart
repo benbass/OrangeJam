@@ -90,12 +90,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonRestore":
             MessageLookupByLibrary.simpleMessage("Wiederherstellen"),
         "close": MessageLookupByLibrary.simpleMessage("Schliessen"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage(
-                "Kontinuierliches Playback ist aus"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOn":
-            MessageLookupByLibrary.simpleMessage(
-                "Kontinuierliches Playback ist an"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "Eine ZIP Datei wird erstellt und auf deinen Google Drive hochgeladen"),
@@ -152,9 +146,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m2,
         "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m3,
         "loopButton_LoopPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage("Track Wiederholung ist an"),
-        "loopButton_LoopPlaybackIsOn":
             MessageLookupByLibrary.simpleMessage("Track Wiederholung ist aus"),
+        "loopButton_LoopPlaybackIsOn":
+            MessageLookupByLibrary.simpleMessage("Track Wiederholung ist an"),
         "playlistButton_SnackbarNameWasDeleted": m4,
         "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m5,
         "playlistHandler_addThisTrackToPlaylist":

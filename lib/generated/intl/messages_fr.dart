@@ -90,10 +90,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonOk": MessageLookupByLibrary.simpleMessage("Ok"),
         "buttonRestore": MessageLookupByLibrary.simpleMessage("Restaurer"),
         "close": MessageLookupByLibrary.simpleMessage("Fermer"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage("Lecture continue désactivée"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOn":
-            MessageLookupByLibrary.simpleMessage("Lecture continue activée"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "Un fichier ZIP sera créé puis téléchargé sur ton Google Drive"),
@@ -148,10 +144,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "la queue contient déjà ce titre."),
         "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m2,
         "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m3,
-        "loopButton_LoopPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage("Lecture en boucle activée"),
-        "loopButton_LoopPlaybackIsOn": MessageLookupByLibrary.simpleMessage(
+        "loopButton_LoopPlaybackIsOff": MessageLookupByLibrary.simpleMessage(
             "Lecture en boucle désactivée"),
+        "loopButton_LoopPlaybackIsOn":
+            MessageLookupByLibrary.simpleMessage("Lecture en boucle activée"),
         "playlistButton_SnackbarNameWasDeleted": m4,
         "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m5,
         "playlistHandler_addThisTrackToPlaylist":

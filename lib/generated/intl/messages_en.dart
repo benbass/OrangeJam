@@ -88,10 +88,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonOk": MessageLookupByLibrary.simpleMessage("Ok"),
         "buttonRestore": MessageLookupByLibrary.simpleMessage("Restore"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage("Continuous playback is off"),
-        "continuousPlaybackButton_ContinuousPlaybackIsOn":
-            MessageLookupByLibrary.simpleMessage("Continuous playback is on"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "A ZIP archive will be created and uploaded to your Google Drive"),

@@ -160,26 +160,6 @@ class S {
     );
   }
 
-  /// `Continuous playback is on`
-  String get continuousPlaybackButton_ContinuousPlaybackIsOn {
-    return Intl.message(
-      'Continuous playback is on',
-      name: 'continuousPlaybackButton_ContinuousPlaybackIsOn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Continuous playback is off`
-  String get continuousPlaybackButton_ContinuousPlaybackIsOff {
-    return Intl.message(
-      'Continuous playback is off',
-      name: 'continuousPlaybackButton_ContinuousPlaybackIsOff',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Track: `
   String get track {
     return Intl.message(
