@@ -43,21 +43,21 @@ class MyAudioHandler {
 
   /// PLAYER CONTROLS ///
   void playTrack(TrackEntity track) {
-    /// The following 3 vars are needed for the whenFinished function in flutterSoundPlayer.startPlayer()
+    /// The following 2 vars are needed for the whenFinished function
     final automaticPlaybackCubit = BlocProvider.of<AutomaticPlaybackCubit>(
         globalScaffoldKey.scaffoldKey.currentContext!);
     final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(
         globalScaffoldKey.scaffoldKey.currentContext!);
-    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+
     ///
+
     p = Duration.zero;
     isPausingState = false;
     currentTrack = track;
     flutterSoundPlayer.startPlayer(
       fromURI: track.filePath,
 
-      /// TODO: logic for loop song and automatic playback!!!
+      /// Logic for loop song and automatic playback!!!
       whenFinished: () {
         if (isLoopModeCubit.state && automaticPlaybackCubit.state) {
           playTrack(currentTrack);
