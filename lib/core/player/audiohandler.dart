@@ -122,8 +122,8 @@ class MyAudioHandler {
     // We in- or decrease list index based on parameter
     index += plusMinusOne;
 
-    // we prevent exception for index == 0 && index bigger than last index (out of range) and play previous/next track.
-    if (index > 0 && index < tracks.length) {
+    // we prevent out of range exception for index == -1 && index bigger than last index and play previous/next track.
+    if (index > -1 && index < tracks.length) {
       // we set new track based on decreased index
       TrackEntity track = tracks[index];
       String filePath = track.filePath;
