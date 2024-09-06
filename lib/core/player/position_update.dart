@@ -1,5 +1,5 @@
-// flutter_sound doesn't have any onCompleted or onFinished method or similar
-// That's why we need the following method to check when end of playback is reached
+// This is not used anymore!!!!
+
 
 import 'dart:async';
 

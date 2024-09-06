@@ -11,7 +11,11 @@ import 'package:orangejam/core/player/position_update.dart';
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
 
+import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../application/playlists/automatic_playback_cubit.dart';
 import '../../domain/entities/track_entity.dart';
+import '../../injection.dart';
 import '../notifications/create_notification.dart';
 import '../globals.dart';
 
@@ -23,6 +27,7 @@ class MyAudioHandler {
   /// track id 0 is empty track
   TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0);
   bool isPausingState = false;
+
   ///
 
   void openAudioSession() {
@@ -36,14 +41,36 @@ class MyAudioHandler {
 
   Duration p = Duration.zero;
 
-
-
   /// PLAYER CONTROLS ///
   void playTrack(TrackEntity track) {
+    /// The following 3 vars are needed for the whenFinished function in flutterSoundPlayer.startPlayer()
+    final automaticPlaybackCubit = BlocProvider.of<AutomaticPlaybackCubit>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
+    final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
+    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
+    ///
     p = Duration.zero;
     isPausingState = false;
     currentTrack = track;
-    flutterSoundPlayer.startPlayer(fromURI: track.filePath);
+    flutterSoundPlayer.startPlayer(
+      fromURI: track.filePath,
+
+      /// TODO: logic for loop song and automatic playback!!!
+      whenFinished: () {
+        if (isLoopModeCubit.state && automaticPlaybackCubit.state) {
+          playTrack(currentTrack);
+        } else if (isLoopModeCubit.state && !automaticPlaybackCubit.state) {
+          playTrack(currentTrack);
+        } else if (automaticPlaybackCubit.state && !isLoopModeCubit.state) {
+          sl<PlayerControlsBloc>().add(NextButtonPressed());
+        } else {
+          sl<PlayerControlsBloc>().add(InitialPlayerControls());
+          cancelNotification();
+        }
+      },
+    );
     openAudioSession();
     createNotification(track, isPausingState, p);
 
@@ -51,12 +78,6 @@ class MyAudioHandler {
     flutterSoundPlayer.onProgress?.listen((event) {
       p = event.position;
     });
-
-    // check position with timer for app's behaviour at end of playback
-    // we delay to ensure that this track's trackPositionCubit.state != null and currentPosition != lastPosition ( in startPositionCheckTimer() )
-    Future.delayed(const Duration(seconds: 1))
-        .whenComplete(() =>
-        positionUpdate.startPositionCheckTimer());
   }
 
   void stopTrack() {
@@ -89,8 +110,10 @@ class MyAudioHandler {
     createNotification(currentTrack, isPausingState, p);
   }
 
-  Future<TrackEntity> getNextTrack(int plusMinusOne, TrackEntity currentTrack) async {
-    PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+  Future<TrackEntity> getNextTrack(
+      int plusMinusOne, TrackEntity currentTrack) async {
+    PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
     List<TrackEntity> tracks = playlistsBloc.state.tracks;
 
     // we get the current list index based on current track id
@@ -114,5 +137,4 @@ class MyAudioHandler {
       return currentTrack;
     }
   }
-
 }
