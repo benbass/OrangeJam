@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/core/player/position_update.dart';
 
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
@@ -21,7 +20,6 @@ import '../globals.dart';
 
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
-  final PositionUpdate positionUpdate = PositionUpdate();
 
   /// we need the following vars with initial values for the notification handler at app start
   /// track id 0 is empty track
@@ -88,7 +86,6 @@ class MyAudioHandler {
     flutterSoundPlayer.stopPlayer();
     currentTrack = TrackEntity.empty().copyWith(id: 0);
     AwesomeNotifications().cancel(10);
-    positionUpdate.positionCheckTimer?.cancel();
   }
 
   void pauseTrack() {
