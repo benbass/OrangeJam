@@ -58,14 +58,18 @@ class MyAudioHandler {
       fromURI: track.filePath,
 
       /// Logic for loop song and automatic playback!!!
-      whenFinished: () {
+      whenFinished: () async {
         if (isLoopModeCubit.state && automaticPlaybackCubit.state) {
+          // Loop mode prevails: play same track again
           playTrack(currentTrack);
         } else if (isLoopModeCubit.state && !automaticPlaybackCubit.state) {
+          // Loop mode prevails: play same track again
           playTrack(currentTrack);
         } else if (automaticPlaybackCubit.state && !isLoopModeCubit.state) {
+          // no loop mode so we play next track
           sl<PlayerControlsBloc>().add(NextButtonPressed());
         } else {
+          // no loop mode and no automatic playback: we stop the player
           sl<PlayerControlsBloc>().add(InitialPlayerControls());
           cancelNotification();
         }
