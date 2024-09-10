@@ -125,5 +125,6 @@ class AppTheme {
         color: _primaryVariantColor,
       ),
     ),
+
   );
 }

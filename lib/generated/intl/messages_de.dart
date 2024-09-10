@@ -21,12 +21,12 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
   static String m0(appName) =>
-      "Wähle die ZIP Datei mit der gewünschten Sicherung im \'${appName} Playlists\' Ordner in deinem Google Drive aus.";
+      "Wählen Sie die ZIP Datei mit der gewünschten Sicherung im \'${appName} Playlists\' Ordner in Ihrem Google Drive aus.";
 
   static String m1(fileName) => "Die Tags von ${fileName} wurden aktualisiert.";
 
   static String m2(trackName) =>
-      "Der Track \'${trackName}\' wurde der Queue hinzugefügt.";
+      "Der Titel \'${trackName}\' wurde der Queue hinzugefügt.";
 
   static String m3(filePath) =>
       "Ups, die Datei \'${filePath}\' wurde nicht gefunden!";
@@ -41,10 +41,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(name) => "Die Playlist \'${name}\' wurde erstellt.";
 
   static String m8(selectedVal) =>
-      "Dieser Track befindet sich bereits in der Playlist \'${selectedVal}\'.";
+      "Dieser Titel befindet sich bereits in der Playlist \'${selectedVal}\'.";
 
   static String m9(selectedVal) =>
-      "Der Track wurde zur Playlist \'${selectedVal}\' hinzugefügt.";
+      "Der Titel wurde zur Playlist \'${selectedVal}\' hinzugefügt.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "backupRestore_error": MessageLookupByLibrary.simpleMessage("Fehler"),
         "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
-                "Fehler beim Holen der Sicherungsdatei.\nBitte versuche es nochmal."),
+                "Fehler beim Holen der Sicherungsdatei.\nBitte versuchen Sie es nochmal."),
         "backupRestore_hasBeenUploadedToYourGoogleDrive":
             MessageLookupByLibrary.simpleMessage(
                 " wurde auf Google Drive hochgeladen."),
@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 " wurde erfolgreich erstellt in "),
         "backupRestore_youAreNotSignedInToYourGoogleAccount":
             MessageLookupByLibrary.simpleMessage(
-                "Du bist nicht in deinem Google Konto eingeloggt"),
+                "Sie sind nicht in Ihrem Google Konto angemeldet"),
         "backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored":
             MessageLookupByLibrary.simpleMessage(
                 "Die Playlists aus der Sicherung wurden wiederhergestellt."),
@@ -92,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Schliessen"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
-                "Eine ZIP Datei wird erstellt und auf deinen Google Drive hochgeladen"),
+                "Eine ZIP Datei wird erstellt und auf Ihren Google Drive hochgeladen"),
         "cutomWidgets_pickTheZipFileThatContainsYourBackup": m0,
         "drawer_automaticPlayback":
             MessageLookupByLibrary.simpleMessage("Automatische Wiedergabe"),
@@ -109,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "edit_tags_selectPicture":
             MessageLookupByLibrary.simpleMessage("Bild\nauswählen"),
         "edit_tags_snackBarUpdateError": MessageLookupByLibrary.simpleMessage(
-            "Beim Schreiben in die Datei ist ein Fehler aufgetreten.\nÜberprüfe die Datei und versuche es erneut."),
+            "Beim Schreiben in die Datei ist ein Fehler aufgetreten.\nÜberprüfen Sie die Datei und versuchen Sie es erneut."),
         "edit_tags_snackBarUpdateSuccess": m1,
         "edit_tags_trackTitle": MessageLookupByLibrary.simpleMessage("Titel"),
         "edit_tags_tracksTotal":
@@ -129,8 +129,62 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterByPopUpMenuButton_year":
             MessageLookupByLibrary.simpleMessage("Jahr"),
         "genre": MessageLookupByLibrary.simpleMessage("Genre: "),
+        "help": MessageLookupByLibrary.simpleMessage("Hilfe"),
+        "help_add_to_playlist": MessageLookupByLibrary.simpleMessage(
+            "Zu Playlist\n/ Queue\nhinzufügen"),
+        "help_add_to_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Den Titel nach rechts wischen und die gewünschte Option wählen."),
+        "help_automatic_playback":
+            MessageLookupByLibrary.simpleMessage("Automatische\nWiedergabe"),
+        "help_automatic_playback_desc": MessageLookupByLibrary.simpleMessage(
+            "Aktivieren Sie diesen Modus im Einstellungsmenü.\nBitte beachten Sie, dass eine Liste nicht automatisch gestartet wird, wenn Sie die App starten.\nDer Modus funktioniert nur, wenn Sie zu einer anderen Liste wechseln."),
+        "help_backup_restore": MessageLookupByLibrary.simpleMessage(
+            "Backup &\nWiederherst.\nder Playlisten"),
+        "help_backup_restore_desc": MessageLookupByLibrary.simpleMessage(
+            "Bei der Sicherung wird eine Archivdatei (zip) auf Ihr Google Drive hochgeladen. Sie müssen bei Ihrem Google-Konto angemeldet sein.\n\nBei der Wiederherstellung werden Sie aufgefordert, eine zuvor erstellte Archivdatei aus Ihrem Google Drive auszuwählen.\nWiederhergestellte Playlisten werden zu bestehenden Playlisten hinzugefügt. Wenn Playlisten mit demselben Namen bereits in der App vorhanden sind, werden sie überschrieben."),
+        "help_create_playlist":
+            MessageLookupByLibrary.simpleMessage("Playlist\nerstellen"),
+        "help_create_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Unten in der App auf die Schaltfläche \'OrangeJam\' und dann auf die Schaltfläche \'+\' tippen."),
+        "help_delete_playlist":
+            MessageLookupByLibrary.simpleMessage("Playlist\nlöschen"),
+        "help_delete_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Unten in der App auf die Schaltfläche \'OrangeJam\' tippen und dann lange auf die zu löschende Playlist drücken."),
+        "help_edit_tags":
+            MessageLookupByLibrary.simpleMessage("Tags bearbeiten"),
+        "help_edit_tags_desc": MessageLookupByLibrary.simpleMessage(
+            "Den Titel nach links wischen oder auf die Schaltfläche \'Bearbeiten\' in der Playersteuerung tippen.\nDie letztgenannte Option ist nur für den gerade abgespielten Titel verfügbar."),
+        "help_or": MessageLookupByLibrary.simpleMessage(" oder "),
+        "help_play": MessageLookupByLibrary.simpleMessage("Abspielen"),
+        "help_play_desc":
+            MessageLookupByLibrary.simpleMessage("Auf Titel tippen."),
+        "help_refresh":
+            MessageLookupByLibrary.simpleMessage("Datenbank\naktualisieren"),
+        "help_refresh_desc": MessageLookupByLibrary.simpleMessage(
+            "Nachdem Sie Dateien aus Ihrer Musikbibliothek gelöscht oder hinzugefügt haben (mit einer Dateimanager-App), sollten Sie die Datenbank aktualisieren, damit sie den aktuellen Stand Ihrer Bibliothek wiedergibt."),
+        "help_remove_from_playlist": MessageLookupByLibrary.simpleMessage(
+            "Von Playlist\n/ Queue\nentfernen"),
+        "help_remove_from_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Den Titel nach links wischen und entfernen.\nDadurch wird der Titel sofort entfernt und, im Falle einer Playlist, der neue Status dieser Playlist gespeichert.\nBeachten Sie, dass diese Option nicht für \'Dateien\' verfügbar ist, da die App nur Elemente aus Playlisten entfernen kann: Sie kann keine Dateien löschen.\nWenn Sie eine Datei von Ihrem Gerät entfernen möchten, verwenden Sie bitte die Dateimanager-App Ihrer Wahl. Wenn Sie fertig sind, gehen Sie zu den Einstellungen der App und scannen Sie Ihr Gerät, um die Datenbank zu aktualisieren."),
+        "help_reorder_tracks":
+            MessageLookupByLibrary.simpleMessage("Titel\nneu ordnen"),
+        "help_reorder_tracks_desc": MessageLookupByLibrary.simpleMessage(
+            "Lange auf den Titel drücken und diesen in die neue Position schieben.\nBeachten Sie, dass die neue Reihenfolge bei Playlists sofort gespeichert wird. Bei \'Dateien\' und \'Queue\' geht die Reihenfolge verloren, wenn Sie eine andere Liste öffnen."),
+        "help_repeat_track":
+            MessageLookupByLibrary.simpleMessage("Titel\nwiederholen"),
+        "help_repeat_track_desc": MessageLookupByLibrary.simpleMessage(
+            "Auf die Schaltfläche \'Titel wiederholen\' in der Playersteuerung tippen."),
+        "help_shuffle": MessageLookupByLibrary.simpleMessage("Mischen"),
+        "help_shuffle_desc": MessageLookupByLibrary.simpleMessage(
+            "Auf die Schaltfläche \'Mischen\' in der Playersteuerung tippen."),
+        "help_stop": MessageLookupByLibrary.simpleMessage("Stop"),
+        "help_stop_desc": MessageLookupByLibrary.simpleMessage(
+            "Erneut auf den Titel tippen ODER auf die Stopptaste in der Playersteuerung tippen."),
+        "help_view_tags": MessageLookupByLibrary.simpleMessage("Tags ansehen"),
+        "help_view_tags_desc": MessageLookupByLibrary.simpleMessage(
+            "Auf die Schaltfläche \'Info\' in der Playersteuerung tippen.\nDiese Funktion ist nur verfügbar, wenn ein Titel abgespielt wird."),
         "homePage_LoadingTracks":
-            MessageLookupByLibrary.simpleMessage("Lade Tracks ..."),
+            MessageLookupByLibrary.simpleMessage("Lade Titel ..."),
         "homePage_ScanningDevice":
             MessageLookupByLibrary.simpleMessage("Durchsuche Gerät ..."),
         "initializeAwesomeNotification_allowNotifications":
@@ -142,18 +196,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Entfernen"),
         "listItemSlidable_theQueueAlreadyContainsThisTrack":
             MessageLookupByLibrary.simpleMessage(
-                "Dieser Track befindet sich bereits in der Queue."),
+                "Dieser Titel befindet sich bereits in der Queue."),
         "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": m2,
         "listItemSlidable_upsTheFileTrackfilepathWasNotFound": m3,
         "loopButton_LoopPlaybackIsOff":
-            MessageLookupByLibrary.simpleMessage("Track Wiederholung ist aus"),
+            MessageLookupByLibrary.simpleMessage("Titel Wiederholung ist aus"),
         "loopButton_LoopPlaybackIsOn":
-            MessageLookupByLibrary.simpleMessage("Track Wiederholung ist an"),
+            MessageLookupByLibrary.simpleMessage("Titel Wiederholung ist an"),
         "playlistButton_SnackbarNameWasDeleted": m4,
         "playlistButton_ThisWillDefinitelyDeleteThePlaylist": m5,
         "playlistHandler_addThisTrackToPlaylist":
             MessageLookupByLibrary.simpleMessage(
-                "Track zur Playlist hinzufügen: "),
+                "Titel zur Playlist hinzufügen: "),
         "playlistHandler_enterANameForYourNewPlaylist":
             MessageLookupByLibrary.simpleMessage(
                 "Name für die neue Playlist vergeben!"),
@@ -168,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "playlistHandler_theTrackWasAddedToThePlaylistSelectedval": m9,
         "playlistHandler_youDontHaveAnyPlaylistYet":
             MessageLookupByLibrary.simpleMessage(
-                "Du hast noch keine Playlist!"),
+                "Sie haben noch keine Playlist!"),
         "playlistsMenu_NewPlaylist":
             MessageLookupByLibrary.simpleMessage("Neue Playlist: "),
         "queue": MessageLookupByLibrary.simpleMessage("Queue"),
@@ -187,9 +241,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sortByDropdown_sort":
             MessageLookupByLibrary.simpleMessage("Sortieren"),
         "sortByDropdown_trackName":
-            MessageLookupByLibrary.simpleMessage("Track Name"),
-        "track": MessageLookupByLibrary.simpleMessage("Track: "),
-        "trackNo": MessageLookupByLibrary.simpleMessage("Track Nr: "),
+            MessageLookupByLibrary.simpleMessage("Titel Name"),
+        "track": MessageLookupByLibrary.simpleMessage("Titel: "),
+        "trackNo": MessageLookupByLibrary.simpleMessage("Titel Nr: "),
         "year": MessageLookupByLibrary.simpleMessage("Jahr: ")
       };
 }

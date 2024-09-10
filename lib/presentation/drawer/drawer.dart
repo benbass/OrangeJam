@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
+import 'package:orangejam/presentation/help_page/help_page.dart';
 
 import '../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../generated/l10n.dart';
@@ -142,6 +143,20 @@ class MyDrawer extends StatelessWidget {
             ),
             const SizedBox(
               height: 40,
+            ),
+            //const Spacer(),
+
+            /// Help
+            SimpleButton(
+              themeData: themeData,
+              btnText: S.of(context).help,
+              function: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HelpPage()),
+                );
+              },
             ),
           ],
         ),

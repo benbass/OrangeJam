@@ -866,6 +866,306 @@ class S {
       args: [],
     );
   }
+
+  /// `Play`
+  String get help_play {
+    return Intl.message(
+      'Play',
+      name: 'help_play',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stop`
+  String get help_stop {
+    return Intl.message(
+      'Stop',
+      name: 'help_stop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reorder tracks`
+  String get help_reorder_tracks {
+    return Intl.message(
+      'Reorder tracks',
+      name: 'help_reorder_tracks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repeat track`
+  String get help_repeat_track {
+    return Intl.message(
+      'Repeat track',
+      name: 'help_repeat_track',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shuffle`
+  String get help_shuffle {
+    return Intl.message(
+      'Shuffle',
+      name: 'help_shuffle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View tags`
+  String get help_view_tags {
+    return Intl.message(
+      'View tags',
+      name: 'help_view_tags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit tags`
+  String get help_edit_tags {
+    return Intl.message(
+      'Edit tags',
+      name: 'help_edit_tags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a\nplaylist`
+  String get help_create_playlist {
+    return Intl.message(
+      'Create a\nplaylist',
+      name: 'help_create_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete a\nplaylist`
+  String get help_delete_playlist {
+    return Intl.message(
+      'Delete a\nplaylist',
+      name: 'help_delete_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to\nplaylist / queue`
+  String get help_add_to_playlist {
+    return Intl.message(
+      'Add to\nplaylist / queue',
+      name: 'help_add_to_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove from\nplaylist / queue`
+  String get help_remove_from_playlist {
+    return Intl.message(
+      'Remove from\nplaylist / queue',
+      name: 'help_remove_from_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatic\nplayback`
+  String get help_automatic_playback {
+    return Intl.message(
+      'Automatic\nplayback',
+      name: 'help_automatic_playback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup &\nRestore\nplaylists`
+  String get help_backup_restore {
+    return Intl.message(
+      'Backup &\nRestore\nplaylists',
+      name: 'help_backup_restore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh\ndatabase`
+  String get help_refresh {
+    return Intl.message(
+      'Refresh\ndatabase',
+      name: 'help_refresh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help`
+  String get help {
+    return Intl.message(
+      'Help',
+      name: 'help',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on track.`
+  String get help_play_desc {
+    return Intl.message(
+      'Tap on track.',
+      name: 'help_play_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap again on track OR tap on 'Stop' button in player controls.`
+  String get help_stop_desc {
+    return Intl.message(
+      'Tap again on track OR tap on \'Stop\' button in player controls.',
+      name: 'help_stop_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Long press on track and slide into new position.\nNote that the new order will be immediately saved for playlists. For 'Files' and 'Queue' the order will be lost when you open another list.`
+  String get help_reorder_tracks_desc {
+    return Intl.message(
+      'Long press on track and slide into new position.\nNote that the new order will be immediately saved for playlists. For \'Files\' and \'Queue\' the order will be lost when you open another list.',
+      name: 'help_reorder_tracks_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on 'Repeat one' button in player controls.`
+  String get help_repeat_track_desc {
+    return Intl.message(
+      'Tap on \'Repeat one\' button in player controls.',
+      name: 'help_repeat_track_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on 'Shuffle' button in player controls.`
+  String get help_shuffle_desc {
+    return Intl.message(
+      'Tap on \'Shuffle\' button in player controls.',
+      name: 'help_shuffle_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on 'Info' button in player controls.\nThis is only available when a track is being played.`
+  String get help_view_tags_desc {
+    return Intl.message(
+      'Tap on \'Info\' button in player controls.\nThis is only available when a track is being played.',
+      name: 'help_view_tags_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe track to the left or tap on 'Edit' button in player controls.\nThe latter option is only available for the track currently being played.`
+  String get help_edit_tags_desc {
+    return Intl.message(
+      'Swipe track to the left or tap on \'Edit\' button in player controls.\nThe latter option is only available for the track currently being played.',
+      name: 'help_edit_tags_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on the 'OrangeJam' button at the bottom of the app, then on the '+' button.`
+  String get help_create_playlist_desc {
+    return Intl.message(
+      'Tap on the \'OrangeJam\' button at the bottom of the app, then on the \'+\' button.',
+      name: 'help_create_playlist_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap on the 'OrangeJam' button at the bottom of the app and then long press on the playlist you want to delete.`
+  String get help_delete_playlist_desc {
+    return Intl.message(
+      'Tap on the \'OrangeJam\' button at the bottom of the app and then long press on the playlist you want to delete.',
+      name: 'help_delete_playlist_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe track to the right and select the desired option.`
+  String get help_add_to_playlist_desc {
+    return Intl.message(
+      'Swipe track to the right and select the desired option.',
+      name: 'help_add_to_playlist_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe track to the left and remove.\nThis immediately removes the title and, in the case of a playlist, saves the new status of this playlist.\nNote that this option is not available for 'Files' as the app can only remove items from playlists: It cannot delete files.\nIf you want to remove a file from your device, please use the file manager app of your choice. When done, go to the app settings and scan your device in order to update the database.`
+  String get help_remove_from_playlist_desc {
+    return Intl.message(
+      'Swipe track to the left and remove.\nThis immediately removes the title and, in the case of a playlist, saves the new status of this playlist.\nNote that this option is not available for \'Files\' as the app can only remove items from playlists: It cannot delete files.\nIf you want to remove a file from your device, please use the file manager app of your choice. When done, go to the app settings and scan your device in order to update the database.',
+      name: 'help_remove_from_playlist_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activate this mode in the settings menu.\nPlease note that a list is not started automatically when you start the app.\nThe mode only works when you switch to another list.`
+  String get help_automatic_playback_desc {
+    return Intl.message(
+      'Activate this mode in the settings menu.\nPlease note that a list is not started automatically when you start the app.\nThe mode only works when you switch to another list.',
+      name: 'help_automatic_playback_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `During the backup, an archive file (zip) is uploaded to your Google Drive. You must be logged in to your Google account.\n\nWhen restoring, you will be prompted to select a previously created archive file from your Google Drive.\nRestored playlists are added to existing playlists. If playlists with the same name already exist in the app, they will be overwritten.`
+  String get help_backup_restore_desc {
+    return Intl.message(
+      'During the backup, an archive file (zip) is uploaded to your Google Drive. You must be logged in to your Google account.\n\nWhen restoring, you will be prompted to select a previously created archive file from your Google Drive.\nRestored playlists are added to existing playlists. If playlists with the same name already exist in the app, they will be overwritten.',
+      name: 'help_backup_restore_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `After you have deleted or added audio files from your music library (using a file manager app), you should update the database so that it reflects the current status of your library.`
+  String get help_refresh_desc {
+    return Intl.message(
+      'After you have deleted or added audio files from your music library (using a file manager app), you should update the database so that it reflects the current status of your library.',
+      name: 'help_refresh_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` or `
+  String get help_or {
+    return Intl.message(
+      ' or ',
+      name: 'help_or',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

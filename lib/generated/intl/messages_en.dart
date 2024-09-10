@@ -125,6 +125,58 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterByPopUpMenuButton_year":
             MessageLookupByLibrary.simpleMessage("Year"),
         "genre": MessageLookupByLibrary.simpleMessage("Genre: "),
+        "help": MessageLookupByLibrary.simpleMessage("Help"),
+        "help_add_to_playlist":
+            MessageLookupByLibrary.simpleMessage("Add to\nplaylist / queue"),
+        "help_add_to_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Swipe track to the right and select the desired option."),
+        "help_automatic_playback":
+            MessageLookupByLibrary.simpleMessage("Automatic\nplayback"),
+        "help_automatic_playback_desc": MessageLookupByLibrary.simpleMessage(
+            "Activate this mode in the settings menu.\nPlease note that a list is not started automatically when you start the app.\nThe mode only works when you switch to another list."),
+        "help_backup_restore": MessageLookupByLibrary.simpleMessage(
+            "Backup &\nRestore\nplaylists"),
+        "help_backup_restore_desc": MessageLookupByLibrary.simpleMessage(
+            "During the backup, an archive file (zip) is uploaded to your Google Drive. You must be logged in to your Google account.\n\nWhen restoring, you will be prompted to select a previously created archive file from your Google Drive.\nRestored playlists are added to existing playlists. If playlists with the same name already exist in the app, they will be overwritten."),
+        "help_create_playlist":
+            MessageLookupByLibrary.simpleMessage("Create a\nplaylist"),
+        "help_create_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap on the \'OrangeJam\' button at the bottom of the app, then on the \'+\' button."),
+        "help_delete_playlist":
+            MessageLookupByLibrary.simpleMessage("Delete a\nplaylist"),
+        "help_delete_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap on the \'OrangeJam\' button at the bottom of the app and then long press on the playlist you want to delete."),
+        "help_edit_tags": MessageLookupByLibrary.simpleMessage("Edit tags"),
+        "help_edit_tags_desc": MessageLookupByLibrary.simpleMessage(
+            "Swipe track to the left or tap on \'Edit\' button in player controls.\nThe latter option is only available for the track currently being played."),
+        "help_or": MessageLookupByLibrary.simpleMessage(" or "),
+        "help_play": MessageLookupByLibrary.simpleMessage("Play"),
+        "help_play_desc": MessageLookupByLibrary.simpleMessage("Tap on track."),
+        "help_refresh":
+            MessageLookupByLibrary.simpleMessage("Refresh\ndatabase"),
+        "help_refresh_desc": MessageLookupByLibrary.simpleMessage(
+            "After you have deleted or added audio files from your music library (using a file manager app), you should update the database so that it reflects the current status of your library."),
+        "help_remove_from_playlist": MessageLookupByLibrary.simpleMessage(
+            "Remove from\nplaylist / queue"),
+        "help_remove_from_playlist_desc": MessageLookupByLibrary.simpleMessage(
+            "Swipe track to the left and remove.\nThis immediately removes the title and, in the case of a playlist, saves the new status of this playlist.\nNote that this option is not available for \'Files\' as the app can only remove items from playlists: It cannot delete files.\nIf you want to remove a file from your device, please use the file manager app of your choice. When done, go to the app settings and scan your device in order to update the database."),
+        "help_reorder_tracks":
+            MessageLookupByLibrary.simpleMessage("Reorder tracks"),
+        "help_reorder_tracks_desc": MessageLookupByLibrary.simpleMessage(
+            "Long press on track and slide into new position.\nNote that the new order will be immediately saved for playlists. For \'Files\' and \'Queue\' the order will be lost when you open another list."),
+        "help_repeat_track":
+            MessageLookupByLibrary.simpleMessage("Repeat track"),
+        "help_repeat_track_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap on \'Repeat one\' button in player controls."),
+        "help_shuffle": MessageLookupByLibrary.simpleMessage("Shuffle"),
+        "help_shuffle_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap on \'Shuffle\' button in player controls."),
+        "help_stop": MessageLookupByLibrary.simpleMessage("Stop"),
+        "help_stop_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap again on track OR tap on \'Stop\' button in player controls."),
+        "help_view_tags": MessageLookupByLibrary.simpleMessage("View tags"),
+        "help_view_tags_desc": MessageLookupByLibrary.simpleMessage(
+            "Tap on \'Info\' button in player controls.\nThis is only available when a track is being played."),
         "homePage_LoadingTracks":
             MessageLookupByLibrary.simpleMessage("Loading tracks ..."),
         "homePage_ScanningDevice":
