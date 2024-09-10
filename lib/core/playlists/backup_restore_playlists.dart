@@ -99,7 +99,7 @@ class BackupRestorePlaylists {
                 '${dir.path}/${appName}_Playlists_$dateTimeForReuse.zip');
 
         // SCHRITTE BEI GOOGLE:
-        // Zuerst unter https://console.cloud.google.com/ die Projekt erstellen.
+        // Zuerst unter https://console.cloud.google.com/ Projekt erstellen.
         // Dann Google Drive Api aktivieren
         // Anmeldedaten erstellen (OAuth) für Android app. SHA1 key unbedingt!!!! hier mit " ./gradlew signingReport " (zuerst ins Verz. android wechseln!)
         // Wenn später die Anmeldung beim Testen fehlschlägt, dann ist der key wahrscheinlich falsch (falsch erstellt!)
@@ -107,6 +107,8 @@ class BackupRestorePlaylists {
         // dann nach "Bearbeiten" einfach Speichern und Fortfahren um zu den Scopes zu gelangen.
         // Dort Google Drive API auswählen und speichern.
         // Dann die email des test users eingeben
+        /// !!! WICHTIG: Beim Release zu https://play.google.com/ -> App-Signatur gehen und dort oben unter "Zertifikat für den App-Signaturschlüssel"
+        /// den SHA-1 Zertifikats kopieren und dann in https://console.cloud.google.com/ -> Client-ID für Android den Schlüssel durch Einfügen ersetzen!!!!
         final googleSignIn = sign_in.GoogleSignIn.standard(
             scopes: [drive.DriveApi.driveFileScope]);
 
