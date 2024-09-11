@@ -75,6 +75,9 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             //signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
+            // shrinkResources false is necessary for release mode due to following bug in awesome_notifications:
+            // https://github.com/rafaelsetragni/awesome_notifications/issues/808
+            //shrinkResources false // I will instead try other solution first as in https://developer.android.com/build/shrink-code#keep-resources. See file res/raw/keep.xml
             ndk {
                 debugSymbolLevel 'SYMBOL_TABLE'
             }

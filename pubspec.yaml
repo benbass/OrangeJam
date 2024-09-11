@@ -107,8 +107,6 @@ flutter:
     - assets/album-placeholder.png
     - assets/orange.jpeg
     - assets/playlist.png
-    - assets/scroll.png
-    - assets/arrow.png
 
   fonts:
     - family: Montserrat
