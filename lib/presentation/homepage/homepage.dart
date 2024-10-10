@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
-import 'package:orangejam/core/notifications/initialize_awesome_notifications.dart';
 import 'package:orangejam/presentation/drawer/drawer.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
@@ -37,7 +36,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // app language will be set based on shared prefs if set. Default lang. is en.
+    // app language will be set based on shared prefs if set. Default lang is en.
     setAppLanguage(context);
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
@@ -120,6 +119,7 @@ class MyHomePage extends StatelessWidget {
             child: BlocBuilder<TracksBloc, TracksState>(
               builder: (context, tracklistState) {
                 if (tracklistState is TracksInitial) {
+                  // We check the permissions, then
                   // we get the tracks from the objectBox db. If db is empty, device will be scanned,
                   // files will be converted to entities with metadata and put into db (slow!).
                   // See tracks_datasources.dart in infrastructure layer!
@@ -141,8 +141,6 @@ class MyHomePage extends StatelessWidget {
                     // Position for Progressbar in Player controls and behaviour at playback end
                     audioHandler.flutterSoundPlayer.setSubscriptionDuration(
                         const Duration(milliseconds: 100));
-                    //init and check permission for awesomeNotifications
-                    initAwesomeNotifications();
                   }
 
                   // Check sharedPrefs for automatic playback and emit state according to result
