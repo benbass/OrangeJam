@@ -26,21 +26,23 @@ class CustomDialog extends StatelessWidget {
     // BackdropFilter: creates a blur behinds the child (iOS like)
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-      child: AlertDialog(
-        scrollable: scrollable ?? false,
-        title: titleWidget,
-        backgroundColor:
-            themeData.dialogTheme.backgroundColor!.withOpacity(0.98),
-        content: SizedBox(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              content,
-              if (showDropdown) const Placeholder() // DropDown?
-            ],
+      child: SingleChildScrollView(
+        child: AlertDialog(
+          scrollable: scrollable ?? false,
+          title: titleWidget,
+          backgroundColor:
+              themeData.dialogTheme.backgroundColor!.withOpacity(0.98),
+          content: SizedBox(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                content,
+                if (showDropdown) const Placeholder() // DropDown?
+              ],
+            ),
           ),
+          actions: actions,
         ),
-        actions: actions,
       ),
     );
   }

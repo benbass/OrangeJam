@@ -111,5 +111,9 @@
   "help_automatic_playback_desc": "Activez ce mode dans le menu des paramètres.\nVeuillez noter qu'une liste n'est pas lancée automatiquement lorsque vous démarrez l'application.\nLe mode ne fonctionne que lorsque vous passez à une autre liste.",
   "help_backup_restore_desc": "Pendant la sauvegarde, un fichier d'archive (zip) est téléchargé sur votre Google Drive. Vous devez être connecté à votre compte Google.\n\nLors de la restauration, vous serez invité à sélectionner un fichier d'archive précédemment créé dans votre Google Drive.\nLes playlistes restaurées sont ajoutées aux playlistes existantes. Si des playlistes portant le même nom existent déjà dans l'application, elles seront écrasées.",
   "help_refresh_desc": "Après avoir supprimé ou ajouté des fichiers audio à votre bibliothèque musicale (à l'aide d'une application de gestion de fichiers), vous devez mettre à jour la base de données afin qu'elle reflète l'état actuel de votre bibliothèque.",
-  "help_or": " ou "
+  "help_or": " ou ",
+
+  "storage_permissions_dialog_content_33": "Accordez l'autorisation pour Musique et audio dans les paramètres de l'application",
+  "storage_permissions_dialog_content": "Accordez l'autorisation pour Stockage dans les paramètres de l'application",
+  "storage_permissions_dialog_description": "L'accès aux fichiers audio est nécessaire"
 }

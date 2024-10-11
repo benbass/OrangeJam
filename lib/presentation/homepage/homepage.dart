@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/language/language_cubit.dart';
 import 'package:orangejam/presentation/drawer/drawer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/listview/list_of_tracks/tracks_bloc.dart';
@@ -56,16 +57,36 @@ class MyHomePage extends StatelessWidget {
     final ListObserverController observerController =
         ListObserverController(controller: sctr);
 
+    void refreshUi(){
+      BlocProvider.of<TracksBloc>(context).add(TracksRefreshingEvent());
+    }
+
     // Trying to "dispose" the player when closing the app.
     void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
 
     // We update notification (Play/Pause)
     // track id 0 is empty track: occurs at app start or when player is stopped
     // notification should live only when track is not empty
-    void onResumed() => sl<PlayerControlsBloc>().state.track.id != 0
-        ? createNotification(audioHandler.currentTrack,
-            audioHandler.isPausingState, audioHandler.p)
-        : {};
+    void onResumed() async {
+      sl<PlayerControlsBloc>().state.track.id != 0
+          ? createNotification(audioHandler.currentTrack,
+              audioHandler.isPausingState, audioHandler.p)
+          : {};
+      // Storage permission may be permanently denied but
+      // user may grant permission later in app settings: if so, we can now scan device and refresh UI.
+      late bool granted;
+      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
+        granted = await Permission.storage.isGranted;
+      } else {
+        granted = await Permission.audio.isGranted;
+      }
+      // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
+      // An empty list can indicate that permission was never granted
+      granted && GlobalLists().initialTracks.isEmpty
+          ? refreshUi()
+          : {};
+    }
+
     void onInactive() => sl<PlayerControlsBloc>().state.track.id != 0
         ? createNotification(audioHandler.currentTrack,
             audioHandler.isPausingState, audioHandler.p)

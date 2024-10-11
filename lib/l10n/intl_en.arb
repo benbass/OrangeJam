@@ -111,5 +111,9 @@
   "help_automatic_playback_desc": "Activate this mode in the settings menu.\nPlease note that a list is not started automatically when you start the app.\nThe mode only works when you switch to another list.",
   "help_backup_restore_desc": "During the backup, an archive file (zip) is uploaded to your Google Drive. You must be logged in to your Google account.\n\nWhen restoring, you will be prompted to select a previously created archive file from your Google Drive.\nRestored playlists are added to existing playlists. If playlists with the same name already exist in the app, they will be overwritten.",
   "help_refresh_desc": "After you have deleted or added audio files from your music library (using a file manager app), you should update the database so that it reflects the current status of your library.",
-  "help_or": " or "
+  "help_or": " or ",
+
+  "storage_permissions_dialog_content_33": "Grant permission for Music and Audio in the app settings",
+  "storage_permissions_dialog_content": "Grant permission for Storage in the app settings",
+  "storage_permissions_dialog_description": "Access to audio files is required"
 }

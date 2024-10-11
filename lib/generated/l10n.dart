@@ -1166,6 +1166,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Grant permission for Music and Audio in the app settings`
+  String get storage_permissions_dialog_content_33 {
+    return Intl.message(
+      'Grant permission for Music and Audio in the app settings',
+      name: 'storage_permissions_dialog_content_33',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grant permission for Storage in the app settings`
+  String get storage_permissions_dialog_content {
+    return Intl.message(
+      'Grant permission for Storage in the app settings',
+      name: 'storage_permissions_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access to audio files is required`
+  String get storage_permissions_dialog_description {
+    return Intl.message(
+      'Access to audio files is required',
+      name: 'storage_permissions_dialog_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

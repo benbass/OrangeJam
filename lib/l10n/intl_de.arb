@@ -111,5 +111,9 @@
   "help_automatic_playback_desc": "Aktivieren Sie diesen Modus im Einstellungsmenü.\nBitte beachten Sie, dass eine Liste nicht automatisch gestartet wird, wenn Sie die App starten.\nDer Modus funktioniert nur, wenn Sie zu einer anderen Liste wechseln.",
   "help_backup_restore_desc": "Bei der Sicherung wird eine Archivdatei (zip) auf Ihr Google Drive hochgeladen. Sie müssen bei Ihrem Google-Konto angemeldet sein.\n\nBei der Wiederherstellung werden Sie aufgefordert, eine zuvor erstellte Archivdatei aus Ihrem Google Drive auszuwählen.\nWiederhergestellte Playlisten werden zu bestehenden Playlisten hinzugefügt. Wenn Playlisten mit demselben Namen bereits in der App vorhanden sind, werden sie überschrieben.",
   "help_refresh_desc": "Nachdem Sie Dateien aus Ihrer Musikbibliothek gelöscht oder hinzugefügt haben (mit einer Dateimanager-App), sollten Sie die Datenbank aktualisieren, damit sie den aktuellen Stand Ihrer Bibliothek wiedergibt.",
-  "help_or": " oder "
+  "help_or": " oder ",
+
+  "storage_permissions_dialog_content_33": "Erteilen Sie die Berechtigung für Musik und Audio in den App-Einstellungen",
+  "storage_permissions_dialog_content": "Erteilen Sie die Berechtigung für Speicher in den App-Einstellungen",
+  "storage_permissions_dialog_description": "Zugang zu Audiodateien ist erforderlich"
 }

@@ -242,6 +242,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sortieren"),
         "sortByDropdown_trackName":
             MessageLookupByLibrary.simpleMessage("Titel Name"),
+        "storage_permissions_dialog_content": MessageLookupByLibrary.simpleMessage(
+            "Erteilen Sie die Berechtigung für Speicher in den App-Einstellungen"),
+        "storage_permissions_dialog_content_33":
+            MessageLookupByLibrary.simpleMessage(
+                "Erteilen Sie die Berechtigung für Musik und Audio in den App-Einstellungen"),
+        "storage_permissions_dialog_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Zugang zu Audiodateien ist erforderlich"),
         "track": MessageLookupByLibrary.simpleMessage("Titel: "),
         "trackNo": MessageLookupByLibrary.simpleMessage("Titel Nr: "),
         "year": MessageLookupByLibrary.simpleMessage("Jahr: ")

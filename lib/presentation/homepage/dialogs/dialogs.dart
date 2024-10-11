@@ -304,12 +304,6 @@ void dialogCreatePlaylist(
   showDialog(
     context: globalScaffoldKey.scaffoldKey.currentContext!,
     builder: (context) {
-      return OrientationBuilder(builder: (context, orientation) {
-        if (orientation == Orientation.landscape) {
-          // We prevent a pixel overflow
-          Navigator.pop(context);
-        }
-        if (orientation == Orientation.portrait) {
           return CustomDialog(
             content: MyTextInput(
               txtController: PlaylistsNamesAndSelectedVars().txtController,
@@ -338,10 +332,6 @@ void dialogCreatePlaylist(
             ),
             themeData: themeData,
           );
-        } else {
-          return const SizedBox.shrink();
-        }
-      });
     },
   );
 }
