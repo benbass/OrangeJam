@@ -17,6 +17,7 @@ import '../../application/playlists/automatic_playback_cubit.dart';
 import '../../core/notifications/create_notification.dart';
 import '../../core/globals.dart';
 import '../../core/helpers/app_language.dart';
+import '../../core/notifications/initialize_awesome_notifications.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/player/audiohandler.dart';
@@ -61,17 +62,7 @@ class MyHomePage extends StatelessWidget {
       BlocProvider.of<TracksBloc>(context).add(TracksRefreshingEvent());
     }
 
-    // Trying to "dispose" the player when closing the app.
-    void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
-
-    // We update notification (Play/Pause)
-    // track id 0 is empty track: occurs at app start or when player is stopped
-    // notification should live only when track is not empty
-    void onResumed() async {
-      sl<PlayerControlsBloc>().state.track.id != 0
-          ? createNotification(audioHandler.currentTrack,
-              audioHandler.isPausingState, audioHandler.p)
-          : {};
+    void checkStoragePermissionOnResumed() async {
       // Storage permission may be permanently denied but
       // user may grant permission later in app settings: if so, we can now scan device and refresh UI.
       late bool granted;
@@ -85,6 +76,20 @@ class MyHomePage extends StatelessWidget {
       granted && GlobalLists().initialTracks.isEmpty
           ? refreshUi()
           : {};
+    }
+
+    // Trying to "dispose" the player when closing the app.
+    void onDetached() => audioHandler.flutterSoundPlayer.closePlayer();
+
+    // We update notification (Play/Pause)
+    // track id 0 is empty track: occurs at app start or when player is stopped
+    // notification should live only when track is not empty
+    void onResumed() {
+      sl<PlayerControlsBloc>().state.track.id != 0
+          ? createNotification(audioHandler.currentTrack,
+              audioHandler.isPausingState, audioHandler.p)
+          : {};
+      checkStoragePermissionOnResumed();
     }
 
     void onInactive() => sl<PlayerControlsBloc>().state.track.id != 0
@@ -162,6 +167,8 @@ class MyHomePage extends StatelessWidget {
                     // Position for Progressbar in Player controls and behaviour at playback end
                     audioHandler.flutterSoundPlayer.setSubscriptionDuration(
                         const Duration(milliseconds: 100));
+                    //init and check permission for awesomeNotifications
+                    initAwesomeNotifications();
                   }
 
                   // Check sharedPrefs for automatic playback and emit state according to result

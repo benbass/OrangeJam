@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../core/globals.dart';
-import '../core/notifications/initialize_awesome_notifications.dart';
 import '../generated/l10n.dart';
 import '../presentation/homepage/custom_widgets/custom_widgets.dart';
 
@@ -67,26 +66,14 @@ class PermissionsAndDirectory {
       sdkAtLeast33 = false;
       permissions.add(Permission.storage);
       isGranted = await _checkPermissions(permissions);
-      if (isGranted) {
-        // isGranted == true:
-        // audiofiles_datasources.dart will call getPublicMusicDirectoryPath();
-
-        /// NOTIFICATIONS: init and check permission for awesomeNotifications
-        // We need this permission only if app has access to storage so audio files can be played
-        // not all SDKs < 33 need this permission
-        initAwesomeNotifications();
-
-        ///
-      }
+      // isGranted == true:
+      // audiofiles_datasources.dart will call getPublicMusicDirectoryPath();
     } else {
       sdkAtLeast33 = true;
       permissions.add(Permission.audio);
       // permissions.add(Permission.photos); // NOT NEEDED
       // permissions.add(Permission.videos); // NOT NEEDED
       isGranted = await _checkPermissions(permissions);
-      if (isGranted) {
-        initAwesomeNotifications();
-      }
     }
   }
 
