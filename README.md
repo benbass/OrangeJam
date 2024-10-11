@@ -17,4 +17,4 @@ Beautiful player for audio files located in the device's music folder.
 ## Technical note
 Android Studio Ladybug (2024.2...) is shipped with JDK 21. That causes compilation issue with plugins that expect JDK 17.
 That's why Flutter on machines running this app on Android emulator must be configured as follows:
-MacOS: flutter config --jdk-dir "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home" or adjust path to your jdk17 installation
+MacOS: flutter config --jdk-dir "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"  (Windows: "C:\Program Files\Java\jdk-17") or adjust path to your jdk17 installation
