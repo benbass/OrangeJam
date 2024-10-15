@@ -47,8 +47,9 @@ class MyHomePage extends StatelessWidget {
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
     final appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(context);
+    final automaticPlaybackCubit =
+        BlocProvider.of<AutomaticPlaybackCubit>(context);
     final themeData = Theme.of(context);
-    PlaylistHandler playlistHandler = PlaylistHandler(playlists: []);
 
     // Search field
     final TextEditingController searchController = TextEditingController();
@@ -58,7 +59,7 @@ class MyHomePage extends StatelessWidget {
     final ListObserverController observerController =
         ListObserverController(controller: sctr);
 
-    void refreshUi(){
+    void refreshUi() {
       BlocProvider.of<TracksBloc>(context).add(TracksRefreshingEvent());
     }
 
@@ -73,9 +74,16 @@ class MyHomePage extends StatelessWidget {
       }
       // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
       // An empty list can indicate that permission was never granted
-      granted && GlobalLists().initialTracks.isEmpty
-          ? refreshUi()
-          : {};
+      if (granted && GlobalLists().initialTracks.isEmpty) {
+        refreshUi();
+      }
+    }
+
+    void updateNotificationIfNeeded() {
+      if (sl<PlayerControlsBloc>().state.track.id != 0) {
+        createNotification(audioHandler.currentTrack,
+            audioHandler.isPausingState, audioHandler.p);
+      }
     }
 
     // Trying to "dispose" the player when closing the app.
@@ -85,39 +93,24 @@ class MyHomePage extends StatelessWidget {
     // track id 0 is empty track: occurs at app start or when player is stopped
     // notification should live only when track is not empty
     void onResumed() {
-      sl<PlayerControlsBloc>().state.track.id != 0
-          ? createNotification(audioHandler.currentTrack,
-              audioHandler.isPausingState, audioHandler.p)
-          : {};
+      updateNotificationIfNeeded();
       checkStoragePermissionOnResumed();
     }
-
-    void onInactive() => sl<PlayerControlsBloc>().state.track.id != 0
-        ? createNotification(audioHandler.currentTrack,
-            audioHandler.isPausingState, audioHandler.p)
-        : {};
-    void onHidden() => sl<PlayerControlsBloc>().state.track.id != 0
-        ? createNotification(audioHandler.currentTrack,
-            audioHandler.isPausingState, audioHandler.p)
-        : {};
-    void onPaused() => sl<PlayerControlsBloc>().state.track.id != 0
-        ? createNotification(audioHandler.currentTrack,
-            audioHandler.isPausingState, audioHandler.p)
-        : {};
 
     // Listen to the app lifecycle state changes
     void onStateChanged(AppLifecycleState state) {
       switch (state) {
         case AppLifecycleState.detached:
           onDetached();
+          break;
         case AppLifecycleState.resumed:
           onResumed();
+          break;
         case AppLifecycleState.inactive:
-          onInactive();
         case AppLifecycleState.hidden:
-          onHidden();
         case AppLifecycleState.paused:
-          onPaused();
+          updateNotificationIfNeeded();
+          break;
       }
     }
 
@@ -172,8 +165,6 @@ class MyHomePage extends StatelessWidget {
                   }
 
                   // Check sharedPrefs for automatic playback and emit state according to result
-                  final automaticPlaybackCubit =
-                      BlocProvider.of<AutomaticPlaybackCubit>(context);
                   automaticPlaybackCubit.getAutomaticPlaybackFromPrefs();
                   //
 
@@ -188,7 +179,6 @@ class MyHomePage extends StatelessWidget {
                                   playlistsBloc: playlistsBloc,
                                   searchController: searchController,
                                   appbarFilterByCubit: appbarFilterByCubit,
-                                  playlistHandler: playlistHandler,
                                 )
                               : const SizedBox.shrink(),
 
@@ -213,7 +203,6 @@ class MyHomePage extends StatelessWidget {
                                     audioHandler: audioHandler,
                                     isScrollingCubit: isScrollingCubit,
                                     isScrollReverseCubit: isScrollReverseCubit,
-                                    playlistHandler: playlistHandler,
                                   ),
                                   BlocBuilder<IsCommWithGoogleCubit, bool>(
                                     builder: (context, state) {
@@ -277,13 +266,11 @@ class MyHomePage extends StatelessWidget {
               /// Playlists menu
               BlocBuilder<PlaylistsBloc, PlaylistsState>(
                 builder: (context, state) {
-                  playlistHandler = PlaylistHandler(playlists: state.playlists);
                   // we need the names of the playlists as strings
-                  playlistHandler.buildPlaylistStrings();
+                  PlaylistHandler().buildPlaylistStrings(state.playlists);
                   return Expanded(
                     child: MenuPlaylistsWidget(
                       scrollController: sctr,
-                      playlistHandler: playlistHandler,
                       appbarFilterByCubit: appbarFilterByCubit,
                       themeData: themeData,
                     ),

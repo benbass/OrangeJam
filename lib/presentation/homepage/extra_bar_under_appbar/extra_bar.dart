@@ -5,7 +5,6 @@ import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/s
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../core/playlists/playlist_handler.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../generated/l10n.dart';
 import '../dialogs/dialogs.dart';
@@ -17,13 +16,11 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
     required this.playlistsBloc,
     required this.searchController,
     required this.appbarFilterByCubit,
-    required this.playlistHandler,
   });
 
   final PlaylistsBloc playlistsBloc;
   final TextEditingController searchController;
   final AppbarFilterByCubit appbarFilterByCubit;
-  final PlaylistHandler playlistHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +93,7 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
                       }
                       dialogCreatePlaylist(
                         S.of(context).extraBar_saveTheQueueAsAPlaylist,
-                        filePaths,
-                        playlistHandler,
+                        filePaths
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(

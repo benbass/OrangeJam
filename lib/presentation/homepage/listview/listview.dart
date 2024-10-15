@@ -20,7 +20,6 @@ class MyListview extends StatelessWidget {
   final IsScrollingCubit isScrollingCubit;
   final IsScrollReverseCubit isScrollReverseCubit;
   final MyAudioHandler audioHandler;
-  final PlaylistHandler playlistHandler;
 
   const MyListview({
     super.key,
@@ -30,7 +29,6 @@ class MyListview extends StatelessWidget {
     required this.isScrollingCubit,
     required this.isScrollReverseCubit,
     required this.audioHandler,
-    required this.playlistHandler,
   });
 
   @override
@@ -87,8 +85,8 @@ class MyListview extends StatelessWidget {
                     .remove(track.filePath);
                 playlistsState.playlists[playlistsState.playlistId][1]
                     .insert(newIndex, track.filePath);
-                //playlistHandler.updateDatabase();
-                playlistHandler.reorderLinesInFile(
+
+                PlaylistHandler().reorderLinesInFile(
                     playlistsState.playlists[playlistsState.playlistId][0],
                     oldIndex,
                     newIndex);
@@ -133,7 +131,6 @@ class MyListview extends StatelessWidget {
                 audioHandler: audioHandler,
                 themeData: themeData,
                 textColor: textColor,
-                playlistHandler: playlistHandler,
               );
             }),
       );

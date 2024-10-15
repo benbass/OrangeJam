@@ -7,9 +7,6 @@ import '../../presentation/homepage/dialogs/dialogs.dart';
 import '../globals.dart';
 
 class PlaylistHandler {
-  final List playlists;
-
-  PlaylistHandler({required this.playlists});
 
   // get the correct m3u file
   Future<File> getFile(String fileName) async {
@@ -22,7 +19,7 @@ class PlaylistHandler {
   }
 
   // this method is used in dialog dialogAddTrackToPlaylist() for the dropdown menu. And in homepage where the strings are needed for the playlists menu
-  void buildPlaylistStrings() async {
+  void buildPlaylistStrings(List playlists) async {
     PlaylistsNamesAndSelectedVars().playlistNames.clear();
     for (var el in playlists) {
       PlaylistsNamesAndSelectedVars().playlistNames.add(el[0]);
@@ -69,11 +66,9 @@ class PlaylistHandler {
     await file.delete();
   }
 
-  Future<void> createPlaylistFile(List playlist) async {
-    if (PlaylistsNamesAndSelectedVars().txtController.value.text.isNotEmpty) {
-      final String name =
-          PlaylistsNamesAndSelectedVars().txtController.value.text.trim();
-      bool nameExists = playlists.any((element) => element[0] == name);
+  Future<void> createPlaylistFile(List playlist, bool nameExists, String name) async {
+    List playlists = [];
+    if (name.isNotEmpty) {
       if (!nameExists) {
         playlists.add([name, playlist]);
 
@@ -104,7 +99,6 @@ class PlaylistHandler {
               .playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName(
                   name),
           playlist,
-          this,
         );
       }
     } else {
@@ -114,7 +108,6 @@ class PlaylistHandler {
             .of(globalScaffoldKey.scaffoldKey.currentContext!)
             .playlistHandler_enterANameForYourNewPlaylist,
         playlist,
-        this,
       );
     }
   }

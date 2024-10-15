@@ -11,6 +11,12 @@ final class PlaylistsLoadingEvent extends PlaylistsEvent {
 
 final class PlaylistsLoadedEvent extends PlaylistsEvent {}
 
+final class PlaylistCreated extends PlaylistsEvent {
+  final String name;
+  final List playlist;
+  PlaylistCreated({required this.name, required this.playlist});
+}
+
 final class PlaylistChanged extends PlaylistsEvent {
   final int id;
   PlaylistChanged({required this.id});

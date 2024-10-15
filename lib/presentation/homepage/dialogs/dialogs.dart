@@ -160,7 +160,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
 
 // Button Save for adding a track to a playlist
 StatefulBuilder buttonSaveAddTrackToPlaylist(
-    String filePath, ThemeData themeData, PlaylistHandler playlistHandler) {
+    String filePath, ThemeData themeData) {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
@@ -168,11 +168,12 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
       onPressed: () async {
         if (PlaylistsNamesAndSelectedVars().selectedVal != "") {
           String selectedPlaylist = PlaylistsNamesAndSelectedVars().selectedVal;
-          if (!playlistHandler
+          if (!playlistsBloc
+              .state
               .playlists[PlaylistsNamesAndSelectedVars().selectedIndex][1]
               .contains(filePath)) {
             // we update the m3u file
-            playlistHandler.writeNewTrackInPlaylistFile(
+            PlaylistHandler().writeNewTrackInPlaylistFile(
                 selectedPlaylist, filePath);
             // we update the selected playlist in bloc
             playlistsBloc
@@ -236,13 +237,15 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
 
 // Dialog after tap on slidable action on list item
 Future dialogAddTrackToPlaylist(
-    String filePath, PlaylistHandler playlistHandler) async {
+    String filePath) async {
+  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+      globalScaffoldKey.scaffoldKey.currentContext!);
   final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   String description = S
       .of(globalScaffoldKey.scaffoldKey.currentContext!)
       .playlistHandler_addThisTrackToPlaylist;
   PlaylistsNamesAndSelectedVars().selectedVal = "";
-  playlistHandler.buildPlaylistStrings();
+  PlaylistHandler().buildPlaylistStrings(playlistsBloc.state.playlists);
 
   if (PlaylistsNamesAndSelectedVars().playlistNames.isNotEmpty) {
     return await showDialog(
@@ -262,7 +265,7 @@ Future dialogAddTrackToPlaylist(
                 Navigator.of(context).pop();
               },
             ),
-            buttonSaveAddTrackToPlaylist(filePath, themeData, playlistHandler),
+            buttonSaveAddTrackToPlaylist(filePath, themeData),
           ],
           showDropdown: false,
           themeData: themeData,
@@ -296,9 +299,10 @@ Future dialogAddTrackToPlaylist(
 }
 /// END DIALOG addToPlaylist()
 
-/// Dialog for Icon + in BottomSheet for Playlists (create a new playlist)
+/// Dialog for Icon + in BottomSheet for Playlists (create a new playlist) AND for saving queue as new playlist
 void dialogCreatePlaylist(
-    String description, List playlist, PlaylistHandler playlistHandler) {
+    String description, List playlist) {
+  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
   PlaylistsNamesAndSelectedVars().txtController.clear();
   final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   showDialog(
@@ -321,7 +325,14 @@ void dialogCreatePlaylist(
                 themeData: themeData,
                 btnText: S.of(globalScaffoldKey.scaffoldKey.currentContext!).save,
                 function: () async {
-                  await playlistHandler.createPlaylistFile(playlist);
+                  String name = PlaylistsNamesAndSelectedVars().txtController.text.trim();
+                  bool nameExists = playlistsBloc.state.playlists.any((element) => element[0] == name);
+                  // we handle playlist name issues and create file
+                  await PlaylistHandler().createPlaylistFile(playlist, nameExists, name);
+                  // if no issue with name, we trigger event
+                  if(name.isNotEmpty && !nameExists){
+                    playlistsBloc.add(PlaylistCreated(name: name, playlist: playlist));
+                  }
                 },
               )
             ],

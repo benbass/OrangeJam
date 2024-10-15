@@ -6,7 +6,6 @@ import 'package:orangejam/presentation/homepage/playlists_menu/widgets/topbar_pl
 import '../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../core/playlists/playlist_handler.dart';
 
 // The menu to access playlists
 class BottomSheetPlaylistsMenu extends StatelessWidget {
@@ -14,14 +13,12 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
     super.key,
     required this.scrollController,
     required this.tracksBlock,
-    required this.playlistHandler,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
   });
 
   final ScrollController scrollController;
   final TracksBloc tracksBlock;
-  final PlaylistHandler playlistHandler;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
 
@@ -49,20 +46,17 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
               children: [
                 TopBarPlaylistsMenu(
                   tracksBlock: tracksBlock,
-                  playlistHandler: playlistHandler,
                 ),
                 FirstRowAllFilesAndQueueButtons(
                   scrollController: scrollController,
                   playlistsBloc: playlistsBloc,
                   appbarFilterByCubit: appbarFilterByCubit,
-                  playlistHandler: playlistHandler,
                 ),
                 const SizedBox(height: 15,),
                 SecondRowPlaylistButtons(
                   scrollController: scrollController,
                   playlistsBloc: playlistsBloc,
                   appbarFilterByCubit: appbarFilterByCubit,
-                  playlistHandler: playlistHandler,
                 ),
               ],
             ),

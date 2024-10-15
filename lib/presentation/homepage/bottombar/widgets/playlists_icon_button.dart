@@ -4,20 +4,17 @@ import 'package:orangejam/application/playlists/playlists_bloc.dart';
 
 import '../../../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../../../../core/playlists/playlist_handler.dart';
 import '../../playlists_menu/bottom_sheet_playlists_menu.dart';
 
 // This button opens the playlist menu
 class MenuPlaylistsWidget extends StatelessWidget {
   final ScrollController scrollController;
-  final PlaylistHandler playlistHandler;
   final AppbarFilterByCubit appbarFilterByCubit;
   final ThemeData themeData;
 
   const MenuPlaylistsWidget({
     super.key,
     required this.scrollController,
-    required this.playlistHandler,
     required this.appbarFilterByCubit,
     required this.themeData,
   });
@@ -40,7 +37,6 @@ class MenuPlaylistsWidget extends StatelessWidget {
                 return BottomSheetPlaylistsMenu(
                   scrollController: scrollController,
                   tracksBlock: tracksBlock,
-                  playlistHandler: playlistHandler,
                   playlistsBloc: playlistsBloc,
                   appbarFilterByCubit: appbarFilterByCubit,
                 );

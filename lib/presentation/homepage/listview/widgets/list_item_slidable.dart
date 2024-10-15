@@ -27,7 +27,6 @@ class ListItemSlidable extends StatelessWidget {
     required this.audioHandler,
     required this.themeData,
     required this.textColor,
-    required this.playlistHandler,
   });
 
   final int index;
@@ -37,7 +36,6 @@ class ListItemSlidable extends StatelessWidget {
   final MyAudioHandler audioHandler;
   final ThemeData themeData;
   final Color textColor;
-  final PlaylistHandler playlistHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class ListItemSlidable extends StatelessWidget {
           SlidableAction(
             /// Add track to playlist
             onPressed: (_) {
-              dialogAddTrackToPlaylist(track.filePath, playlistHandler);
+              dialogAddTrackToPlaylist(track.filePath);
             },
             flex: 20,
             backgroundColor: const Color(0xFFFF8100),
@@ -141,7 +139,7 @@ class ListItemSlidable extends StatelessWidget {
                   playlistsBloc
                       .state.playlists[playlistsBloc.state.playlistId][1]
                       .remove(track.filePath);
-                  playlistHandler.deleteLineInFile(
+                  PlaylistHandler().deleteLineInFile(
                       playlistsBloc
                           .state.playlists[playlistsBloc.state.playlistId][0],
                       index);

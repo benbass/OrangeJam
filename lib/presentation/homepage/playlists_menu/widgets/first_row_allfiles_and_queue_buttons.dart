@@ -4,7 +4,6 @@ import 'package:orangejam/presentation/homepage/playlists_menu/widgets/playlist_
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/globals.dart';
-import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 
 // row of 2 buttons for "Files" and "Queue"
@@ -14,13 +13,11 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
     required this.scrollController,
     required this.playlistsBloc,
     required this.appbarFilterByCubit,
-    required this.playlistHandler,
   });
 
   final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
   final AppbarFilterByCubit appbarFilterByCubit;
-  final PlaylistHandler playlistHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,6 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             width: 120,
             name: S.of(context).files,
             length: GlobalLists().initialTracks.length.toString(),
-            playlistHandler: playlistHandler,
           ),
           ButtonOpenPlaylist(
             scrollController: scrollController,
@@ -47,7 +43,6 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             width: 120,
             name: S.of(context).queue,
             length: GlobalLists().queue.length.toString(),
-            playlistHandler: playlistHandler,
           ),
         ],
       ),

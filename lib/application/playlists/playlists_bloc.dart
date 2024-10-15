@@ -60,6 +60,14 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           tracks: tracks, playlists: playlists, playlistId: savedId));
     });
 
+    // This event is triggered when creating a new empty playlist (+ button in playlist menu with following dialog)
+    // AND when saving queue to new playlist
+    on<PlaylistCreated>((event, emit) async {
+      List playlists = state.playlists; // current state
+      playlists.add([event.name, event.playlist]); // add playlist-name and path-list from event to current playlists
+      emit(state.copyWith(playlists: playlists));
+    });
+
     on<PlaylistChanged>((event, emit) async {
       List<TrackEntity> tracks = [];
       // User selects a playlist

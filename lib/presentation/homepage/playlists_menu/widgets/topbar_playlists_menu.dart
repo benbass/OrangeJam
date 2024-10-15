@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../application/listview/list_of_tracks/tracks_bloc.dart';
-import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
 
@@ -10,11 +9,9 @@ class TopBarPlaylistsMenu extends StatelessWidget {
   const TopBarPlaylistsMenu({
     super.key,
     required this.tracksBlock,
-    required this.playlistHandler,
   });
 
   final TracksBloc tracksBlock;
-  final PlaylistHandler playlistHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class TopBarPlaylistsMenu extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            dialogCreatePlaylist(S.of(context).playlistsMenu_NewPlaylist, [], playlistHandler);
+            dialogCreatePlaylist(S.of(context).playlistsMenu_NewPlaylist, []);
           },
           icon: const Icon(
             Icons.add,

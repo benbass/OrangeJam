@@ -16,7 +16,6 @@ class ButtonOpenPlaylist extends StatelessWidget {
     required this.name,
     required this.length,
     required this.id,
-    required this.playlistHandler,
   });
 
   final ScrollController scrollController;
@@ -26,7 +25,6 @@ class ButtonOpenPlaylist extends StatelessWidget {
   final String name;
   final String length;
   final int id;
-  final PlaylistHandler playlistHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +76,7 @@ class ButtonOpenPlaylist extends StatelessWidget {
                       btnText: S.of(context).buttonOk,
                       function: () {
                         playlistsBloc.state.playlists.removeAt(id);
-                        playlistHandler.deleteFile(name);
+                        PlaylistHandler().deleteFile(name);
                         playlistsBloc.add(PlaylistDeleted(id: id));
                         Navigator.pop(context); // closes the dialog
                         Navigator.pop(context); // closes the playlist menu
