@@ -6,7 +6,6 @@ import 'package:orangejam/presentation/homepage/player_controls/widgets/stop_but
 import 'package:orangejam/presentation/homepage/player_controls/widgets/track_info_text.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/skip_to_next_or_prev_button.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import '../../../application/playercontrols/cubits/loop_mode_cubit.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../domain/entities/track_entity.dart';
 
@@ -28,7 +27,6 @@ class PlayerControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(context);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 600),
@@ -112,7 +110,7 @@ class PlayerControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 /// Loop button
-                LoopButton(isLoopModeCubit: isLoopModeCubit),
+                const LoopButton(),
 
                 /// Skip to previous button
                 SkipToNextOrPrevious(

@@ -11,7 +11,6 @@ import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
 
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../application/playercontrols/cubits/loop_mode_cubit.dart';
 import '../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../application/playercontrols/cubits/track_position_cubit.dart';
 import '../../application/playlists/automatic_playback_cubit.dart';
@@ -46,7 +45,7 @@ class MyAudioHandler {
     /// The following 2 vars are needed for the whenFinished function
     final automaticPlaybackCubit = BlocProvider.of<AutomaticPlaybackCubit>(
         globalScaffoldKey.scaffoldKey.currentContext!);
-    final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(
+    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
         globalScaffoldKey.scaffoldKey.currentContext!);
     ///
 
@@ -61,13 +60,13 @@ class MyAudioHandler {
 
       /// Logic for loop song and automatic playback!!!
       whenFinished: () async {
-        if (isLoopModeCubit.state && automaticPlaybackCubit.state) {
+        if (playerControlsBloc.state.loopMode && automaticPlaybackCubit.state) {
           // Loop mode prevails: play same track again
           playTrack(currentTrack);
-        } else if (isLoopModeCubit.state && !automaticPlaybackCubit.state) {
+        } else if (playerControlsBloc.state.loopMode && !automaticPlaybackCubit.state) {
           // Loop mode prevails: play same track again
           playTrack(currentTrack);
-        } else if (automaticPlaybackCubit.state && !isLoopModeCubit.state) {
+        } else if (automaticPlaybackCubit.state && !playerControlsBloc.state.loopMode) {
           // no loop mode so we play next track
           sl<PlayerControlsBloc>().add(NextButtonPressed());
         } else {

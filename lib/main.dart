@@ -17,7 +17,6 @@ import 'injection.dart' as di;
 import 'injection.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orangejam/application/playercontrols/cubits/loop_mode_cubit.dart';
 import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
 import 'package:orangejam/presentation/homepage/homepage.dart';
 import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
@@ -102,13 +101,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => TrackPositionCubit(),
           ),
+
           BlocProvider(
             create: (BuildContext context) => TrackDurationCubit(),
-          ),
-
-          /// handles loop playback mode
-          BlocProvider(
-            create: (BuildContext context) => LoopModeCubit(),
           ),
 
           /// handles automatic playback

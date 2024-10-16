@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +15,11 @@ class PlayerControlsBloc
     // Initial state: empty track -> player controls not visible
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
-          track: TrackEntity.empty().copyWith(id: 0),
-          isPausing: false,
-          height: 0));
+        track: TrackEntity.empty().copyWith(id: 0),
+        isPausing: false,
+        height: 0,
+        loopMode: false,
+      ));
     });
 
     // track was pressed:
@@ -65,8 +66,12 @@ class PlayerControlsBloc
     on<NextButtonPressed>((event, emit) async {
       await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
         if (value.id != 0) {
-          emit(
-              PlayerControlsState(track: value, isPausing: false, height: 200));
+          emit(PlayerControlsState(
+            track: value,
+            isPausing: false,
+            height: 200,
+            loopMode: state.loopMode,
+          ));
           sl<MyAudioHandler>().playTrack(value);
         }
       });
@@ -76,17 +81,23 @@ class PlayerControlsBloc
       await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
         if (value.id != 0) {
           sl<MyAudioHandler>().playTrack(value);
-          emit(
-              PlayerControlsState(track: value, isPausing: false, height: 200));
+          emit(PlayerControlsState(
+            track: value,
+            isPausing: false,
+            height: 200,
+            loopMode: state.loopMode,
+          ));
         }
       });
     });
 
-    // not used: loop playback is handled by timer in PositionUpdate()
-    on<LoopButtonPressed>((event, emit) {});
-
-    // Not used: continuous playback is handled by timer in PositionUpdate()
-    on<ContinuousButtonPressed>((event, emit) async {});
+    on<LoopButtonPressed>((event, emit) {
+      if (state.loopMode == true) {
+        emit(state.copyWith(loopMode: false));
+      } else {
+        emit(state.copyWith(loopMode: true));
+      }
+    });
 
     // Update track info after metatag update: this event will be called only if updated track is currently playing track
     on<TrackMetaTagUpdated>((event, emit) {

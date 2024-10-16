@@ -23,11 +23,7 @@ class NextButtonPressed extends PlayerControlsEvent {}
 
 class PreviousButtonPressed extends PlayerControlsEvent {}
 
-// NOT used
 class LoopButtonPressed extends PlayerControlsEvent {}
-
-// NOT used
-class ContinuousButtonPressed extends PlayerControlsEvent {}
 
 class ShowHideControlsButtonPressed extends PlayerControlsEvent {
   final double height;
@@ -35,6 +31,4 @@ class ShowHideControlsButtonPressed extends PlayerControlsEvent {
   ShowHideControlsButtonPressed({required this.height});
 }
 
-class TrackMetaTagUpdated extends PlayerControlsEvent{}
-
-
+class TrackMetaTagUpdated extends PlayerControlsEvent {}
