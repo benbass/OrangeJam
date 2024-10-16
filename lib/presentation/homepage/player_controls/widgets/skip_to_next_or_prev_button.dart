@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
-import '../../../../core/manipulate_list/animate_to_index.dart';
+import '../../../../core/helpers/animate_to_index.dart';
 
 class SkipToNextOrPrevious extends StatelessWidget {
   const SkipToNextOrPrevious({

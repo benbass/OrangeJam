@@ -85,6 +85,9 @@ class FilterByPopupMenuButton extends StatelessWidget {
             }
             return PopupMenuButton(
               color: const Color(0xFF202531),
+              position: PopupMenuPosition.over,
+              offset: const Offset(80, -20),
+              elevation: 20,
               itemBuilder: (context) {
                 return menuItems.map((value) {
                   return PopupMenuItem(

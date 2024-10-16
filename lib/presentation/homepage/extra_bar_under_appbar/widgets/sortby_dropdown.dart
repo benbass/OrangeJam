@@ -39,6 +39,7 @@ class SortByDropdown extends StatelessWidget {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
                   dropdownColor: const Color(0xFF202531),
+                  borderRadius: BorderRadius.circular(4),
                   //isExpanded: true,
                   icon: const Icon(
                     Icons.arrow_drop_down,
