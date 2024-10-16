@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/filterby_popupmenubutton.dart';
 import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
 import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
-import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../generated/l10n.dart';
 import '../dialogs/dialogs.dart';
@@ -13,17 +13,14 @@ import '../dialogs/dialogs.dart';
 class SortFilterSearchAndQueueMenu extends StatelessWidget {
   const SortFilterSearchAndQueueMenu({
     super.key,
-    required this.playlistsBloc,
     required this.searchController,
-    required this.appbarFilterByCubit,
   });
 
-  final PlaylistsBloc playlistsBloc;
   final TextEditingController searchController;
-  final AppbarFilterByCubit appbarFilterByCubit;
 
   @override
   Widget build(BuildContext context) {
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -55,7 +52,6 @@ class SortFilterSearchAndQueueMenu extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 12.0, top: 0),
                     child: SearchTextField(
                       searchController: searchController,
-                      appbarFilterByCubit: appbarFilterByCubit,
                     ),
                   ),
                 ),

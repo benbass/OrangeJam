@@ -9,7 +9,6 @@ import '../../application/listview/list_of_tracks/tracks_bloc.dart';
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
@@ -46,7 +45,6 @@ class MyHomePage extends StatelessWidget {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
-    final appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(context);
     final automaticPlaybackCubit =
         BlocProvider.of<AutomaticPlaybackCubit>(context);
     final themeData = Theme.of(context);
@@ -128,7 +126,7 @@ class MyHomePage extends StatelessWidget {
         child: Scaffold(
           key: globalScaffoldKey.scaffoldKey,
           appBar: AppBar(
-            title: AppBarContent(themeData: themeData),
+            title: const AppBarContent(),
           ),
           endDrawer: MyDrawer(
             supportedLang: S.delegate.supportedLocales,
@@ -145,7 +143,7 @@ class MyHomePage extends StatelessWidget {
                   tracksBloc.add(TracksLoadingEvent());
                   return CustomProgressIndicator(
                       progressText: S.of(context).homePage_ScanningDevice,
-                      themeData: themeData);
+                    );
                 } else if (tracklistState is TracksStateLoading) {
                   /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
                   playlistsBloc.add(
@@ -153,7 +151,7 @@ class MyHomePage extends StatelessWidget {
                   tracksBloc.add(TracksLoadedEvent());
                   return CustomProgressIndicator(
                       progressText: S.of(context).homePage_LoadingTracks,
-                      themeData: themeData);
+                      );
                 } else if (tracklistState is TracksStateLoaded) {
                   // Player is open so we can subscribe
                   if (audioHandler.flutterSoundPlayer.isOpen()) {
@@ -176,9 +174,7 @@ class MyHomePage extends StatelessWidget {
 
                               /// Extra bar for views all files and queue
                               ? SortFilterSearchAndQueueMenu(
-                                  playlistsBloc: playlistsBloc,
                                   searchController: searchController,
-                                  appbarFilterByCubit: appbarFilterByCubit,
                                 )
                               : const SizedBox.shrink(),
 
@@ -200,7 +196,6 @@ class MyHomePage extends StatelessWidget {
                                     sctr: sctr,
                                     observController: observerController,
                                     tracks: state.tracks,
-                                    audioHandler: audioHandler,
                                     isScrollingCubit: isScrollingCubit,
                                     isScrollReverseCubit: isScrollReverseCubit,
                                   ),
@@ -271,8 +266,6 @@ class MyHomePage extends StatelessWidget {
                   return Expanded(
                     child: MenuPlaylistsWidget(
                       scrollController: sctr,
-                      appbarFilterByCubit: appbarFilterByCubit,
-                      themeData: themeData,
                     ),
                   );
                 },

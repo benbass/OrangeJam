@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/playlist_button.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
-import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 
 // list of buttons for each playlist
 class SecondRowPlaylistButtons extends StatelessWidget {
@@ -10,12 +9,10 @@ class SecondRowPlaylistButtons extends StatelessWidget {
     super.key,
     required this.scrollController,
     required this.playlistsBloc,
-    required this.appbarFilterByCubit,
   });
 
   final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
-  final AppbarFilterByCubit appbarFilterByCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,6 @@ class SecondRowPlaylistButtons extends StatelessWidget {
             return ButtonOpenPlaylist(
               scrollController: scrollController,
               playlistsBloc: playlistsBloc,
-              appbarFilterByCubit: appbarFilterByCubit,
               id: index,
               width: 150,
               name: item,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
-import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 
@@ -11,7 +10,6 @@ class ButtonOpenPlaylist extends StatelessWidget {
     super.key,
     required this.scrollController,
     required this.playlistsBloc,
-    required this.appbarFilterByCubit,
     required this.width,
     required this.name,
     required this.length,
@@ -20,7 +18,6 @@ class ButtonOpenPlaylist extends StatelessWidget {
 
   final ScrollController scrollController;
   final PlaylistsBloc playlistsBloc;
-  final AppbarFilterByCubit appbarFilterByCubit;
   final double width;
   final String name;
   final String length;
@@ -45,7 +42,6 @@ class ButtonOpenPlaylist extends StatelessWidget {
                       /// END
                       .whenComplete(() {
                     playlistsBloc.add(PlaylistChanged(id: id));
-                    appbarFilterByCubit.setStringFilterBy(null);
                   });
 
                   // we want the new list with offset 0

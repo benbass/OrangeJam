@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/core/player/audiohandler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import '../../../application/playercontrols/cubits/track_duration_cubit.dart';
-import '../../../application/playercontrols/cubits/track_position_cubit.dart';
 import '../../../application/listview/ui/is_scroll_reverse_cubit.dart';
 import '../../../application/listview/ui/is_scrolling_cubit.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
@@ -19,7 +16,6 @@ class MyListview extends StatelessWidget {
   final ListObserverController observController;
   final IsScrollingCubit isScrollingCubit;
   final IsScrollReverseCubit isScrollReverseCubit;
-  final MyAudioHandler audioHandler;
 
   const MyListview({
     super.key,
@@ -28,13 +24,10 @@ class MyListview extends StatelessWidget {
     required this.observController,
     required this.isScrollingCubit,
     required this.isScrollReverseCubit,
-    required this.audioHandler,
   });
 
   @override
   Widget build(BuildContext context) {
-    final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(context);
-    final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(context);
     BlocProvider.of<PlayerControlsBloc>(context);
 
     final themeData = Theme.of(context);
@@ -55,12 +48,6 @@ class MyListview extends StatelessWidget {
     }
 
     sctr.addListener(onScrollEvent);
-
-    // Update progressbar and handle behaviour when track is completed
-    audioHandler.flutterSoundPlayer.onProgress?.listen((event) {
-      trackDurationCubit.setDuration(event.duration);
-      trackPositionCubit.setPosition(event.position);
-    });
 
     return Builder(builder: (context) {
       final playerControlsState = context.watch<PlayerControlsBloc>().state;
@@ -128,7 +115,6 @@ class MyListview extends StatelessWidget {
                 track: track,
                 backgroundColor: backgroundColor,
                 selectedTrackId: selectedTrackId,
-                audioHandler: audioHandler,
                 themeData: themeData,
                 textColor: textColor,
               );

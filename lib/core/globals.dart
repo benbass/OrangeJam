@@ -39,7 +39,6 @@ class PlaylistsNamesAndSelectedVars {
   }
   PlaylistsNamesAndSelectedVars._internal();
 
-  List playlists = [];
   String selectedVal = "";
   Map<int, String> playlistMap = {};
   List<String> playlistNames = [];

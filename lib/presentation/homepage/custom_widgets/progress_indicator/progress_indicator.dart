@@ -4,14 +4,13 @@ class CustomProgressIndicator extends StatelessWidget {
   const CustomProgressIndicator({
     super.key,
     required this.progressText,
-    required this.themeData,
   });
 
   final String progressText;
-  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 38.0),

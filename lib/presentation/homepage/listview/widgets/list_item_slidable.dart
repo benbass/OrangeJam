@@ -9,7 +9,6 @@ import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
-import '../../../../core/player/audiohandler.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
@@ -24,7 +23,6 @@ class ListItemSlidable extends StatelessWidget {
     required this.track,
     required this.backgroundColor,
     required this.selectedTrackId,
-    required this.audioHandler,
     required this.themeData,
     required this.textColor,
   });
@@ -33,7 +31,6 @@ class ListItemSlidable extends StatelessWidget {
   final TrackEntity track;
   final Color backgroundColor;
   final int selectedTrackId;
-  final MyAudioHandler audioHandler;
   final ThemeData themeData;
   final Color textColor;
 

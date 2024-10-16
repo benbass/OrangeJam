@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/usecases/playlists_usecases.dart';
+import '../extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../playercontrols/bloc/playercontrols_bloc.dart';
 
 part 'playlists_event.dart';
@@ -93,6 +94,9 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           tracks.add(track);
         }
       }
+      // We remove filters
+      BlocProvider.of<AppbarFilterByCubit>(globalScaffoldKey.scaffoldKey.currentContext!).setStringFilterBy(null);
+
       emit(state.copyWith(tracks: tracks, playlistId: event.id));
       SharedPreferences myStart = await startPrefs;
       myStart.setInt("startWith", event.id);

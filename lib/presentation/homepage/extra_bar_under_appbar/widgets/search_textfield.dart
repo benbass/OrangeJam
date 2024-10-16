@@ -7,16 +7,15 @@ import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cub
 
 class SearchTextField extends StatelessWidget {
   final TextEditingController searchController;
-  final AppbarFilterByCubit appbarFilterByCubit;
 
   const SearchTextField({
     super.key,
     required this.searchController,
-    required this.appbarFilterByCubit,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AppbarFilterByCubit appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(context);
     final SortByCubit sortByCubit = BlocProvider.of<SortByCubit>(context);
     return BlocBuilder<PlaylistsBloc, PlaylistsState>(
       builder: (context, state) {

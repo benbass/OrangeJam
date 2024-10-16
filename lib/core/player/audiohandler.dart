@@ -12,6 +12,8 @@ import 'package:orangejam/injection.dart' as di;
 
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../application/playercontrols/cubits/loop_mode_cubit.dart';
+import '../../application/playercontrols/cubits/track_duration_cubit.dart';
+import '../../application/playercontrols/cubits/track_position_cubit.dart';
 import '../../application/playlists/automatic_playback_cubit.dart';
 import '../../domain/entities/track_entity.dart';
 import '../../injection.dart';
@@ -46,8 +48,10 @@ class MyAudioHandler {
         globalScaffoldKey.scaffoldKey.currentContext!);
     final isLoopModeCubit = BlocProvider.of<LoopModeCubit>(
         globalScaffoldKey.scaffoldKey.currentContext!);
-
     ///
+
+  final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(globalScaffoldKey.scaffoldKey.currentContext!);
+  final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(globalScaffoldKey.scaffoldKey.currentContext!);
 
     p = Duration.zero;
     isPausingState = false;
@@ -76,9 +80,11 @@ class MyAudioHandler {
     openAudioSession();
     createNotification(track, isPausingState, p);
 
-    // Update progressbar in notification
+    // Update progressbar in notification and player controls
     flutterSoundPlayer.onProgress?.listen((event) {
       p = event.position;
+      trackDurationCubit.setDuration(event.duration);
+      trackPositionCubit.setPosition(event.position);
     });
   }
 

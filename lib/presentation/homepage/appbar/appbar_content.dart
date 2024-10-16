@@ -9,13 +9,11 @@ import '../../../generated/l10n.dart';
 class AppBarContent extends StatelessWidget {
   const AppBarContent({
     super.key,
-    required this.themeData,
   });
-
-  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
