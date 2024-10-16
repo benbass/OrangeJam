@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orangejam/application/language/language_cubit.dart';
-import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
 import 'package:orangejam/presentation/help_page/help_page.dart';
 
-import '../../application/listview/list_of_tracks/tracks_bloc.dart';
+import '../../application/listview/data/tracks_bloc.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../homepage/custom_widgets/custom_widgets.dart';

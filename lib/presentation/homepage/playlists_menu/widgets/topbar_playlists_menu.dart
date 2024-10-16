@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../application/listview/list_of_tracks/tracks_bloc.dart';
+import '../../../../application/listview/data/tracks_bloc.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
 

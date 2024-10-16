@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
 import 'package:orangejam/core/manipulate_list/sort_filter_search_tracklist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -101,7 +101,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       SharedPreferences myStart = await startPrefs;
       myStart.setInt("startWith", event.id);
 
-      // Play first track automatically if prefs is set
+      // Play first track automatically if drawer_prefs is set
       if(BlocProvider.of<AutomaticPlaybackCubit>(globalScaffoldKey.scaffoldKey.currentContext!).state == true){
         BlocProvider.of<PlayerControlsBloc>(globalScaffoldKey.scaffoldKey.currentContext!)
             .add(TrackItemPressed(track: tracks[0]));

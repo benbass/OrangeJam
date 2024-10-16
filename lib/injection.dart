@@ -14,7 +14,7 @@ import 'package:orangejam/infrastructure/repositories/tracks_repository_impl.dar
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/core/player/audiohandler.dart';
 
-import 'application/listview/list_of_tracks/tracks_bloc.dart';
+import 'application/listview/data/tracks_bloc.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'domain/entities/track_entity.dart';
 import 'objectbox.g.dart';

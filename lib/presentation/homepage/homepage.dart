@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orangejam/application/language/language_cubit.dart';
-import 'package:orangejam/presentation/drawer/drawer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../application/listview/list_of_tracks/tracks_bloc.dart';
+import '../../application/listview/data/tracks_bloc.dart';
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
 import '../../application/listview/ui/is_scroll_reverse_cubit.dart';
-import '../../application/playlists/automatic_playback_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
+import 'package:orangejam/presentation/drawer/drawer.dart';
+import '../../application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
 import '../../core/notifications/create_notification.dart';
 import '../../core/globals.dart';
 import '../../core/helpers/app_language.dart';
@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // app language will be set based on shared prefs if set. Default lang is en.
+    // app language will be set based on shared drawer_prefs if set. Default lang is en.
     setAppLanguage(context);
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();

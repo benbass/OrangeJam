@@ -10,7 +10,7 @@ import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.da
 import 'package:path/path.dart';
 
 import 'package:orangejam/domain/entities/track_entity.dart';
-import '../../../application/listview/list_of_tracks/tracks_bloc.dart';
+import '../../../application/listview/data/tracks_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../generated/l10n.dart';
 import '../../../injection.dart' as di;

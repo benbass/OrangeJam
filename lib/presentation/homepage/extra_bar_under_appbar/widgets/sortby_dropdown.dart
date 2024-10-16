@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/extra_bar_all_files/sortby/sort_by_cubit.dart';
-import 'package:orangejam/application/language/language_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
 import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../generated/l10n.dart';

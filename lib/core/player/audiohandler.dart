@@ -13,7 +13,7 @@ import 'package:orangejam/injection.dart' as di;
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../application/playercontrols/cubits/track_position_cubit.dart';
-import '../../application/playlists/automatic_playback_cubit.dart';
+import '../../application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
 import '../../domain/entities/track_entity.dart';
 import '../../injection.dart';
 import '../notifications/create_notification.dart';

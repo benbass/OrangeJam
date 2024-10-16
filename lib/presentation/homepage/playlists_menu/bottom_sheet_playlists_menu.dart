@@ -3,7 +3,7 @@ import 'package:orangejam/presentation/homepage/playlists_menu/widgets/first_row
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/topbar_playlists_menu.dart';
 
-import '../../../application/listview/list_of_tracks/tracks_bloc.dart';
+import '../../../application/listview/data/tracks_bloc.dart';
 import '../../../application/playlists/playlists_bloc.dart';
 
 // The menu to access playlists

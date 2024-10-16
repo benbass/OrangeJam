@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:orangejam/application/listview/list_of_tracks/tracks_bloc.dart';
+import 'package:orangejam/application/listview/data/tracks_bloc.dart';
 import 'package:orangejam/domain/entities/track_entity.dart';
 import 'package:orangejam/domain/failures/tracks_failures.dart';
 import 'package:orangejam/domain/usecases/tracks_usecases.dart';

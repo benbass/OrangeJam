@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:media_store_plus/media_store_plus.dart';
-import 'package:orangejam/application/playlists/automatic_playback_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:orangejam/application/language/language_cubit.dart';
+import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
 import 'package:orangejam/core/globals.dart';
 
-import 'application/listview/list_of_tracks/tracks_bloc.dart';
+import 'application/listview/data/tracks_bloc.dart';
 import 'generated/l10n.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
