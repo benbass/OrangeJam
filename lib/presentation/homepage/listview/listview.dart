@@ -82,13 +82,10 @@ class MyListview extends StatelessWidget {
             footer: OrientationBuilder(
               builder: (context, orientation) {
                 if (orientation == Orientation.portrait) {
-                  return BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
-                      builder: (context, state) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 600),
-                      height: state.height == 200 ? 200 : 0,
-                    );
-                  });
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 600),
+                    height: playerControlsState.height == 200 ? 200 : 0,
+                  );
                 } else {
                   return const SizedBox.shrink();
                 }
