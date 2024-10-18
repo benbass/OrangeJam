@@ -5,8 +5,8 @@ import 'package:orangejam/application/drawer_prefs/automatic_playback/automatic_
 import 'package:orangejam/presentation/help_page/help_page.dart';
 
 import '../../application/listview/data/tracks_bloc.dart';
+import '../../core/globals.dart';
 import '../../generated/l10n.dart';
-import '../../injection.dart';
 import '../homepage/custom_widgets/custom_widgets.dart';
 import '../homepage/dialogs/dialogs.dart';
 

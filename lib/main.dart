@@ -7,6 +7,8 @@ import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart'
 import 'package:orangejam/core/globals.dart';
 
 import 'application/listview/data/tracks_bloc.dart';
+import 'core/objectbox.dart';
+import 'domain/entities/track_entity.dart';
 import 'generated/l10n.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
@@ -27,6 +29,10 @@ import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  /// Init our objectBox
+  ObjectBox objectbox = await ObjectBox.create();
+  trackBox = objectbox.store.box<TrackEntity>();
+  //sl.registerSingleton(() => trackBox);
   await di.init();
   await di.sl<MyAudioHandler>().flutterSoundPlayer.openPlayer();
   MetadataGod.initialize();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/domain/entities/track_entity.dart';
 
+import '../../../core/globals.dart';
 import '../../../injection.dart';
 import '../../../core/player/audiohandler.dart';
 

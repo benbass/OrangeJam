@@ -13,7 +13,6 @@ import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../application/listview/data/tracks_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../generated/l10n.dart';
-import '../../../injection.dart' as di;
 
 class WriterView extends StatefulWidget {
   final TrackEntity track;
@@ -47,7 +46,7 @@ class _WriterViewState extends State<WriterView> {
 // Update DB object
   _updateDbObject() async {
     // Get the obj
-    final track = di.trackBox.get(widget.track.id)!;
+    final track = trackBox.get(widget.track.id)!;
     // Modify obj properties
     track.trackName = titleController.text;
     track.trackArtistNames = artistController.text;
@@ -63,7 +62,7 @@ class _WriterViewState extends State<WriterView> {
     track.albumArtist = albumArtistController.text;
 
     // Update the obj
-    di.trackBox.put(track);
+    trackBox.put(track);
 
     // Update the UI
     _updateUi(track);

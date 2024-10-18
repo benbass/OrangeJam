@@ -5,6 +5,7 @@ import 'package:diacritic/diacritic.dart';
 import 'package:orangejam/core/metatags/metatags_handler.dart';
 import 'package:orangejam/domain/failures/tracks_failures.dart';
 import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
+import '../../core/globals.dart';
 import '../../injection.dart';
 
 import '../../domain/entities/track_entity.dart';

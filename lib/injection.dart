@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/core/objectbox.dart';
 import 'package:orangejam/domain/repositories/playlists_repository.dart';
 import 'package:orangejam/domain/repositories/tracks_repository.dart';
 import 'package:orangejam/domain/usecases/playlists_usecases.dart';
@@ -16,11 +15,8 @@ import 'package:orangejam/core/player/audiohandler.dart';
 
 import 'application/listview/data/tracks_bloc.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
-import 'domain/entities/track_entity.dart';
-import 'objectbox.g.dart';
 
 final sl = GetIt.instance; // sl = service locator (injection container)
-late Box<TrackEntity> trackBox;
 
 Future<void> init() async {
   // Bloc
@@ -37,11 +33,6 @@ Future<void> init() async {
   // Datasources
   sl.registerLazySingleton<TracksDatasource>(
       () => TracksDatasourceImpl(audioFilesDataSources: sl()));
-
-  /// Provides access to the ObjectBox Store throughout the app.
-  ObjectBox objectbox = await ObjectBox.create();
-  trackBox = objectbox.store.box<TrackEntity>();
-  sl.registerSingleton(() => trackBox);
   // Intern
   sl.registerLazySingleton<AudioFilesDataSources>(
       () => AudioFilesDataSourcesImpl());
