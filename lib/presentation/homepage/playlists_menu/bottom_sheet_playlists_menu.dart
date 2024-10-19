@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/first_row_allfiles_and_queue_buttons.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
-import 'package:orangejam/presentation/homepage/playlists_menu/widgets/topbar_playlists_menu.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/create_playlist_button.dart';
 
 import '../../../application/listview/data/tracks_bloc.dart';
 import '../../../application/playlists/playlists_bloc.dart';
@@ -41,9 +41,7 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 6),
             child: Column(
               children: [
-                TopBarPlaylistsMenu(
-                  tracksBlock: tracksBlock,
-                ),
+                const CreatePlaylistButton(),
                 FirstRowAllFilesAndQueueButtons(
                   scrollController: scrollController,
                   playlistsBloc: playlistsBloc,

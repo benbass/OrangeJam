@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/filterby_popupmenubutton.dart';
-import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/search_textfield.dart';
-import 'package:orangejam/presentation/homepage/extra_bar_under_appbar/widgets/sortby_dropdown.dart';
+
+import 'package:orangejam/presentation/homepage/extra_top_bar/widgets/filterby_popupmenubutton.dart';
+import 'package:orangejam/presentation/homepage/extra_top_bar/widgets/search_textfield.dart';
+import 'package:orangejam/presentation/homepage/extra_top_bar/widgets/sortby_dropdown.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../domain/entities/track_entity.dart';
@@ -10,8 +11,8 @@ import '../../../generated/l10n.dart';
 import '../dialogs/dialogs.dart';
 
 // this extra bar is displayed only if playlistId == -2 (Files) or -1 (Queue)
-class SortFilterSearchAndQueueMenu extends StatelessWidget {
-  const SortFilterSearchAndQueueMenu({
+class ExtraTopBar extends StatelessWidget {
+  const ExtraTopBar({
     super.key,
     required this.searchController,
   });

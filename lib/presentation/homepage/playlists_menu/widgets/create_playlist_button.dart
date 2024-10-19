@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../application/listview/data/tracks_bloc.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
 
 // Icon + : create a new playlist
-class TopBarPlaylistsMenu extends StatelessWidget {
-  const TopBarPlaylistsMenu({
+class CreatePlaylistButton extends StatelessWidget {
+  const CreatePlaylistButton({
     super.key,
-    required this.tracksBlock,
   });
-
-  final TracksBloc tracksBlock;
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../application/listview/data/tracks_bloc.dart';
-import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
@@ -20,11 +19,9 @@ import '../../core/notifications/initialize_awesome_notifications.dart';
 import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/player/audiohandler.dart';
-import '../../core/playlists/playlist_handler.dart';
 import 'appbar/appbar_content.dart';
 import 'custom_widgets/error/error_message.dart';
 import 'custom_widgets/progress_indicator/progress_indicator.dart';
-import 'extra_bar_under_appbar/extra_bar.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_icon_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
@@ -47,10 +44,7 @@ class MyHomePage extends StatelessWidget {
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
     final automaticPlaybackCubit =
         BlocProvider.of<AutomaticPlaybackCubit>(context);
-    final themeData = Theme.of(context);
-
-    // Search field
-    final TextEditingController searchController = TextEditingController();
+    Theme.of(context);
 
     final ScrollController sctr = ScrollController();
     // This ListObserverController works much better than ScrollController for animateTo since it uses index instead of pixel
@@ -142,16 +136,16 @@ class MyHomePage extends StatelessWidget {
                   // See tracks_datasources.dart in infrastructure layer!
                   tracksBloc.add(TracksLoadingEvent());
                   return CustomProgressIndicator(
-                      progressText: S.of(context).homePage_ScanningDevice,
-                    );
+                    progressText: S.of(context).homePage_ScanningDevice,
+                  );
                 } else if (tracklistState is TracksStateLoading) {
                   /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
                   playlistsBloc.add(
                       PlaylistsLoadingEvent(tracks: tracklistState.tracks));
                   tracksBloc.add(TracksLoadedEvent());
                   return CustomProgressIndicator(
-                      progressText: S.of(context).homePage_LoadingTracks,
-                      );
+                    progressText: S.of(context).homePage_LoadingTracks,
+                  );
                 } else if (tracklistState is TracksStateLoaded) {
                   // Player is open so we can subscribe
                   if (audioHandler.flutterSoundPlayer.isOpen()) {
@@ -166,60 +160,12 @@ class MyHomePage extends StatelessWidget {
                   automaticPlaybackCubit.getAutomaticPlaybackFromPrefs();
                   //
 
-                  return BlocBuilder<PlaylistsBloc, PlaylistsState>(
-                    builder: (context, state) {
-                      return Column(
-                        children: [
-                          state.playlistId < 0
-
-                              /// Extra bar for views all files and queue
-                              ? SortFilterSearchAndQueueMenu(
-                                  searchController: searchController,
-                                )
-                              : const SizedBox.shrink(),
-
-                          /// listview shows the list of tracks: no extra bar will be shown on top if this is a playlist (id >= 0)
-                          Expanded(
-                            child: RawScrollbar(
-                              //trackVisibility: true,
-                              thumbVisibility: false,
-                              fadeDuration: const Duration(milliseconds: 0),
-                              timeToFade: const Duration(milliseconds: 0),
-                              thickness: 4.5,
-                              thumbColor:
-                                  const Color(0xFFFF8100).withOpacity(0.7),
-                              controller: sctr,
-                              //shape: const OvalBorder(),
-                              child: Stack(
-                                children: [
-                                  MyListview(
-                                    sctr: sctr,
-                                    observController: observerController,
-                                    tracks: state.tracks,
-                                    isScrollingCubit: isScrollingCubit,
-                                    isScrollReverseCubit: isScrollReverseCubit,
-                                  ),
-                                  BlocBuilder<IsCommWithGoogleCubit, bool>(
-                                    builder: (context, state) {
-                                      // progress indicator in case of backup/restore
-                                      return Visibility(
-                                        visible: state,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color:
-                                                themeData.colorScheme.secondary,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+                  /// List of tracks, extra top bar (if any, depending on kind of list)
+                  return MyListview(
+                    sctr: sctr,
+                    observController: observerController,
+                    isScrollingCubit: isScrollingCubit,
+                    isScrollReverseCubit: isScrollReverseCubit,
                   );
                 } else if (tracklistState is TracksStateError) {
                   return ErrorMessage(
@@ -236,39 +182,18 @@ class MyHomePage extends StatelessWidget {
               /// jump to item button
               Expanded(
                 flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
-                      builder: (context, state) {
-                        if (state.track.id != 0) {
-                          // button is shown only if a track is playing && list is scrolled
-                          return GotoItemIcon(
-                            isScrollReverseCubit: isScrollReverseCubit,
-                            isScrollingCubit: isScrollingCubit,
-                            observerController: observerController,
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
-                  ],
+                child: GotoItemIcon(
+                  isScrollReverseCubit: isScrollReverseCubit,
+                  isScrollingCubit: isScrollingCubit,
+                  observerController: observerController,
                 ),
               ),
 
               /// Playlists menu
-              BlocBuilder<PlaylistsBloc, PlaylistsState>(
-                builder: (context, state) {
-                  // we need the names of the playlists as strings
-                  PlaylistHandler().buildPlaylistStrings(state.playlists);
-                  return Expanded(
-                    child: MenuPlaylistsWidget(
-                      scrollController: sctr,
-                    ),
-                  );
-                },
+              Expanded(
+                child: MenuPlaylistsWidget(
+                  scrollController: sctr,
+                ),
               ),
 
               /// Show/Hide player controls
@@ -280,13 +205,8 @@ class MyHomePage extends StatelessWidget {
           ),
 
           /// Player controls
-          bottomSheet: BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
-            builder: (context, state) {
-              return PlayerControls(
-                track: state.track,
-                observerController: observerController,
-              );
-            },
+          bottomSheet: PlayerControls(
+            observerController: observerController,
           ),
         ),
       ),
