@@ -28,7 +28,6 @@ class MyListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PlayerControlsBloc>(context);
 
     final themeData = Theme.of(context);
 

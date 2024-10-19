@@ -23,7 +23,7 @@ import 'appbar/appbar_content.dart';
 import 'custom_widgets/error/error_message.dart';
 import 'custom_widgets/progress_indicator/progress_indicator.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
-import 'bottombar/widgets/playlists_icon_button.dart';
+import 'bottombar/widgets/playlists_menu_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
 import 'listview/listview.dart';
 
@@ -191,7 +191,7 @@ class MyHomePage extends StatelessWidget {
 
               /// Playlists menu
               Expanded(
-                child: MenuPlaylistsWidget(
+                child: PlaylistsMenuButton(
                   scrollController: sctr,
                 ),
               ),

@@ -5,8 +5,8 @@ import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 
-class ButtonOpenPlaylist extends StatelessWidget {
-  const ButtonOpenPlaylist({
+class OpenPlaylistButton extends StatelessWidget {
+  const OpenPlaylistButton({
     super.key,
     required this.scrollController,
     required this.playlistsBloc,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orangejam/presentation/homepage/playlists_menu/widgets/playlist_button.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/open_playlist_button.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
 import '../../../../core/globals.dart';
@@ -23,7 +23,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          ButtonOpenPlaylist(
+          OpenPlaylistButton(
             scrollController: scrollController,
             playlistsBloc: playlistsBloc,
             id: -2,
@@ -31,7 +31,7 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             name: S.of(context).files,
             length: GlobalLists().initialTracks.length.toString(),
           ),
-          ButtonOpenPlaylist(
+          OpenPlaylistButton(
             scrollController: scrollController,
             playlistsBloc: playlistsBloc,
             id: -1,

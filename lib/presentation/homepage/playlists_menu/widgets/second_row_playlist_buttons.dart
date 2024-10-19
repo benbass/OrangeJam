@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orangejam/presentation/homepage/playlists_menu/widgets/playlist_button.dart';
+import 'package:orangejam/presentation/homepage/playlists_menu/widgets/open_playlist_button.dart';
 
 import '../../../../application/playlists/playlists_bloc.dart';
 
@@ -27,7 +27,7 @@ class SecondRowPlaylistButtons extends StatelessWidget {
           final String item = playlistsBloc.state.playlists[index][0];
           final int length = playlistsBloc.state.playlists[index][1].length;
           if (playlistsBloc.state.playlists.isNotEmpty) {
-            return ButtonOpenPlaylist(
+            return OpenPlaylistButton(
               scrollController: scrollController,
               playlistsBloc: playlistsBloc,
               id: index,

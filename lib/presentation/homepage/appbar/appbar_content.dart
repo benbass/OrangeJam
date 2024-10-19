@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
@@ -19,31 +20,35 @@ class AppBarContent extends StatelessWidget {
       children: [
         Expanded(
             flex: 3,
-            child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
-              builder: (context, state) {
-                // Title of app bar depends on current list
-                // -2 -> all tracks
-                if (state.playlistId == -2) {
-                  return Text(
-                    "${S.of(context).files} (${state.tracks.length})",
-                  );
-                } else if (state.playlistId == -1) {
-                  // -1 -> queue
-                  return Text(
-                    "${S.of(context).queue} (${state.tracks.length})",
-                  );
-                } else if (state.playlistId > -1) {
-                  // > -1 -> the selected playlists
-                  return Text(
-                    "${state.playlists[state.playlistId][0]} (${state.tracks.length})",
-                    overflow: TextOverflow.ellipsis,
-                    //"Playlist",
-                  );
-                } else {
-                  return Text(
-                    "${S.of(context).files} (${state.tracks.length})",
-                  );
-                }
+            child: BlocBuilder<LanguageCubit, String>(
+              builder: (context, langState) {
+                return BlocBuilder<PlaylistsBloc, PlaylistsState>(
+                  builder: (context, state) {
+                    // Title of app bar depends on current list
+                    // -2 -> all tracks
+                    if (state.playlistId == -2) {
+                      return Text(
+                        "${S.of(context).files} (${state.tracks.length})",
+                      );
+                    } else if (state.playlistId == -1) {
+                      // -1 -> queue
+                      return Text(
+                        "${S.of(context).queue} (${state.tracks.length})",
+                      );
+                    } else if (state.playlistId > -1) {
+                      // > -1 -> the selected playlists
+                      return Text(
+                        "${state.playlists[state.playlistId][0]} (${state.tracks.length})",
+                        overflow: TextOverflow.ellipsis,
+                        //"Playlist",
+                      );
+                    } else {
+                      return Text(
+                        "${S.of(context).files} (${state.tracks.length})",
+                      );
+                    }
+                  },
+                );
               },
             )),
         const SizedBox(
