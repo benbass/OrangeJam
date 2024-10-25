@@ -3,11 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i7;
 
+import 'package:dartz/dartz.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:orangejam/core/globals.dart' as _i11;
+import 'package:orangejam/domain/entities/track_entity.dart' as _i8;
+import 'package:orangejam/domain/failures/tracks_failures.dart' as _i10;
 import 'package:orangejam/domain/repositories/playlists_repository.dart' as _i2;
-import 'package:orangejam/domain/usecases/playlists_usecases.dart' as _i3;
+import 'package:orangejam/domain/repositories/tracks_repository.dart' as _i4;
+import 'package:orangejam/domain/usecases/playlists_usecases.dart' as _i6;
+import 'package:orangejam/domain/usecases/tracks_usecases.dart' as _i9;
+import 'package:shared_preferences/shared_preferences.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -33,10 +40,42 @@ class _FakePlaylistsRepository_0 extends _i1.SmartFake
         );
 }
 
+class _FakeSharedPreferences_1 extends _i1.SmartFake
+    implements _i3.SharedPreferences {
+  _FakeSharedPreferences_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeTracksRepository_2 extends _i1.SmartFake
+    implements _i4.TracksRepository {
+  _FakeTracksRepository_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeEither_3<L, R> extends _i1.SmartFake implements _i5.Either<L, R> {
+  _FakeEither_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [PlaylistsUsecases].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPlaylistsUsecases extends _i1.Mock implements _i3.PlaylistsUsecases {
+class MockPlaylistsUsecases extends _i1.Mock implements _i6.PlaylistsUsecases {
   MockPlaylistsUsecases() {
     _i1.throwOnMissingStub(this);
   }
@@ -51,11 +90,223 @@ class MockPlaylistsUsecases extends _i1.Mock implements _i3.PlaylistsUsecases {
       ) as _i2.PlaylistsRepository);
 
   @override
-  _i4.Future<List<dynamic>> getPlaylistsUsecase() => (super.noSuchMethod(
+  _i3.SharedPreferences get sharedPreferences => (super.noSuchMethod(
+        Invocation.getter(#sharedPreferences),
+        returnValue: _FakeSharedPreferences_1(
+          this,
+          Invocation.getter(#sharedPreferences),
+        ),
+      ) as _i3.SharedPreferences);
+
+  @override
+  _i7.Future<List<dynamic>> getPlaylistsUsecase() => (super.noSuchMethod(
         Invocation.method(
           #getPlaylistsUsecase,
           [],
         ),
-        returnValue: _i4.Future<List<dynamic>>.value(<dynamic>[]),
-      ) as _i4.Future<List<dynamic>>);
+        returnValue: _i7.Future<List<dynamic>>.value(<dynamic>[]),
+      ) as _i7.Future<List<dynamic>>);
+
+  @override
+  int idFromPrefs() => (super.noSuchMethod(
+        Invocation.method(
+          #idFromPrefs,
+          [],
+        ),
+        returnValue: 0,
+      ) as int);
+
+  @override
+  void saveIdToPrefs(int? id) => super.noSuchMethod(
+        Invocation.method(
+          #saveIdToPrefs,
+          [id],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  List<_i8.TrackEntity> getInitialListAsPerPrefs(
+    List<dynamic>? playlists,
+    dynamic savedId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getInitialListAsPerPrefs,
+          [
+            playlists,
+            savedId,
+          ],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> playlistChanged({
+    required int? id,
+    required List<dynamic>? playlists,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #playlistChanged,
+          [],
+          {
+            #id: id,
+            #playlists: playlists,
+          },
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> sortedList(
+    List<_i8.TrackEntity>? tracks,
+    String? sortBy,
+    bool? ascending,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sortedList,
+          [
+            tracks,
+            sortBy,
+            ascending,
+          ],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> filteredList(
+    List<_i8.TrackEntity>? tracks,
+    String? filterBy,
+    String? value,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #filteredList,
+          [
+            tracks,
+            filterBy,
+            value,
+          ],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> searchedList(String? keyword) => (super.noSuchMethod(
+        Invocation.method(
+          #searchedList,
+          [keyword],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> addTrackToQueue(_i8.TrackEntity? track) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addTrackToQueue,
+          [track],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> removeTrackFromQueue(_i8.TrackEntity? track) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeTrackFromQueue,
+          [track],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  List<_i8.TrackEntity> clearQueue() => (super.noSuchMethod(
+        Invocation.method(
+          #clearQueue,
+          [],
+        ),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+}
+
+/// A class which mocks [TracksUsecases].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTracksUsecases extends _i1.Mock implements _i9.TracksUsecases {
+  MockTracksUsecases() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.TracksRepository get tracksRepository => (super.noSuchMethod(
+        Invocation.getter(#tracksRepository),
+        returnValue: _FakeTracksRepository_2(
+          this,
+          Invocation.getter(#tracksRepository),
+        ),
+      ) as _i4.TracksRepository);
+
+  @override
+  _i7.Future<_i5.Either<_i10.TracksFailure, List<_i8.TrackEntity>>>
+      getTracksUsecases() => (super.noSuchMethod(
+            Invocation.method(
+              #getTracksUsecases,
+              [],
+            ),
+            returnValue: _i7.Future<
+                    _i5
+                    .Either<_i10.TracksFailure, List<_i8.TrackEntity>>>.value(
+                _FakeEither_3<_i10.TracksFailure, List<_i8.TrackEntity>>(
+              this,
+              Invocation.method(
+                #getTracksUsecases,
+                [],
+              ),
+            )),
+          ) as _i7
+              .Future<_i5.Either<_i10.TracksFailure, List<_i8.TrackEntity>>>);
+}
+
+/// A class which mocks [GlobalLists].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGlobalLists extends _i1.Mock implements _i11.GlobalLists {
+  MockGlobalLists() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i8.TrackEntity> get initialTracks => (super.noSuchMethod(
+        Invocation.getter(#initialTracks),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  set initialTracks(List<_i8.TrackEntity>? _initialTracks) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #initialTracks,
+          _initialTracks,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  List<_i8.TrackEntity> get queue => (super.noSuchMethod(
+        Invocation.getter(#queue),
+        returnValue: <_i8.TrackEntity>[],
+      ) as List<_i8.TrackEntity>);
+
+  @override
+  set queue(List<_i8.TrackEntity>? _queue) => super.noSuchMethod(
+        Invocation.setter(
+          #queue,
+          _queue,
+        ),
+        returnValueForMissingStub: null,
+      );
 }

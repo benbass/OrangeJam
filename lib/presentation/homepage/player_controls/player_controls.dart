@@ -23,7 +23,6 @@ class PlayerControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
 
     return BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
       builder: (context, state) {
@@ -62,7 +61,9 @@ class PlayerControls extends StatelessWidget {
                         const SizedBox(
                           width: 38,
                         ),
-                        TrackInfoText(track: state.track, themeData: themeData),
+                        TrackInfoText(
+                          track: state.track,
+                        ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -84,7 +85,6 @@ class PlayerControls extends StatelessWidget {
                               iconSize: 22,
                             ),
                             BottomSheetTrackDetails(
-                              themeData: themeData,
                               track: state.track,
                             ),
                           ],

@@ -4,13 +4,13 @@ import 'package:audiotags/audiotags.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/core/metatags/overwrite_file.dart';
 import 'package:orangejam/presentation/homepage/custom_widgets/custom_widgets.dart';
 import 'package:path/path.dart';
 
 import 'package:orangejam/domain/entities/track_entity.dart';
-import '../../../application/listview/data/tracks_bloc.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../../generated/l10n.dart';
 
@@ -37,11 +37,10 @@ class _WriterViewState extends State<WriterView> {
   File? imgFromPicker;
   late File file;
   late String fileName;
-  final tracksBloc = BlocProvider.of<TracksBloc>(
+  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
   final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
-  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
 
 // Update DB object
   _updateDbObject() async {
@@ -70,7 +69,7 @@ class _WriterViewState extends State<WriterView> {
 
   _updateUi(TrackEntity track) {
     // list
-    tracksBloc.add(TracksLoadingEvent());
+    playlistsBloc.add(PlaylistsTracksLoadingEvent());
     // player controls and track details if updated track is playback track
     if (track.id == playerControlsBloc.state.track.id) {
       playerControlsBloc.add(TrackMetaTagUpdated());
@@ -154,7 +153,6 @@ class _WriterViewState extends State<WriterView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SimpleButton(
-                      themeData: themeData,
                       btnText: S.of(context).edit_tags_selectPicture,
                       function: () async {
                         FilePickerResult? result =
@@ -178,66 +176,54 @@ class _WriterViewState extends State<WriterView> {
             ),
             MyTextInput(
                 txtController: titleController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).edit_tags_trackTitle),
             MyTextInput(
                 txtController: artistController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).artist),
             MyTextInput(
                 txtController: albumController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).album),
             MyTextInput(
                 txtController: albumArtistController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).albumArtist),
             MyTextInput(
                 txtController: trackNumberController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).trackNo),
             MyTextInput(
                 txtController: trackTotalController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).edit_tags_tracksTotal),
             MyTextInput(
                 txtController: yearController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).year),
             MyTextInput(
                 txtController: genreController,
-                themeData: themeData,
                 autoFocus: false,
                 labelText: S.of(context).genre),
           ],
         ),
         actions: [
           SimpleButton(
-            themeData: themeData,
             btnText: S.of(context).buttonCancel,
             function: () {
               Navigator.of(context).pop();
             },
           ),
           SimpleButton(
-            themeData: themeData,
             btnText: S.of(context).save,
             function: saveUpdatedTrack,
           ),
         ],
         showDropdown: false,
         titleWidget: DescriptionText(
-          themeData: themeData,
           description: S.of(context).edit_tags_editTags,
         ),
-        themeData: themeData,
       ),
     );
   }

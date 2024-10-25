@@ -6,11 +6,9 @@ class TrackInfoText extends StatelessWidget {
   const TrackInfoText({
     super.key,
     required this.track,
-    required this.themeData,
   });
 
   final TrackEntity track;
-  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class TrackInfoText extends StatelessWidget {
               child: Text(
                 track.trackName ?? "",
                 overflow: TextOverflow.ellipsis,
-                style: themeData.textTheme.bodyLarge?.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontSize: 12,
                   color: const Color(0xFF202531),
                 ),
@@ -40,7 +38,7 @@ class TrackInfoText extends StatelessWidget {
               child: Text(
                 track.trackArtistNames ?? "",
                 overflow: TextOverflow.ellipsis,
-                style: themeData.textTheme.bodyLarge?.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontSize: 12,
                   color: const Color(0xFF202531),
                 ),

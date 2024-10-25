@@ -1,8 +1,9 @@
 import 'dart:typed_data';
+import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class TrackEntity {
+class TrackEntity with EquatableMixin {
   @Id()
   int id = 0;
 
@@ -79,4 +80,7 @@ class TrackEntity {
       albumArtist: albumArtist ?? this.albumArtist,
     );
   }
+
+  @override
+  List<Object?> get props => [id, filePath, trackName, trackArtistNames, albumName, trackNumber, albumLength, year, genre, trackDuration, albumArt, albumArtist];
 }

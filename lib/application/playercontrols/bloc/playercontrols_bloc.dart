@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/domain/entities/track_entity.dart';
@@ -65,31 +66,33 @@ class PlayerControlsBloc
     });
 
     on<NextButtonPressed>((event, emit) async {
-      await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
-        if (value.id != 0) {
+      TrackEntity nextTrack = await sl<MyAudioHandler>().getNextTrack(1, state.track);
+      //await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
+        //if (nextTrack.id != 0) {
           emit(PlayerControlsState(
-            track: value,
+            track: nextTrack,
             isPausing: false,
             height: 200,
             loopMode: state.loopMode,
           ));
-          sl<MyAudioHandler>().playTrack(value);
-        }
-      });
+          sl<MyAudioHandler>().playTrack(nextTrack);
+        //}
+      //});
     });
 
     on<PreviousButtonPressed>((event, emit) async {
-      await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
-        if (value.id != 0) {
-          sl<MyAudioHandler>().playTrack(value);
+      TrackEntity previousTrack = await sl<MyAudioHandler>().getNextTrack(-1, state.track);
+      //await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
+        //if (value.id != 0) {
           emit(PlayerControlsState(
-            track: value,
+            track: previousTrack,
             isPausing: false,
             height: 200,
             loopMode: state.loopMode,
           ));
-        }
-      });
+          sl<MyAudioHandler>().playTrack(previousTrack);
+        //}
+      //});
     });
 
     on<LoopButtonPressed>((event, emit) {

@@ -7,11 +7,9 @@ import 'widgets/sizedbox_info_text.dart';
 class BottomSheetTrackDetails extends StatelessWidget {
   const BottomSheetTrackDetails({
     super.key,
-    required this.themeData,
     required this.track,
   });
 
-  final ThemeData themeData;
   final TrackEntity track;
 
   @override
@@ -20,7 +18,7 @@ class BottomSheetTrackDetails extends StatelessWidget {
       onPressed: () => showModalBottomSheet(
         shape: const ContinuousRectangleBorder(),
         backgroundColor:
-        themeData.bottomSheetTheme.backgroundColor,
+        Theme.of(context).bottomSheetTheme.backgroundColor,
         context: context,
         builder: (BuildContext context) =>
             OrientationBuilder(builder: (context, orientation) {

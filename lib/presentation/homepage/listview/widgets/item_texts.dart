@@ -6,12 +6,10 @@ class ItemTexts extends StatelessWidget {
   const ItemTexts({
     super.key,
     required this.track,
-    required this.themeData,
     required this.textColor,
   });
 
   final TrackEntity track;
-  final ThemeData themeData;
   final Color textColor;
 
   @override
@@ -29,14 +27,14 @@ class ItemTexts extends StatelessWidget {
                 track.trackName ?? "",
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: themeData.textTheme.bodyMedium!
+                style: Theme.of(context).textTheme.bodyMedium!
                     .copyWith(color: textColor),
               ),
             ),
             SizedBox(
               child: Text(
                 track.trackArtistNames ?? "",
-                style: themeData.textTheme.bodySmall!
+                style: Theme.of(context).textTheme.bodySmall!
                     .copyWith(color: textColor),
               ),
             ),

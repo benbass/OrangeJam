@@ -3,21 +3,15 @@ import 'package:orangejam/presentation/homepage/playlists_menu/widgets/first_row
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/second_row_playlist_buttons.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/create_playlist_button.dart';
 
-import '../../../application/listview/data/tracks_bloc.dart';
-import '../../../application/playlists/playlists_bloc.dart';
 
 // The menu to access playlists
 class BottomSheetPlaylistsMenu extends StatelessWidget {
   const BottomSheetPlaylistsMenu({
     super.key,
     required this.scrollController,
-    required this.tracksBlock,
-    required this.playlistsBloc,
   });
 
   final ScrollController scrollController;
-  final TracksBloc tracksBlock;
-  final PlaylistsBloc playlistsBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +38,10 @@ class BottomSheetPlaylistsMenu extends StatelessWidget {
                 const CreatePlaylistButton(),
                 FirstRowAllFilesAndQueueButtons(
                   scrollController: scrollController,
-                  playlistsBloc: playlistsBloc,
                 ),
                 const SizedBox(height: 15,),
                 SecondRowPlaylistButtons(
                   scrollController: scrollController,
-                  playlistsBloc: playlistsBloc,
                 ),
               ],
             ),

@@ -3,12 +3,11 @@ part of 'playlists_bloc.dart';
 @immutable
 sealed class PlaylistsEvent {}
 
-final class PlaylistsLoadingEvent extends PlaylistsEvent {
-  final List<TrackEntity> tracks;
+// For the tracks as data source for playlists
+final class PlaylistsTracksLoadingEvent extends PlaylistsEvent {}
+final class PlaylistsTracksLoadedEvent extends PlaylistsEvent {}
 
-  PlaylistsLoadingEvent({required this.tracks});
-}
-
+// For the playlists
 final class PlaylistsLoadedEvent extends PlaylistsEvent {}
 
 final class PlaylistCreated extends PlaylistsEvent {
@@ -55,7 +54,7 @@ final class PlaylistSearchedByKeyword extends PlaylistsEvent {
   });
 }
 
-///
+// For the queue
 final class TrackAddedToQueue extends PlaylistsEvent {
   final TrackEntity track;
   TrackAddedToQueue({required this.track});

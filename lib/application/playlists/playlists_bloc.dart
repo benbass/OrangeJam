@@ -1,179 +1,159 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:orangejam/application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
-import 'package:orangejam/core/manipulate_list/sort_filter_search_tracklist.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:orangejam/domain/usecases/tracks_usecases.dart';
 
 import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/usecases/playlists_usecases.dart';
-import '../extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
-import '../playercontrols/bloc/playercontrols_bloc.dart';
+import '../../domain/failures/tracks_failures.dart';
+import '../../injection.dart';
 
 part 'playlists_event.dart';
 part 'playlists_state.dart';
 
-
-
 class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
   final PlaylistsUsecases playlistsUsecases;
-  PlaylistsBloc({required this.playlistsUsecases})
-      : super(PlaylistsState.initial()) {
+  final TracksUsecases tracksUsecases;
 
-    final Future<SharedPreferences> startPrefs =
-        SharedPreferences.getInstance();
-
-    final globalLists = GlobalLists();
-
-    on<PlaylistsLoadingEvent>((event, emit) async {
-      // create a copy of the list of track entities from data source
-      globalLists.initialTracks = event.tracks;
-
-      // load id of last opened playlist from SharedPrefs so app starts with it
-      int savedId =
-          await startPrefs.then((value) => value.getInt("startWith") ?? -2);
-      // We don't save queue so we get rid of id -1 at next app start
-      if (savedId == -1) {
-        savedId = -2;
+  PlaylistsBloc({
+    required this.playlistsUsecases,
+    required this.tracksUsecases,
+  }) : super(PlaylistsState.initial()) {
+    String mapFailureToMessage(TracksFailure failure) {
+      switch (failure.runtimeType) {
+        case const (TracksIoFailure):
+          return "Oops, an error occurred while reading your files.\nPlease restart the app!";
+        case const (TracksGeneralFailure):
+          return "Oops, something went wrong.\nPlease restart the app!";
+        default:
+          return "Oops, something went wrong.\nPlease restart the app!";
       }
+    }
+
+    on<PlaylistsTracksLoadingEvent>((event, emit) async {
+      emit(state.copyWith(loading: true));
+
+      Either<TracksFailure, List<TrackEntity>> failureOrTracklist =
+          await tracksUsecases.getTracksUsecases();
+
+      failureOrTracklist.fold(
+        (failure) => emit(
+          PlaylistsState.error(
+            message: mapFailureToMessage(failure),
+          ).copyWith(
+            loading: false,
+          ),
+        ),
+        (tracklist) {
+          emit(
+            state.copyWith(
+              tracks: tracklist,
+            ),
+          );
+          add(PlaylistsTracksLoadedEvent());
+        },
+      );
+    });
+
+    on<PlaylistsTracksLoadedEvent>((event, emit) async {
       // load all playlists from m3u files, if any
       List playlists = await playlistsUsecases.getPlaylistsUsecase();
-      List<TrackEntity> tracks = [];
-      // start with a playlist (id > -1) or with all files
-      if (savedId > -1 && playlists.isNotEmpty) {
-        if (playlists.asMap().containsKey(savedId)) {
-          List selectedPlaylist = playlists[savedId][1];
-          for (var el in selectedPlaylist) {
-            for (var track in globalLists.initialTracks) {
-              if (track.filePath == el) {
-                tracks.add(track);
-              }
-            }
-          }
-        }
-      } else {
-        for (TrackEntity track in globalLists.initialTracks) {
-          tracks.add(track);
-        }
-      }
-      emit(state.copyWith(
-          tracks: tracks, playlists: playlists, playlistId: savedId));
+      emit(state.copyWith(playlists: playlists));
+      add(PlaylistsLoadedEvent());
+    });
+
+    on<PlaylistsLoadedEvent>((event, emit) async {
+      // get last playlist id from Shared Prefs
+      int savedId = playlistsUsecases.idFromPrefs();
+
+      List<TrackEntity> tracks =
+          playlistsUsecases.getInitialListAsPerPrefs(state.playlists, savedId);
+
+      emit(
+        state.copyWith(tracks: tracks, playlistId: savedId, loading: false),
+      );
     });
 
     // This event is triggered when creating a new empty playlist (+ button in playlist menu with following dialog)
     // AND when saving queue to new playlist
     on<PlaylistCreated>((event, emit) async {
-      List playlists = state.playlists; // current state
-      playlists.add([event.name, event.playlist]); // add playlist-name and path-list from event to current playlists
+      List playlists = [...state.playlists];
+      // add playlist-name and path-list from event to current playlists
+      playlists.add([
+        event.name,
+        event.playlist
+      ]);
       emit(state.copyWith(playlists: playlists));
     });
 
     on<PlaylistChanged>((event, emit) async {
-      List<TrackEntity> tracks = [];
-      // User selects a playlist
-      if (event.id > -1 && state.playlists.isNotEmpty) {
-        if (state.playlists.asMap().containsKey(event.id)) {
-          List selectedPlaylist = state.playlists[event.id][1];
-          for (var el in selectedPlaylist) {
-            for (var track in globalLists.initialTracks) {
-              if (track.filePath == el) {
-                tracks.add(track);
-              }
-            }
-          }
-        }
-        // User selects the queue or queue content was modified while queue is current list
-      } else if (event.id == -1) {
-        for (TrackEntity track in globalLists.queue) {
-          tracks.add(track);
-        }
-        // User selects all files
-      } else {
-        for (TrackEntity track in globalLists.initialTracks) {
-          tracks.add(track);
-        }
-      }
-      // We remove filters
-      BlocProvider.of<AppbarFilterByCubit>(globalScaffoldKey.scaffoldKey.currentContext!).setStringFilterBy(null);
+      List playlists = state.playlists;
+      List<TrackEntity> tracks =
+          playlistsUsecases.playlistChanged(playlists: playlists, id: event.id);
 
       emit(state.copyWith(tracks: tracks, playlistId: event.id));
-      SharedPreferences myStart = await startPrefs;
-      myStart.setInt("startWith", event.id);
-
-      // Play first track automatically if drawer_prefs is set
-      if(BlocProvider.of<AutomaticPlaybackCubit>(globalScaffoldKey.scaffoldKey.currentContext!).state == true){
-        BlocProvider.of<PlayerControlsBloc>(globalScaffoldKey.scaffoldKey.currentContext!)
-            .add(TrackItemPressed(track: tracks[0]));
-      }
     });
 
     // If current playlist is deleted we change view to all files
     on<PlaylistDeleted>((event, emit) async {
       List<TrackEntity> tracks = [];
       if (event.id == state.playlistId) {
-        for (TrackEntity track in globalLists.initialTracks) {
+        for (TrackEntity track in sl<GlobalLists>().initialTracks) {
           tracks.add(track);
         }
         emit(state.copyWith(tracks: tracks, playlistId: -2));
-        SharedPreferences myStart = await startPrefs;
-        myStart.setInt("startWith", -2);
+
+        playlistsUsecases.saveIdToPrefs(-2);
       }
     });
 
     /// Sorting and filtering (only on all files)
     on<PlaylistSorted>((event, emit) async {
-      List<TrackEntity> tracklistState = state.tracks;
+      List<TrackEntity> tracks = state.tracks;
       // we replace current state with empty list
       emit(state.copyWith(tracks: []));
       // we sort copy of current list
-      List<TrackEntity> sortedTracklist = sortedList(tracklistState, event.sortBy!);
+      List<TrackEntity> sortedTracklist =
+          playlistsUsecases.sortedList(tracks, event.sortBy!, event.ascending);
 
-      bool wasReset = false;
-
-      if(event.sortBy == "Reset"){
-        wasReset = true;
-      }
-
-      if (!event.ascending && wasReset == false) {
-        sortedTracklist = sortedTracklist.reversed.toList();
-      }
       // we emit new list as new state
       emit(state.copyWith(tracks: sortedTracklist));
     });
 
     on<PlaylistFiltered>((event, emit) async {
-      List<TrackEntity> results = filteredList(state.tracks, event.filterBy, event.value);
+      List<TrackEntity> results = playlistsUsecases.filteredList(
+          state.tracks, event.filterBy, event.value);
       emit(state.copyWith(tracks: results));
     });
 
     on<PlaylistSearchedByKeyword>((event, emit) async {
-      List<TrackEntity> results = searchedList(event.keyword);
+      List<TrackEntity> results = playlistsUsecases.searchedList(event.keyword);
       emit(state.copyWith(tracks: results));
     });
+
     /// End sorting and filtering
 
     /// Queue
     on<TrackAddedToQueue>((event, emit) async {
-      globalLists.queue.add(event.track);
-      // if current playlist is queue we update UI
+      List<TrackEntity> tracks = playlistsUsecases.addTrackToQueue(event.track);
+      // if current playlist is queue we update UI: following doesn't happen in current app version
+      // because it would mean we are trying to add same track again and this is not allowed!
       if (state.playlistId == -1) {
-        emit(state.copyWith(tracks: globalLists.queue));
+        emit(state.copyWith(tracks: tracks));
       }
     });
 
-    /// the 2 following events occur only when queue is current view: we need to update UI with event PlaylistChanged()
-    /// so view will show the new state of the queue
+    /// the 2 following events occur only when queue is current view
     on<TrackRemoveFromQueue>((event, emit) async {
-      // first we remove the track from the global list
-      globalLists.queue.remove(event.track);
-      // then we update ui
-      add(PlaylistChanged(id: -1));
+      List<TrackEntity> tracks = playlistsUsecases.removeTrackFromQueue(event.track);
+      emit(state.copyWith(tracks: tracks));
     });
 
-  on<ClearQueue>((event, emit) async {
-      globalLists.queue.clear();
-      add(PlaylistChanged(id: -1));
+    on<ClearQueue>((event, emit) async {
+      List<TrackEntity> tracks = playlistsUsecases.clearQueue();
+      emit(state.copyWith(tracks: tracks));
     });
 
     /// End queue

@@ -7,7 +7,6 @@ import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
 import '../globals.dart';
 
 void initAwesomeNotifications() {
-  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
     null,
@@ -54,7 +53,6 @@ void initAwesomeNotifications() {
           content: Text(S.of(context).initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications),
           actions: [
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).buttonCancel,
               function: () {
                 Navigator.of(context).pop();
@@ -62,7 +60,6 @@ void initAwesomeNotifications() {
             ),
             SimpleButton(
               // AwesomeNotifications shows new dialog for permission
-              themeData: themeData,
               function: () => AwesomeNotifications()
                   .requestPermissionToSendNotifications()
                   .then((_) => closeDialog()),
@@ -71,10 +68,8 @@ void initAwesomeNotifications() {
           ],
           showDropdown: false,
           titleWidget: DescriptionText(
-            themeData: themeData,
             description: S.of(context).initializeAwesomeNotification_allowNotifications,
           ),
-          themeData: themeData,
         ),
       );
     }

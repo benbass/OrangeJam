@@ -9,7 +9,6 @@ class CustomDialog extends StatelessWidget {
   final List<Widget> actions;
   final bool showDropdown;
   final Widget titleWidget;
-  final ThemeData themeData;
 
   const CustomDialog({
     super.key,
@@ -18,7 +17,6 @@ class CustomDialog extends StatelessWidget {
     required this.actions,
     required this.showDropdown,
     required this.titleWidget,
-    required this.themeData,
   });
 
   @override
@@ -31,7 +29,7 @@ class CustomDialog extends StatelessWidget {
           scrollable: scrollable ?? false,
           title: titleWidget,
           backgroundColor:
-              themeData.dialogTheme.backgroundColor!.withOpacity(0.98),
+          Theme.of(context).dialogTheme.backgroundColor!.withOpacity(0.98),
           content: SizedBox(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -52,18 +50,16 @@ class CustomDialog extends StatelessWidget {
 class DescriptionText extends StatelessWidget {
   const DescriptionText({
     super.key,
-    required this.themeData,
     required this.description,
   });
 
-  final ThemeData themeData;
   final String description;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       description,
-      style: themeData.dialogTheme.titleTextStyle,
+      style: Theme.of(context).dialogTheme.titleTextStyle,
     );
   }
 }
@@ -72,12 +68,10 @@ class DescriptionText extends StatelessWidget {
 class SimpleButton extends StatelessWidget {
   const SimpleButton({
     super.key,
-    required this.themeData,
     required this.btnText,
     required this.function,
   });
 
-  final ThemeData themeData;
   final String btnText;
   final VoidCallback function;
 
@@ -85,7 +79,7 @@ class SimpleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: function,
-      style: themeData.textButtonTheme.style,
+      style: Theme.of(context).textButtonTheme.style,
       child: Text(
         btnText,
         textAlign: TextAlign.center,
@@ -101,13 +95,11 @@ class MyTextInput extends StatelessWidget {
     required this.txtController,
     this.autoFocus,
     this.labelText,
-    required this.themeData,
   });
 
   final TextEditingController txtController;
   final bool? autoFocus;
   final String? labelText;
-  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +112,8 @@ class MyTextInput extends StatelessWidget {
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: themeData.textTheme.bodyMedium!,
-          floatingLabelStyle: themeData.textTheme.bodyLarge!.copyWith(
+          labelStyle: Theme.of(context).textTheme.bodyMedium!,
+          floatingLabelStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: const Color(0xFFFF8100),
           ),
           border: InputBorder.none,
@@ -135,7 +127,7 @@ class MyTextInput extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white54),
           ),
         ),
-        style: themeData.textTheme.bodyMedium!.copyWith(fontSize: 14),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
       ),
     );
   }

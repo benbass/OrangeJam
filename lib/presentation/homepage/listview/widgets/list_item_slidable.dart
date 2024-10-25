@@ -11,6 +11,7 @@ import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../injection.dart';
 import '../../dialogs/dialogs.dart';
 import '../../dialogs/writer_view.dart';
 import 'item_leading.dart';
@@ -23,7 +24,6 @@ class ListItemSlidable extends StatelessWidget {
     required this.track,
     required this.backgroundColor,
     required this.selectedTrackId,
-    required this.themeData,
     required this.textColor,
   });
 
@@ -31,18 +31,17 @@ class ListItemSlidable extends StatelessWidget {
   final TrackEntity track;
   final Color backgroundColor;
   final int selectedTrackId;
-  final ThemeData themeData;
   final Color textColor;
 
   @override
   Widget build(BuildContext context) {
-    playTrack(TrackEntity track) {
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+        globalScaffoldKey.scaffoldKey.currentContext!);
+
+    void playTrack(TrackEntity track) {
       BlocProvider.of<PlayerControlsBloc>(context)
           .add(TrackItemPressed(track: track));
     }
-
-    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
 
     void snackBarFileNotExist() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +75,7 @@ class ListItemSlidable extends StatelessWidget {
           /// Add track to queue
           SlidableAction(
             onPressed: (_) {
-              if (!GlobalLists().queue.contains(track)) {
+              if (!sl<GlobalLists>().queue.contains(track)) {
                 playlistsBloc.add(TrackAddedToQueue(track: track));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -188,8 +187,7 @@ class ListItemSlidable extends StatelessWidget {
                 const SizedBox(
                   width: 8.0,
                 ),
-                ItemTexts(
-                    track: track, themeData: themeData, textColor: textColor),
+                ItemTexts(track: track, textColor: textColor),
                 SizedBox(
                   height: 66,
                   child: ItemTrailing(

@@ -21,10 +21,10 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<AutomaticPlaybackCubit>(context);
-    final themeData = Theme.of(context);
+
 
     return Drawer(
-      backgroundColor: themeData.colorScheme.primaryContainer,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -59,7 +59,6 @@ class MyDrawer extends StatelessWidget {
 
             /// Help
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).help,
               function: () {
                 Navigator.of(context).pop();

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/domain/repositories/playlists_repository.dart';
 import 'package:orangejam/domain/repositories/tracks_repository.dart';
 import 'package:orangejam/domain/usecases/playlists_usecases.dart';
@@ -12,19 +13,24 @@ import 'package:orangejam/infrastructure/repositories/playlists_repository_impl.
 import 'package:orangejam/infrastructure/repositories/tracks_repository_impl.dart';
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/core/player/audiohandler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'application/listview/data/tracks_bloc.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 
 final sl = GetIt.instance; // sl = service locator (injection container)
 
 Future<void> init() async {
+  // Extern (SharedPrefs for PlaylistsBloc)
+  sl.registerLazySingletonAsync<SharedPreferences>(() => SharedPreferences.getInstance());
+  await sl.isReady<SharedPreferences>();
   // Bloc
-  sl.registerFactory(() => TracksBloc(tracksUsecase: sl()));
-  sl.registerFactory(() => PlaylistsBloc(playlistsUsecases: sl()));
+  sl.registerFactory(() => PlaylistsBloc(
+        playlistsUsecases: sl(),
+        tracksUsecases: sl(),
+      ));
   // Usecases
   sl.registerLazySingleton(() => TracksUsecases(tracksRepository: sl()));
-  sl.registerLazySingleton(() => PlaylistsUsecases(playlistsRepository: sl()));
+  sl.registerLazySingleton(() => PlaylistsUsecases(playlistsRepository: sl(), sharedPreferences: sl()));
   // Repos
   sl.registerLazySingleton<TracksRepository>(
       () => TracksRepositoryImpl(tracksDataSources: sl()));
@@ -47,8 +53,11 @@ Future<void> init() async {
 
   final audioSession = MyAudioSession();
   sl.registerLazySingleton<MyAudioSession>(() => audioSession);
+
+  sl.registerLazySingleton<GlobalLists>(() => GlobalLists());
+
   // state management
   final playerControls = PlayerControlsBloc();
   sl.registerLazySingleton(() => playerControls);
-  //sl.registerFactory(() => PlayerControlsBloc());
+
 }

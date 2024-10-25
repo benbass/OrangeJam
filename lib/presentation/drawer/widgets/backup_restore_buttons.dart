@@ -11,21 +11,19 @@ class BackupRestoreButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     return BlocBuilder<LanguageCubit, String>(
   builder: (context2, state) {
     return Column(
       children: [
         Text(
           S.of(context).drawer_playlists,
-          style: themeData.textTheme.displayLarge,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: [
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).drawer_backup,
               function: () {
                 Navigator.of(context).pop();
@@ -33,7 +31,6 @@ class BackupRestoreButtons extends StatelessWidget {
               },
             ),
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).drawer_restore,
               function: () {
                 Navigator.of(context).pop();

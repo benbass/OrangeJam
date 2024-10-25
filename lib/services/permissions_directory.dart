@@ -17,7 +17,6 @@ class PermissionsAndDirectory {
   late bool isGranted = false;
   List<Permission> permissions = [];
   late bool sdkAtLeast33;
-  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
 
   void permissionDialog() {
     showDialog(
@@ -27,7 +26,6 @@ class PermissionsAndDirectory {
             Text(sdkAtLeast33 ? S.of(context).storage_permissions_dialog_content_33 : S.of(context).storage_permissions_dialog_content),
         actions: [
           SimpleButton(
-            themeData: themeData,
             btnText: S.of(context).buttonOk,
             function: () {
               Navigator.of(context).pop();
@@ -37,10 +35,8 @@ class PermissionsAndDirectory {
         ],
         showDropdown: false,
         titleWidget: DescriptionText(
-          themeData: themeData,
           description: S.of(context).storage_permissions_dialog_description,
         ),
-        themeData: themeData,
       ),
     );
   }

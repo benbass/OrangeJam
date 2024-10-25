@@ -1,6 +1,6 @@
 part of 'playercontrols_bloc.dart';
 
-class PlayerControlsState {
+class PlayerControlsState with EquatableMixin {
   final TrackEntity track;
   final bool isPausing;
   final double height;
@@ -33,4 +33,7 @@ class PlayerControlsState {
       loopMode: loopMode ?? this.loopMode,
     );
   }
+
+  @override
+  List<Object?> get props => [track, isPausing, height, loopMode];
 }

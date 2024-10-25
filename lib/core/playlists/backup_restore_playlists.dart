@@ -293,7 +293,7 @@ class BackupRestorePlaylists {
         final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
             globalScaffoldKey.scaffoldKey.currentContext!);
         playlistsBloc
-            .add(PlaylistsLoadingEvent(tracks: GlobalLists().initialTracks));
+            .add(PlaylistsTracksLoadingEvent());
 
         //Delete the created temp dir and file in it since we don't need them anymore
         extTempDir.delete(recursive: true);

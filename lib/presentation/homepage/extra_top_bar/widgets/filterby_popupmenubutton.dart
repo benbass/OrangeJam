@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/drawer_prefs/language/language_cubit.dart';
+import '../../../../application/extra_top_bar/filterby/topbar_filterby_cubit.dart';
 import '../../../../application/playlists/playlists_bloc.dart';
-import '../../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../generated/l10n.dart';
@@ -173,7 +173,7 @@ class MyExpansionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
         globalScaffoldKey.scaffoldKey.currentContext!);
-    final appbarFilterByCubit = BlocProvider.of<AppbarFilterByCubit>(
+    final appbarFilterByCubit = BlocProvider.of<TopBarFilterByCubit>(
         globalScaffoldKey.scaffoldKey.currentContext!);
 
     return ExpansionTile(

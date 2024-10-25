@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
 
+import '../../../application/extra_top_bar/filterby/topbar_filterby_cubit.dart';
 import '../../../application/playlists/playlists_bloc.dart';
-import '../../../application/extra_bar_all_files/filterby/appbar_filterby_cubit.dart';
 import '../../../generated/l10n.dart';
 
 // the appBar shows the name of the list + (the list length) + if list is filtered: filter keywords (if many separated by ">")
@@ -56,7 +56,7 @@ class AppBarContent extends StatelessWidget {
         ),
 
         /// This builder shows a filtering hint: filtertext1 > filtertext2 > filtertext3...
-        BlocBuilder<AppbarFilterByCubit, String?>(
+        BlocBuilder<TopBarFilterByCubit, String?>(
           builder: (context, appbarFilterByState) {
             return Expanded(
               flex: 2,

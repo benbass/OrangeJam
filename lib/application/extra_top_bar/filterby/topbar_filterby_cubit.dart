@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
-class AppbarFilterByCubit extends Cubit<String?> {
-  AppbarFilterByCubit() : super(null);
+class TopBarFilterByCubit extends Cubit<String?> {
+  TopBarFilterByCubit() : super(null);
 
   void setStringFilterBy(String? stringFilterby){
     // Depending on current state we build an output == null or "String" or "String1 > String2 ..."

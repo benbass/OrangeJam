@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../application/listview/data/tracks_bloc.dart';
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
@@ -25,6 +24,7 @@ import 'custom_widgets/progress_indicator/progress_indicator.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
 import 'bottombar/widgets/playlists_menu_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
+import 'extra_top_bar/extra_top_bar.dart';
 import 'listview/listview.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -38,13 +38,13 @@ class MyHomePage extends StatelessWidget {
     setAppLanguage(context);
 
     final MyAudioHandler audioHandler = sl<MyAudioHandler>();
-    final tracksBloc = BlocProvider.of<TracksBloc>(context);
-    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
     final automaticPlaybackCubit =
         BlocProvider.of<AutomaticPlaybackCubit>(context);
-    Theme.of(context);
+
+
+    final SearchController searchController = SearchController();
 
     final ScrollController sctr = ScrollController();
     // This ListObserverController works much better than ScrollController for animateTo since it uses index instead of pixel
@@ -52,7 +52,8 @@ class MyHomePage extends StatelessWidget {
         ListObserverController(controller: sctr);
 
     void refreshUi() {
-      BlocProvider.of<TracksBloc>(context).add(TracksRefreshingEvent());
+      BlocProvider.of<PlaylistsBloc>(context)
+          .add(PlaylistsTracksLoadingEvent());
     }
 
     void checkStoragePermissionOnResumed() async {
@@ -66,7 +67,7 @@ class MyHomePage extends StatelessWidget {
       }
       // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
       // An empty list can indicate that permission was never granted
-      if (granted && GlobalLists().initialTracks.isEmpty) {
+      if (granted && sl<GlobalLists>().initialTracks.isEmpty) {
         refreshUi();
       }
     }
@@ -127,26 +128,10 @@ class MyHomePage extends StatelessWidget {
           ),
           body: SizedBox(
             height: double.infinity,
-            child: BlocBuilder<TracksBloc, TracksState>(
-              builder: (context, tracklistState) {
-                if (tracklistState is TracksInitial) {
-                  // We check the permissions, then
-                  // we get the tracks from the objectBox db. If db is empty, device will be scanned,
-                  // files will be converted to entities with metadata and put into db (slow!).
-                  // See tracks_datasources.dart in infrastructure layer!
-                  tracksBloc.add(TracksLoadingEvent());
-                  return CustomProgressIndicator(
-                    progressText: S.of(context).homePage_ScanningDevice,
-                  );
-                } else if (tracklistState is TracksStateLoading) {
-                  /// we send the data from source (the tracks) to the playlist bloc so playlists can be built
-                  playlistsBloc.add(
-                      PlaylistsLoadingEvent(tracks: tracklistState.tracks));
-                  tracksBloc.add(TracksLoadedEvent());
-                  return CustomProgressIndicator(
-                    progressText: S.of(context).homePage_LoadingTracks,
-                  );
-                } else if (tracklistState is TracksStateLoaded) {
+            child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
+              //bloc: BlocProvider.of<PlaylistsBloc>(context),
+              builder: (context, playlistsState) {
+                if (playlistsState.loading) {
                   // Player is open so we can subscribe
                   if (audioHandler.flutterSoundPlayer.isOpen()) {
                     // Position for Progressbar in Player controls and behaviour at playback end
@@ -159,17 +144,35 @@ class MyHomePage extends StatelessWidget {
                   // Check sharedPrefs for automatic playback and emit state according to result
                   automaticPlaybackCubit.getAutomaticPlaybackFromPrefs();
                   //
-
-                  /// List of tracks, extra top bar (if any, depending on kind of list)
-                  return MyListview(
-                    sctr: sctr,
-                    observController: observerController,
-                    isScrollingCubit: isScrollingCubit,
-                    isScrollReverseCubit: isScrollReverseCubit,
+                  return CustomProgressIndicator(
+                    progressText: S.of(context).homePage_LoadingTracks,
                   );
-                } else if (tracklistState is TracksStateError) {
+                } else if (!playlistsState.loading) {
+                  /// List of tracks, extra top bar (if any, depending on kind of list)
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      /// No extra bar will be shown on top if current list is a user playlist (id >= 0)
+                      playlistsState.playlistId < 0
+
+                          /// Extra bar only for views: all files, queue
+                          ? ExtraTopBar(
+                              searchController: searchController,
+                            )
+                          : const SizedBox.shrink(),
+
+                      /// The list of tracks
+                      MyListview(
+                        sctr: sctr,
+                        observController: observerController,
+                        isScrollingCubit: isScrollingCubit,
+                        isScrollReverseCubit: isScrollReverseCubit,
+                      ),
+                    ],
+                  );
+                } else if (playlistsState.message != null) {
                   return ErrorMessage(
-                    message: tracklistState.message,
+                    message: playlistsState.message!,
                   );
                 }
                 return Container();

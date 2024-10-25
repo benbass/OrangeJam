@@ -11,12 +11,11 @@ class LanguageSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     return Column(
       children: [
         Text(
           S.of(context).drawer_language,
-          style: themeData.textTheme.displayLarge,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +23,6 @@ class LanguageSelection extends StatelessWidget {
           children: supportedLang
               .map(
                 (locale) => SimpleButton(
-                  themeData: themeData,
                   btnText: locale.languageCode.toUpperCase(),
                   function: () {
                     BlocProvider.of<LanguageCubit>(context)

@@ -4,6 +4,8 @@ import 'package:media_store_plus/media_store_plus.dart';
 import '../domain/entities/track_entity.dart';
 import '../objectbox.g.dart';
 
+const String appName = "OrangeJam";
+
 /// Provides access to the ObjectBox Store throughout the app.
 late Box<TrackEntity> trackBox;
 
@@ -21,15 +23,8 @@ class GlobalScaffoldKey {
   GlobalKey get scaffoldKey => _scaffoldKey;
 }
 
-const String appName = "OrangeJam";
-
-// we save the tracklist and make it globally accessible
+// we save the tracklist and make it globally accessible via dependency injection
 class GlobalLists {
-  static final GlobalLists _globalLists = GlobalLists._internal();
-  factory GlobalLists() {
-    return _globalLists;
-  }
-  GlobalLists._internal();
   List<TrackEntity> initialTracks = [];
   List<TrackEntity> queue = [];
 }

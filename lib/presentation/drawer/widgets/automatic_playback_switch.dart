@@ -12,7 +12,6 @@ class AutomaticPlaybackSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final automaticPlaybackCubit =
         BlocProvider.of<AutomaticPlaybackCubit>(context);
-    final themeData = Theme.of(context);
     return Column(
       children: [
         Padding(
@@ -21,7 +20,7 @@ class AutomaticPlaybackSwitch extends StatelessWidget {
             builder: (context2, state) {
               return Text(
                 S.of(context).drawer_automaticPlayback,
-                style: themeData.textTheme.displayLarge,
+                style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               );
             },

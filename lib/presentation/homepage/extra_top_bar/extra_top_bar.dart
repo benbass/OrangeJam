@@ -90,7 +90,7 @@ class ExtraTopBar extends StatelessWidget {
                       }
                       dialogCreatePlaylist(
                         S.of(context).extraBar_saveTheQueueAsAPlaylist,
-                        filePaths
+                        filePaths,
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(

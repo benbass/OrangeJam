@@ -12,13 +12,11 @@ import '../custom_widgets/custom_widgets.dart';
 
 /// a simple dialog for canceling actions (used only in file lib/core/playlists/backup_restore_playlists.dart)
 void dialogClose(BuildContext context, message) {
-  final themeData = Theme.of(context);
   showDialog(
     builder: (context) => CustomDialog(
       content: const SizedBox.shrink(),
       actions: [
         SimpleButton(
-          themeData: themeData,
           btnText: S.of(context).close,
           function: () {
             Navigator.of(context).pop();
@@ -27,10 +25,8 @@ void dialogClose(BuildContext context, message) {
       ],
       showDropdown: false,
       titleWidget: DescriptionText(
-        themeData: themeData,
         description: message,
       ),
-      themeData: themeData,
     ),
     context: context,
   );
@@ -40,7 +36,6 @@ void dialogClose(BuildContext context, message) {
 /// This dialog is called when user taps on one of the buttons restore or backup in drawer
 void dialogActionRestoreOrBackupPlaylists(
     BuildContext context, String restoreOrBackup) {
-  final themeData = Theme.of(context);
   BackupRestorePlaylists backupRestorePlaylists = BackupRestorePlaylists();
   String playlistsWillBeDeleted =
   S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
@@ -57,22 +52,18 @@ void dialogActionRestoreOrBackupPlaylists(
           : Text(zipWillBeCreated),
       actions: <Widget>[
         SimpleButton(
-          themeData: themeData,
           btnText: abort,
           function: () => Navigator.pop(context, false),
         ),
         SimpleButton(
-          themeData: themeData,
           btnText: continu,
           function: () => Navigator.pop(context, true),
         ),
       ],
       showDropdown: false,
       titleWidget: DescriptionText(
-        themeData: themeData,
         description: restoreOrBackup == "restore" ? restore : backup,
       ),
-      themeData: themeData,
     ),
     context: context,
   ).then((exit) {
@@ -253,13 +244,11 @@ Future dialogAddTrackToPlaylist(
       builder: (context) {
         return CustomDialog(
           titleWidget: DescriptionText(
-            themeData: themeData,
             description: description,
           ),
           content: dropDownMenuAddToPlaylist(themeData),
           actions: [
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).buttonCancel,
               function: () {
                 Navigator.of(context).pop();
@@ -268,7 +257,6 @@ Future dialogAddTrackToPlaylist(
             buttonSaveAddTrackToPlaylist(filePath, themeData),
           ],
           showDropdown: false,
-          themeData: themeData,
         );
       },
     );
@@ -281,7 +269,6 @@ Future dialogAddTrackToPlaylist(
           content: const SizedBox.shrink(),
           actions: [
             SimpleButton(
-              themeData: themeData,
               btnText: S.of(context).buttonOk,
               function: () {
                 Navigator.of(context).pop();
@@ -290,8 +277,7 @@ Future dialogAddTrackToPlaylist(
           ],
           showDropdown: false,
           titleWidget:
-          DescriptionText(themeData: themeData, description: description),
-          themeData: themeData,
+          DescriptionText(description: description),
         );
       },
     );
@@ -304,25 +290,21 @@ void dialogCreatePlaylist(
     String description, List playlist) {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
   PlaylistsNamesAndSelectedVars().txtController.clear();
-  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   showDialog(
     context: globalScaffoldKey.scaffoldKey.currentContext!,
     builder: (context) {
           return CustomDialog(
             content: MyTextInput(
               txtController: PlaylistsNamesAndSelectedVars().txtController,
-              themeData: themeData,
             ),
             actions: [
               SimpleButton(
-                themeData: themeData,
                 btnText: S.of(context).buttonCancel,
                 function: () {
                   Navigator.of(context).pop();
                 },
               ),
               SimpleButton(
-                themeData: themeData,
                 btnText: S.of(globalScaffoldKey.scaffoldKey.currentContext!).save,
                 function: () async {
                   String name = PlaylistsNamesAndSelectedVars().txtController.text.trim();
@@ -338,10 +320,8 @@ void dialogCreatePlaylist(
             ],
             showDropdown: false,
             titleWidget: DescriptionText(
-              themeData: themeData,
               description: description,
             ),
-            themeData: themeData,
           );
     },
   );
