@@ -11,7 +11,6 @@ class SortByDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     final SortByCubit sortByCubit = BlocProvider.of<SortByCubit>(context);
     final TopBarFilterByCubit appbarFilterByCubit = BlocProvider.of<TopBarFilterByCubit>(context);
@@ -47,7 +46,7 @@ class SortByDropdown extends StatelessWidget {
                   ),
                   hint: Text(
                     S.of(context).sortByDropdown_sort,
-                    style: themeData.textTheme.bodyLarge!.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontSize: 13,
                     ),
                   ),
@@ -96,7 +95,7 @@ class SortByDropdown extends StatelessWidget {
                       child: Center(
                         child: Text(
                           e,
-                          style: themeData.textTheme.bodyLarge!.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontSize: 13,
                             color: sortbyState == e &&
                                     e != S.of(context).sortByDropdown_reset

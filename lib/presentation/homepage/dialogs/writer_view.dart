@@ -67,7 +67,7 @@ class _WriterViewState extends State<WriterView> {
     _updateUi(track);
   }
 
-  _updateUi(TrackEntity track) {
+  void _updateUi(TrackEntity track) {
     // list
     playlistsBloc.add(PlaylistsTracksLoadingEvent());
     // player controls and track details if updated track is playback track

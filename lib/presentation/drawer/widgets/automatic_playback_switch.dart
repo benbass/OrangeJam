@@ -17,7 +17,7 @@ class AutomaticPlaybackSwitch extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: BlocBuilder<LanguageCubit, String>(
-            builder: (context2, state) {
+            builder: (context, state) {
               return Text(
                 S.of(context).drawer_automaticPlayback,
                 style: Theme.of(context).textTheme.displayLarge,

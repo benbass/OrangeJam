@@ -11,7 +11,7 @@ import '../custom_widgets/custom_widgets.dart';
 /// TODO: implement a file picker instead of saving backups directly to Google Drive
 
 /// a simple dialog for canceling actions (used only in file lib/core/playlists/backup_restore_playlists.dart)
-void dialogClose(BuildContext context, message) {
+void dialogClose(BuildContext context, String message) {
   showDialog(
     builder: (context) => CustomDialog(
       content: const SizedBox.shrink(),
@@ -81,7 +81,7 @@ void dialogActionRestoreOrBackupPlaylists(
 
 /// DIALOG addToPlaylist() (add a track to an existing playlist)
 // Dropdown for playlist names in dialog addToPlaylist()
-StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
+StatefulBuilder dropDownMenuAddToPlaylist() {
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
       return SizedBox(
@@ -89,7 +89,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
         child: Column(
           children: [
             PopupMenuButton(
-              color: themeData.dialogTheme.backgroundColor!.withOpacity(0.9),
+              color: Theme.of(context).dialogTheme.backgroundColor!.withOpacity(0.9),
               itemBuilder: (context) {
                 // the entries are saved in a global var by
                 return PlaylistsNamesAndSelectedVars()
@@ -99,7 +99,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
                   return PopupMenuItem(
                     value:  entry.value,
                     child: InkWell(
-                      splashColor: themeData.colorScheme.secondary,
+                      splashColor: Theme.of(context).colorScheme.secondary,
                       onTap: () {
                         var selectedKey = PlaylistsNamesAndSelectedVars()
                             .playlistMap
@@ -120,7 +120,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
                           Expanded(
                             child: Text(
                               entry.value,
-                              style: themeData.textTheme.bodyLarge!,
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                           ),
                         ],
@@ -151,7 +151,7 @@ StatefulBuilder dropDownMenuAddToPlaylist(ThemeData themeData) {
 
 // Button Save for adding a track to a playlist
 StatefulBuilder buttonSaveAddTrackToPlaylist(
-    String filePath, ThemeData themeData) {
+    String filePath) {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
@@ -203,7 +203,7 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
                     .of(context)
                     .playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack(
                     PlaylistsNamesAndSelectedVars().selectedVal)),
-                backgroundColor: themeData.colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
             );
           }
@@ -213,12 +213,12 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
             SnackBar(
               duration: const Duration(seconds: 2),
               content: Text(S.of(context).playlistHandler_pickAPlaylist),
-              backgroundColor: themeData.colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
             ),
           );
         }
       },
-      style: themeData.textButtonTheme.style,
+      style: Theme.of(context).textButtonTheme.style,
       child: Text(
         S.of(context).save,
       ),
@@ -231,7 +231,6 @@ Future dialogAddTrackToPlaylist(
     String filePath) async {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
       globalScaffoldKey.scaffoldKey.currentContext!);
-  final themeData = Theme.of(globalScaffoldKey.scaffoldKey.currentContext!);
   String description = S
       .of(globalScaffoldKey.scaffoldKey.currentContext!)
       .playlistHandler_addThisTrackToPlaylist;
@@ -246,7 +245,7 @@ Future dialogAddTrackToPlaylist(
           titleWidget: DescriptionText(
             description: description,
           ),
-          content: dropDownMenuAddToPlaylist(themeData),
+          content: dropDownMenuAddToPlaylist(),
           actions: [
             SimpleButton(
               btnText: S.of(context).buttonCancel,
@@ -254,7 +253,7 @@ Future dialogAddTrackToPlaylist(
                 Navigator.of(context).pop();
               },
             ),
-            buttonSaveAddTrackToPlaylist(filePath, themeData),
+            buttonSaveAddTrackToPlaylist(filePath),
           ],
           showDropdown: false,
         );

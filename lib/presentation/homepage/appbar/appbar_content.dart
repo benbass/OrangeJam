@@ -14,7 +14,6 @@ class AppBarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -63,7 +62,7 @@ class AppBarContent extends StatelessWidget {
               child: appbarFilterByState != null
                   ? Text(
                       appbarFilterByState,
-                      style: themeData.appBarTheme.titleTextStyle?.copyWith(
+                      style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
                         color: const Color(0xFFFF8100),
                         fontSize: 13,
                         fontWeight: FontWeight.normal,

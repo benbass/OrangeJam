@@ -13,7 +13,6 @@ class FilterByPopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     List<String> menuItems = ["Artist", "Album", "Genre", "Year"];
 
     return BlocBuilder<LanguageCubit, String>(
@@ -100,7 +99,6 @@ class FilterByPopupMenuButton extends StatelessWidget {
                         builder: (context) {
                           if (value == "Artist") {
                             return MyExpansionTile(
-                              themeData: themeData,
                               list: artists,
                               value: value,
                               name: S.of(context).sortByDropdown_artist,
@@ -108,7 +106,6 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           }
                           if (value == "Album") {
                             return MyExpansionTile(
-                              themeData: themeData,
                               list: albums,
                               value: value,
                               name: S.of(context).filterByPopUpMenuButton_album,
@@ -116,14 +113,12 @@ class FilterByPopupMenuButton extends StatelessWidget {
                           }
                           if (value == "Genre") {
                             return MyExpansionTile(
-                                themeData: themeData,
                                 list: genres,
                                 value: value,
                                 name: S.of(context).sortByDropdown_genre);
                           }
                           if (value == "Year") {
                             return MyExpansionTile(
-                              themeData: themeData,
                               list: years,
                               value: value,
                               name: S.of(context).filterByPopUpMenuButton_year,
@@ -158,13 +153,11 @@ class FilterByPopupMenuButton extends StatelessWidget {
 class MyExpansionTile extends StatelessWidget {
   const MyExpansionTile({
     super.key,
-    required this.themeData,
     required this.list,
     required this.value,
     required this.name,
   });
 
-  final ThemeData themeData;
   final List<String> list;
   final String value;
   final String name;
@@ -184,7 +177,7 @@ class MyExpansionTile extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20))),
       title: Text(
         name,
-        style: themeData.textTheme.bodyLarge!.copyWith(
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
           fontSize: 13,
           color: const Color(0xFFCBD4C2),
         ),
@@ -208,7 +201,7 @@ class MyExpansionTile extends StatelessWidget {
                       },
                       child: Text(
                         e,
-                        style: themeData.textTheme.bodyLarge!.copyWith(
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontSize: 13,
                           color: const Color(0xFFFF8100),
                         ),
