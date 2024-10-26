@@ -19,6 +19,7 @@ import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../../core/player/audiohandler.dart';
 import 'appbar/appbar_content.dart';
+import 'custom_widgets/custom_widgets.dart';
 import 'custom_widgets/error/error_message.dart';
 import 'custom_widgets/progress_indicator/progress_indicator.dart';
 import 'bottombar/widgets/goto_item_icon.dart';
@@ -42,7 +43,6 @@ class MyHomePage extends StatelessWidget {
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
     final automaticPlaybackCubit =
         BlocProvider.of<AutomaticPlaybackCubit>(context);
-
 
     final SearchController searchController = SearchController();
 
@@ -69,6 +69,56 @@ class MyHomePage extends StatelessWidget {
       // An empty list can indicate that permission was never granted
       if (granted && sl<GlobalLists>().initialTracks.isEmpty) {
         refreshUi();
+      }
+    }
+
+    void permissionDialog() async {
+      bool sdkAtLeast33 = await mediaStorePlugin.getPlatformSDKInt() < 33;
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomDialog(
+            content: Text(!sdkAtLeast33
+                ? S.of(context).storage_permissions_dialog_content_33
+                : S.of(context).storage_permissions_dialog_content),
+            actions: [
+              SimpleButton(
+                btnText: S.of(context).buttonCancel,
+                function: () {
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              SimpleButton(
+                btnText: S.of(context).buttonOk,
+                function: () {
+                  openAppSettings().then((value) {
+                    if (value == true && context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+              ),
+            ],
+            showDropdown: false,
+            titleWidget: DescriptionText(
+              description: S.of(context).storage_permissions_dialog_description,
+            ),
+          ),
+        );
+      }
+    }
+
+    void callDialogForStoragePermission() async {
+      late bool permanentlyDenied;
+      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
+        permanentlyDenied = await Permission.storage.isPermanentlyDenied;
+      } else {
+        permanentlyDenied = await Permission.audio.isPermanentlyDenied;
+      }
+      if (permanentlyDenied) {
+        permissionDialog();
       }
     }
 
@@ -119,7 +169,7 @@ class MyHomePage extends StatelessWidget {
       builder: (context, state) => SafeArea(
         maintainBottomViewPadding: true,
         child: Scaffold(
-          key: globalScaffoldKey.scaffoldKey,
+          //key: globalScaffoldKey.scaffoldKey,
           appBar: AppBar(
             title: const AppBarContent(),
           ),
@@ -131,14 +181,14 @@ class MyHomePage extends StatelessWidget {
             child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
               //bloc: BlocProvider.of<PlaylistsBloc>(context),
               builder: (context, playlistsState) {
+                callDialogForStoragePermission(); // Dialog will be shown only if permission is permanently denied
+
                 if (playlistsState.loading) {
                   // Player is open so we can subscribe
                   if (audioHandler.flutterSoundPlayer.isOpen()) {
                     // Position for Progressbar in Player controls and behaviour at playback end
                     audioHandler.flutterSoundPlayer.setSubscriptionDuration(
                         const Duration(milliseconds: 100));
-                    //init and check permission for awesomeNotifications
-                    initAwesomeNotifications();
                   }
 
                   // Check sharedPrefs for automatic playback and emit state according to result
@@ -148,6 +198,9 @@ class MyHomePage extends StatelessWidget {
                     progressText: S.of(context).homePage_LoadingTracks,
                   );
                 } else if (!playlistsState.loading) {
+                  //init and check permission for awesomeNotifications
+                  initAwesomeNotifications(context);
+
                   /// List of tracks, extra top bar (if any, depending on kind of list)
                   return Column(
                     mainAxisSize: MainAxisSize.min,

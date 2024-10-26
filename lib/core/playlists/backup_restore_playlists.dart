@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,22 +31,21 @@ extension FileExtention on FileSystemEntity {
 class BackupRestorePlaylists {
 
   /// BACKUP
-  void backupFiles() async {
-    final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+  void backupFiles(BuildContext context) async {
+    final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(context);
     var encoder = ZipFileEncoder();
     String messageNotSignedIn =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_youAreNotSignedInToYourGoogleAccount;
-    String theFile = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theFile;
+        S.of(context).backupRestore_youAreNotSignedInToYourGoogleAccount;
+    String theFile = S.of(context).backupRestore_theFile;
     String hasBeenUploaded =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_hasBeenUploadedToYourGoogleDrive;
-    String error = S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_error;
+        S.of(context).backupRestore_hasBeenUploadedToYourGoogleDrive;
+    String error = S.of(context).backupRestore_error;
     String backupNotCreated =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_backupFileNotCreated;
+        S.of(context).backupRestore_backupFileNotCreated;
     String pleaseTryAgain =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_pleaseTryAgain;
+        S.of(context).backupRestore_pleaseTryAgain;
     String successCreated =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_wasSuccessfullyCreatedIn;
+        S.of(context).backupRestore_wasSuccessfullyCreatedIn;
 
     dynamic dir;
 
@@ -117,8 +117,9 @@ class BackupRestorePlaylists {
         //print("User account $account");
 
         if (account == null) {
-          dialogClose(
-              globalScaffoldKey.scaffoldKey.currentContext!, messageNotSignedIn);
+          if(context.mounted) {
+            dialogClose(context, messageNotSignedIn);
+          }
         } else {
           final authHeaders = await account.authHeaders;
           final authenticateClient = GoogleAuthClient(authHeaders);
@@ -148,8 +149,10 @@ class BackupRestorePlaylists {
                 uploadMedia: drive.Media(file.openRead(), file.lengthSync()),
               );
             } catch (e) {
-              dialogClose(globalScaffoldKey.scaffoldKey.currentContext!,
-                  S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_unableToUpload + e.toString());
+              if(context.mounted) {
+                dialogClose(context,
+                  S.of(context).backupRestore_unableToUpload + e.toString());
+              }
               rethrow;
             }
           }
@@ -167,12 +170,16 @@ class BackupRestorePlaylists {
               .whenComplete(() => Directory(backupPath).delete(recursive: true))
               .whenComplete(() {
             isCommunicating.isCommunicatingWithGoogleDrive(false);
-            dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+            if(context.mounted) {
+              dialogClose(context, message);
+            }
           });
         }
       } catch (e) {
         String message = "$error: $e.\n$backupNotCreated\n$pleaseTryAgain";
-        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+        if(context.mounted) {
+          dialogClose(context, message);
+        }
       }
     } else {
       dir = await getApplicationDocumentsDirectory();
@@ -206,47 +213,54 @@ class BackupRestorePlaylists {
           String message = "$theFile '$newZip' $successCreated $dir.";
           Directory('${dir.path}/$backupFolder')
               .delete(recursive: true)
-              .whenComplete(() =>
-                  dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message));
+              .whenComplete(() {
+            if(context.mounted) {
+              dialogClose(context, message);
+            }
+              });
         } else {
           String message = "$error: $backupNotCreated\n$pleaseTryAgain";
-          dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+          if(context.mounted) {
+            dialogClose(context, message);
+          }
         }
       } catch (e) {
         String message = "$error: $e.\n$backupNotCreated\n$pleaseTryAgain";
-        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+        if(context.mounted) {
+          dialogClose(context, message);
+        }
       }
     }
   }
 
   /// RESTORE
-  void restoreFiles() async {
+  void restoreFiles(BuildContext context) async {
     final isCommunicating = BlocProvider.of<IsCommWithGoogleCubit>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+        context);
+    String errorBackupFile =
+        S.of(context).backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain;
+    String successRestore =
+        S.of(context).backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored;
+    String noValidFiles =
+        S.of(context).backupRestore_theZipFileDoesNotContainValidPlaylistFilesExtension;
     dynamic appDir = await getApplicationDocumentsDirectory();
     var playlistsDir = Directory('${appDir.path}/${appName}_Playlists');
-    String noBackupSelected =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_noBackupFileSelected; //AppLocalizations.of(context)!.noFileSelected;
-    String restoreAborted =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_restoreAborted; //AppLocalizations.of(context)!.restoreAborted;
-    //String pleaseRestartApp = "Please restart the app for the changes to take effect!"; //AppLocalizations.of(context)!.pleaseRestartApp;
-    String noValidFiles =
-        S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_theZipFileDoesNotContainValidPlaylistFilesExtension; //AppLocalizations.of(context)!.noValidFiles;
 
     late FilePickerResult? result;
     try{
       result = await FilePicker.platform.pickFiles();
     } catch(e){
-      String message =
-          S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain;
-      dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+      if(context.mounted){
+        dialogClose(context, errorBackupFile);
+      }
       return;
     }
 
-
     if (result == null) {
-      String message = "$noBackupSelected\n$restoreAborted";
-      dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+      if(context.mounted){
+        String message = "${S.of(context).backupRestore_noBackupFileSelected}\n${S.of(context).backupRestore_restoreAborted}";
+        dialogClose(context, message);
+      }
     } else {
       isCommunicating.isCommunicatingWithGoogleDrive(true);
       dynamic pickedFilePath = result.files.single.path;
@@ -289,28 +303,29 @@ class BackupRestorePlaylists {
           }
         }
 
-        /// Update playlist menue
-        final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-            globalScaffoldKey.scaffoldKey.currentContext!);
-        playlistsBloc
-            .add(PlaylistsTracksLoadingEvent());
-
         //Delete the created temp dir and file in it since we don't need them anymore
         extTempDir.delete(recursive: true);
         await zipFile.delete();
       }
 
       if (isValidFile) {
-        String message =
-            S.of(globalScaffoldKey.scaffoldKey.currentContext!).backupRestore_yourPlaylistsFromTheBackupFileHaveBeenRestored;
         extractFiles().whenComplete(() {
+
           isCommunicating.isCommunicatingWithGoogleDrive(false);
-          dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, message);
+          if(context.mounted) {
+            /// Update playlist menue
+            BlocProvider.of<PlaylistsBloc>(context)
+                .add(PlaylistsTracksLoadingEvent());
+
+            dialogClose(context, successRestore);
+          }
         });
       } else {
         zipFile.delete();
         isCommunicating.isCommunicatingWithGoogleDrive(false);
-        dialogClose(globalScaffoldKey.scaffoldKey.currentContext!, noValidFiles);
+        if(context.mounted) {
+          dialogClose(context, noValidFiles);
+        }
       }
     }
   }

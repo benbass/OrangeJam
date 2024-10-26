@@ -66,7 +66,7 @@ class PlaylistHandler {
     await file.delete();
   }
 
-  Future<void> createPlaylistFile(List playlist, bool nameExists, String name) async {
+  Future<void> createPlaylistFile(List playlist, bool nameExists, String name, BuildContext context) async {
     List playlists = [];
     if (name.isNotEmpty) {
       if (!nameExists) {
@@ -77,37 +77,40 @@ class PlaylistHandler {
         for (String s in playlist) {
           await file.writeAsString("$s\n", mode: FileMode.append);
         }
-
-        Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-        ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
-            .showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Text(
-              S
-                  .of(globalScaffoldKey.scaffoldKey.currentContext!)
-                  .playlistHandler_thePlaylistNameWasCreated(name),
+        if(context.mounted) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context)
+              .showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                S
+                    .of(context)
+                    .playlistHandler_thePlaylistNameWasCreated(name),
+              ),
             ),
-          ),
-        );
+          );
+        }
         PlaylistsNamesAndSelectedVars().txtController.clear();
       } else {
-        Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+        Navigator.of(context).pop();
         dialogCreatePlaylist(
           S
-              .of(globalScaffoldKey.scaffoldKey.currentContext!)
+              .of(context)
               .playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName(
                   name),
           playlist,
+          context,
         );
       }
     } else {
-      Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
+      Navigator.of(context).pop();
       dialogCreatePlaylist(
         S
-            .of(globalScaffoldKey.scaffoldKey.currentContext!)
+            .of(context)
             .playlistHandler_enterANameForYourNewPlaylist,
         playlist,
+        context,
       );
     }
   }

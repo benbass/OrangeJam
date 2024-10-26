@@ -69,9 +69,12 @@ void dialogActionRestoreOrBackupPlaylists(
   ).then((exit) {
     if (exit == null) return;
     if (exit) {
-      restoreOrBackup == "restore"
-          ? backupRestorePlaylists.restoreFiles()
-          : backupRestorePlaylists.backupFiles();
+      if(context.mounted){
+        restoreOrBackup == "restore"
+            ? backupRestorePlaylists.restoreFiles(context)
+            : backupRestorePlaylists.backupFiles(context);
+      }
+
     } else {
       return;
     }
@@ -152,9 +155,9 @@ StatefulBuilder dropDownMenuAddToPlaylist() {
 // Button Save for adding a track to a playlist
 StatefulBuilder buttonSaveAddTrackToPlaylist(
     String filePath) {
-  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-      globalScaffoldKey.scaffoldKey.currentContext!);
+
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     return TextButton(
       onPressed: () async {
         if (PlaylistsNamesAndSelectedVars().selectedVal != "") {
@@ -171,13 +174,13 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
                 .state.playlists[PlaylistsNamesAndSelectedVars().selectedIndex][1]
                 .add(filePath);
             // track is now added to selected playlist: we close the dialog an inform user about success
-            Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-            ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context)
                 .showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
                 content: Text(S
-                    .of(globalScaffoldKey.scaffoldKey.currentContext!)
+                    .of(context)
                     .playlistHandler_theTrackWasAddedToThePlaylistSelectedval(
                     PlaylistsNamesAndSelectedVars().selectedVal)),
               ),
@@ -228,18 +231,17 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
 
 // Dialog after tap on slidable action on list item
 Future dialogAddTrackToPlaylist(
-    String filePath) async {
-  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-      globalScaffoldKey.scaffoldKey.currentContext!);
+    String filePath, BuildContext context) async {
+  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
   String description = S
-      .of(globalScaffoldKey.scaffoldKey.currentContext!)
+      .of(context)
       .playlistHandler_addThisTrackToPlaylist;
   PlaylistsNamesAndSelectedVars().selectedVal = "";
   PlaylistHandler().buildPlaylistStrings(playlistsBloc.state.playlists);
 
   if (PlaylistsNamesAndSelectedVars().playlistNames.isNotEmpty) {
     return await showDialog(
-      context: globalScaffoldKey.scaffoldKey.currentContext!,
+      context: context,
       builder: (context) {
         return CustomDialog(
           titleWidget: DescriptionText(
@@ -261,7 +263,7 @@ Future dialogAddTrackToPlaylist(
     );
   } else {
     return await showDialog(
-      context: globalScaffoldKey.scaffoldKey.currentContext!,
+      context: context,
       builder: (context) {
         description = S.of(context).playlistHandler_youDontHaveAnyPlaylistYet;
         return CustomDialog(
@@ -286,11 +288,11 @@ Future dialogAddTrackToPlaylist(
 
 /// Dialog for Icon + in BottomSheet for Playlists (create a new playlist) AND for saving queue as new playlist
 void dialogCreatePlaylist(
-    String description, List playlist) {
-  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(globalScaffoldKey.scaffoldKey.currentContext!);
+    String description, List playlist, BuildContext context) {
+  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
   PlaylistsNamesAndSelectedVars().txtController.clear();
   showDialog(
-    context: globalScaffoldKey.scaffoldKey.currentContext!,
+    context: context,
     builder: (context) {
           return CustomDialog(
             content: MyTextInput(
@@ -304,12 +306,12 @@ void dialogCreatePlaylist(
                 },
               ),
               SimpleButton(
-                btnText: S.of(globalScaffoldKey.scaffoldKey.currentContext!).save,
+                btnText: S.of(context).save,
                 function: () async {
                   String name = PlaylistsNamesAndSelectedVars().txtController.text.trim();
                   bool nameExists = playlistsBloc.state.playlists.any((element) => element[0] == name);
                   // we handle playlist name issues and create file
-                  await PlaylistHandler().createPlaylistFile(playlist, nameExists, name);
+                  await PlaylistHandler().createPlaylistFile(playlist, nameExists, name, context);
                   // if no issue with name, we trigger event
                   if(name.isNotEmpty && !nameExists){
                     playlistsBloc.add(PlaylistCreated(name: name, playlist: playlist));

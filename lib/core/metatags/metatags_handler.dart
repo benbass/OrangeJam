@@ -6,7 +6,6 @@ import 'package:audiotags/audiotags.dart';
 
 import '../../domain/entities/track_entity.dart';
 import '../../infrastructure/models/track_model.dart';
-import '../globals.dart';
 
 class MetaTagsHandler{
 
@@ -22,14 +21,14 @@ class MetaTagsHandler{
     );
 
   // We use AudioTags to write: MetadataGod doesn't write album art at all (!!!). Reason unknown...
-  writeTags(String filePath, Tag metaData) async {
+  writeTags(String filePath, Tag metaData, BuildContext context) async {
     try{
       await AudioTags.write(
         filePath,
         metaData,
       );
     } catch(e){
-      ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+      ScaffoldMessenger.of(context)
           .showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),

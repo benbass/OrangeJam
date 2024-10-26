@@ -6,7 +6,7 @@ import '../../generated/l10n.dart';
 import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
 import '../globals.dart';
 
-void initAwesomeNotifications() {
+void initAwesomeNotifications(BuildContext context) {
   AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
     null,
@@ -39,18 +39,16 @@ void initAwesomeNotifications() {
     */
   );
 
-  void closeDialog(){
-    Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-  }
-
   // Check if user granted permmission for notification
   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
     // if not, dialog informs user app wants to sent notifications
-    if (!isAllowed) {
+    if (!isAllowed && context.mounted) {
       showDialog(
-        context: globalScaffoldKey.scaffoldKey.currentContext!,
+        context: context,
         builder: (context) => CustomDialog(
-          content: Text(S.of(context).initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications),
+          content: Text(S
+              .of(context)
+              .initializeAwesomeNotification_ourAppWouldLikeToSendYouNotifications),
           actions: [
             SimpleButton(
               btnText: S.of(context).buttonCancel,
@@ -60,19 +58,21 @@ void initAwesomeNotifications() {
             ),
             SimpleButton(
               // AwesomeNotifications shows new dialog for permission
-              function: () => AwesomeNotifications()
-                  .requestPermissionToSendNotifications()
-                  .then((_) => closeDialog()),
+              function: () {
+                Navigator.of(context).pop();
+                AwesomeNotifications().requestPermissionToSendNotifications();
+              },
+              //.then((_) => closeDialog()),
               btnText: S.of(context).buttonOk,
             ),
           ],
           showDropdown: false,
           titleWidget: DescriptionText(
-            description: S.of(context).initializeAwesomeNotification_allowNotifications,
+            description:
+                S.of(context).initializeAwesomeNotification_allowNotifications,
           ),
         ),
       );
     }
   });
-
 }

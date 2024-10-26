@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart' as path;
@@ -23,7 +24,7 @@ class OverwriteFile {
   /// We cannot write to a file in the music library that is not owned by the app.
   /// That's why we need first to create a file with updated metadata in the temp dir.
   /// Then we will use the MediaStore Plus plugin to overwrite the original file with this file
-  Future<File> _saveUpdatedFileToTemporaryFile() async {
+  Future<File> _saveUpdatedFileToTemporaryFile(BuildContext context) async {
     // We create a new file and save it to temp dir:
     final dir = await path_provider.getTemporaryDirectory();
     final filePath = path.join(dir.path, fileName);
@@ -33,14 +34,16 @@ class OverwriteFile {
     await file.copy(filePath);
 
     // we write metaTag to temp file
-    await sl<MetaTagsHandler>().writeTags(filePath, metaData);
+    if(context.mounted) {
+      await sl<MetaTagsHandler>().writeTags(filePath, metaData, context);
+    }
 
     return File(filePath);
   }
 
-  Future<bool?> saveFileWithMediaStore() async {
+  Future<bool?> saveFileWithMediaStore(BuildContext context) async {
     // we need the temp file (file name is identical with original file)
-    final File tempFile = await _saveUpdatedFileToTemporaryFile();
+    final File tempFile = await _saveUpdatedFileToTemporaryFile(context);
 
     // we overwrite the original file with temp file via mediaStore
     SaveInfo? saveInfo = await mediaStorePlugin.saveFile(

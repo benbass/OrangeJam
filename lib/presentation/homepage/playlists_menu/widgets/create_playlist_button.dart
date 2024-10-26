@@ -18,7 +18,7 @@ class CreatePlaylistButton extends StatelessWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            dialogCreatePlaylist(S.of(context).playlistsMenu_NewPlaylist, []);
+            dialogCreatePlaylist(S.of(context).playlistsMenu_NewPlaylist, [], context);
           },
           icon: const Icon(
             Icons.add,

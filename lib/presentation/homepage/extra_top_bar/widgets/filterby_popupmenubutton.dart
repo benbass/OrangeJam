@@ -165,9 +165,9 @@ class MyExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+        context);
     final appbarFilterByCubit = BlocProvider.of<TopBarFilterByCubit>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+        context);
 
     return ExpansionTile(
       expandedCrossAxisAlignment: CrossAxisAlignment.start,

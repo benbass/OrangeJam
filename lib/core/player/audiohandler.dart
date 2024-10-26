@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:orangejam/application/playlists/playlists_bloc.dart';
 
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
@@ -17,7 +17,6 @@ import '../../application/drawer_prefs/automatic_playback/automatic_playback_cub
 import '../../domain/entities/track_entity.dart';
 import '../../injection.dart';
 import '../notifications/create_notification.dart';
-import '../globals.dart';
 
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
@@ -41,16 +40,16 @@ class MyAudioHandler {
   Duration p = Duration.zero;
 
   /// PLAYER CONTROLS ///
-  void playTrack(TrackEntity track) {
+  void playTrack(TrackEntity track, BuildContext context) {
     /// The following 2 vars are needed for the whenFinished function
-    final automaticPlaybackCubit = BlocProvider.of<AutomaticPlaybackCubit>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
-    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+    final automaticPlaybackCubit =
+        BlocProvider.of<AutomaticPlaybackCubit>(context);
+    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(context);
+
     ///
 
-  final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(globalScaffoldKey.scaffoldKey.currentContext!);
-  final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(globalScaffoldKey.scaffoldKey.currentContext!);
+    final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(context);
+    final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(context);
 
     p = Duration.zero;
     isPausingState = false;
@@ -62,13 +61,15 @@ class MyAudioHandler {
       whenFinished: () async {
         if (playerControlsBloc.state.loopMode && automaticPlaybackCubit.state) {
           // Loop mode prevails: play same track again
-          playTrack(currentTrack);
-        } else if (playerControlsBloc.state.loopMode && !automaticPlaybackCubit.state) {
+          playTrack(currentTrack, context);
+        } else if (playerControlsBloc.state.loopMode &&
+            !automaticPlaybackCubit.state) {
           // Loop mode prevails: play same track again
-          playTrack(currentTrack);
-        } else if (automaticPlaybackCubit.state && !playerControlsBloc.state.loopMode) {
+          playTrack(currentTrack, context);
+        } else if (automaticPlaybackCubit.state &&
+            !playerControlsBloc.state.loopMode) {
           // no loop mode so we play next track
-          sl<PlayerControlsBloc>().add(NextButtonPressed());
+          sl<PlayerControlsBloc>().add(NextButtonPressed(context: context));
         } else {
           // no loop mode and no automatic playback: we stop the player
           sl<PlayerControlsBloc>().add(InitialPlayerControls());
@@ -117,11 +118,11 @@ class MyAudioHandler {
   }
 
   Future<TrackEntity> getNextTrack(
-      int plusMinusOne, TrackEntity currentTrack) async {
-    PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
-    List<TrackEntity> tracks = playlistsBloc.state.tracks;
-
+    int plusMinusOne,
+    TrackEntity currentTrack,
+    BuildContext context,
+    List<TrackEntity> tracks,
+  ) async {
     // we get the current list index based on current track id
     int index = tracks.indexWhere((element) => element.id == currentTrack.id);
 

@@ -36,11 +36,11 @@ class ListItemSlidable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-        globalScaffoldKey.scaffoldKey.currentContext!);
+        context);
 
     void playTrack(TrackEntity track) {
       BlocProvider.of<PlayerControlsBloc>(context)
-          .add(TrackItemPressed(track: track));
+          .add(TrackItemPressed(track: track, context: context));
     }
 
     void snackBarFileNotExist() {
@@ -62,7 +62,7 @@ class ListItemSlidable extends StatelessWidget {
           SlidableAction(
             /// Add track to playlist
             onPressed: (_) {
-              dialogAddTrackToPlaylist(track.filePath);
+              dialogAddTrackToPlaylist(track.filePath, context);
             },
             flex: 20,
             backgroundColor: const Color(0xFFFF8100),

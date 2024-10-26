@@ -26,14 +26,14 @@ class BackupRestoreButtons extends StatelessWidget {
             SimpleButton(
               btnText: S.of(context).drawer_backup,
               function: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop(); We don't close Drawer to not lose the context for the dialog!
                 dialogActionRestoreOrBackupPlaylists(context, "backup");
               },
             ),
             SimpleButton(
               btnText: S.of(context).drawer_restore,
               function: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
                 dialogActionRestoreOrBackupPlaylists(context, "restore");
               },
             ),

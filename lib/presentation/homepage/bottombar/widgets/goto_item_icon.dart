@@ -37,7 +37,7 @@ class GotoItemIcon extends StatelessWidget {
                 return BlocBuilder<IsScrollReverseCubit, bool?>(
                     builder: (context, reverseState) {
                   return IconButton(
-                    onPressed: () => gotoItem(72.0, observerController),
+                    onPressed: () => gotoItem(72.0, observerController, context),
                     icon: scrollingState! &&
                             sl<MyAudioHandler>().currentTrack.id != 0
                         ? Transform.flip(

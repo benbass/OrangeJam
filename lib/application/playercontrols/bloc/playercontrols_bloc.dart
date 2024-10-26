@@ -7,6 +7,7 @@ import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../core/globals.dart';
 import '../../../injection.dart';
 import '../../../core/player/audiohandler.dart';
+import '../../playlists/playlists_bloc.dart';
 
 part 'playercontrols_event.dart';
 part 'playercontrols_state.dart';
@@ -14,6 +15,9 @@ part 'playercontrols_state.dart';
 class PlayerControlsBloc
     extends Bloc<PlayerControlsEvent, PlayerControlsState> {
   PlayerControlsBloc() : super(PlayerControlsState.initial()) {
+
+    late BuildContext contextBloc;
+
     // Initial state: empty track -> player controls not visible
     on<InitialPlayerControls>((event, emit) {
       emit(state.copyWith(
@@ -26,11 +30,12 @@ class PlayerControlsBloc
 
     // track was pressed:
     on<TrackItemPressed>((event, emit) {
+      contextBloc = event.context;
       // player controls visible and audioHandler plays track
       if (event.track != state.track) {
         // play new selected track
         emit(state.copyWith(track: event.track, isPausing: false, height: 200));
-        sl<MyAudioHandler>().playTrack(event.track);
+        sl<MyAudioHandler>().playTrack(event.track, event.context);
       } else {
         // same track: player controls not visible and audioHandler stops track
         emit(state.copyWith(
@@ -66,7 +71,10 @@ class PlayerControlsBloc
     });
 
     on<NextButtonPressed>((event, emit) async {
-      TrackEntity nextTrack = await sl<MyAudioHandler>().getNextTrack(1, state.track);
+      PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+          contextBloc);
+      List<TrackEntity> tracks = playlistsBloc.state.tracks;
+      TrackEntity nextTrack = await sl<MyAudioHandler>().getNextTrack(1, state.track, contextBloc, tracks);
       //await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
         //if (nextTrack.id != 0) {
           emit(PlayerControlsState(
@@ -75,13 +83,20 @@ class PlayerControlsBloc
             height: 200,
             loopMode: state.loopMode,
           ));
-          sl<MyAudioHandler>().playTrack(nextTrack);
+          sl<MyAudioHandler>().playTrack(nextTrack, contextBloc);
         //}
       //});
     });
 
+    on<NextButtonInNotificationPressed>((event, emit) async {
+      add(NextButtonPressed(context: contextBloc));
+    });
+
     on<PreviousButtonPressed>((event, emit) async {
-      TrackEntity previousTrack = await sl<MyAudioHandler>().getNextTrack(-1, state.track);
+      PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+          contextBloc);
+      List<TrackEntity> tracks = playlistsBloc.state.tracks;
+      TrackEntity previousTrack = await sl<MyAudioHandler>().getNextTrack(-1, state.track, contextBloc, tracks);
       //await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
         //if (value.id != 0) {
           emit(PlayerControlsState(
@@ -90,9 +105,13 @@ class PlayerControlsBloc
             height: 200,
             loopMode: state.loopMode,
           ));
-          sl<MyAudioHandler>().playTrack(previousTrack);
+          sl<MyAudioHandler>().playTrack(previousTrack, event.context);
         //}
       //});
+    });
+
+    on<PreviousButtonInNotificationPressed>((event, emit) async {
+      add(PreviousButtonPressed(context: contextBloc));
     });
 
     on<LoopButtonPressed>((event, emit) {

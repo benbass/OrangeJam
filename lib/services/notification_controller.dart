@@ -26,12 +26,12 @@ class NotificationController {
   @pragma("vm:entry-point")
   static Future <void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     if (receivedAction.buttonKeyPressed == 'SKIPPREV') {
-      di.sl<PlayerControlsBloc>().add(PreviousButtonPressed());
+      di.sl<PlayerControlsBloc>().add(PreviousButtonInNotificationPressed());
     } else if (receivedAction.buttonKeyPressed == 'RESUMEPAUSE') {
       di.sl<PlayerControlsBloc>().add(PausePlayButtonPressed());
     }
     else if (receivedAction.buttonKeyPressed == 'SKIPNEXT') {
-      di.sl<PlayerControlsBloc>().add(NextButtonPressed());
+      di.sl<PlayerControlsBloc>().add(NextButtonInNotificationPressed());
     }
     else if (receivedAction.buttonKeyPressed == 'STOP') {
       di.sl<PlayerControlsBloc>().add(StopButtonPressed());

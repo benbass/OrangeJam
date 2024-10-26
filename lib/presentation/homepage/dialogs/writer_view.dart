@@ -37,10 +37,6 @@ class _WriterViewState extends State<WriterView> {
   File? imgFromPicker;
   late File file;
   late String fileName;
-  final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-      globalScaffoldKey.scaffoldKey.currentContext!);
-  final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
-      globalScaffoldKey.scaffoldKey.currentContext!);
 
 // Update DB object
   _updateDbObject() async {
@@ -62,18 +58,6 @@ class _WriterViewState extends State<WriterView> {
 
     // Update the obj
     trackBox.put(track);
-
-    // Update the UI
-    _updateUi(track);
-  }
-
-  void _updateUi(TrackEntity track) {
-    // list
-    playlistsBloc.add(PlaylistsTracksLoadingEvent());
-    // player controls and track details if updated track is playback track
-    if (track.id == playerControlsBloc.state.track.id) {
-      playerControlsBloc.add(TrackMetaTagUpdated());
-    }
   }
 
   @override
@@ -217,7 +201,7 @@ class _WriterViewState extends State<WriterView> {
           ),
           SimpleButton(
             btnText: S.of(context).save,
-            function: saveUpdatedTrack,
+            function: () => saveUpdatedTrack(context),
           ),
         ],
         showDropdown: false,
@@ -228,7 +212,7 @@ class _WriterViewState extends State<WriterView> {
     );
   }
 
-  void saveUpdatedTrack() async {
+  saveUpdatedTrack(BuildContext context) async {
             // we create metaTag from form
             Tag metaData = Tag(
               title: titleController.text,
@@ -259,30 +243,44 @@ class _WriterViewState extends State<WriterView> {
             // We send metadata to method where copy of original file will be created,
             // copy's metadata updated and this copy used to overwrite the original file
             OverwriteFile overwriteFile = OverwriteFile(metaData: metaData, file: file, fileName: fileName);
-            bool? fileIsSaved = await overwriteFile.saveFileWithMediaStore();
+            bool? fileIsSaved = await overwriteFile.saveFileWithMediaStore(context);
             // Handle success / error writing to file
-            if(fileIsSaved != null && fileIsSaved){
-              Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-              ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
+            if(fileIsSaved != null && fileIsSaved && context.mounted){
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context)
                   .showSnackBar(
                 SnackBar(
                   duration: const Duration(seconds: 2),
                   content: Text(
-                      S.of(globalScaffoldKey.scaffoldKey.currentContext!).edit_tags_snackBarUpdateSuccess(fileName)),
+                      S.of(context).edit_tags_snackBarUpdateSuccess(fileName)),
                 ),
               );
               // ObjectBox item must also be updated so we avoid scanning device
-              _updateDbObject();
+              await _updateDbObject();
+              if(context.mounted){
+                final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
+                    context);
+                final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
+                    context);
+                // list
+                playlistsBloc.add(PlaylistsTracksLoadingEvent());
+                // player controls and track details if updated track is playback track
+                if (widget.track.id == playerControlsBloc.state.track.id) {
+                  playerControlsBloc.add(TrackMetaTagUpdated());
+                }
+              }
             } else {
-              Navigator.of(globalScaffoldKey.scaffoldKey.currentContext!).pop();
-              ScaffoldMessenger.of(globalScaffoldKey.scaffoldKey.currentContext!)
-                  .showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 2),
-                  content: Text(
-                      S.of(globalScaffoldKey.scaffoldKey.currentContext!).edit_tags_snackBarUpdateError),
-                ),
-              );
+              if(context.mounted) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(
+                  SnackBar(
+                    duration: const Duration(seconds: 2),
+                    content: Text(
+                        S.of(context).edit_tags_snackBarUpdateError),
+                  ),
+                );
+              }
             }
           }
 }
