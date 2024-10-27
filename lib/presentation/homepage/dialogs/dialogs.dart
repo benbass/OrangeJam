@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/playlists/playlists_bloc.dart';
+import '../../../application/playlists/selected_playlist_name_cubit.dart';
 import '../../../core/globals.dart';
 import '../../../core/playlists/backup_restore_playlists.dart';
 import '../../../core/playlists/playlist_handler.dart';
@@ -31,6 +32,7 @@ void dialogClose(BuildContext context, String message) {
     context: context,
   );
 }
+
 /// END simple dialog for canceling actions
 
 /// This dialog is called when user taps on one of the buttons restore or backup in drawer
@@ -38,7 +40,7 @@ void dialogActionRestoreOrBackupPlaylists(
     BuildContext context, String restoreOrBackup) {
   BackupRestorePlaylists backupRestorePlaylists = BackupRestorePlaylists();
   String playlistsWillBeDeleted =
-  S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
+      S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
   String zipWillBeCreated =
       S.of(context).cutomWidgets_aZipArchiveWillBeCreatedAndUploaded;
   String abort = S.of(context).buttonCancel;
@@ -69,60 +71,56 @@ void dialogActionRestoreOrBackupPlaylists(
   ).then((exit) {
     if (exit == null) return;
     if (exit) {
-      if(context.mounted){
+      if (context.mounted) {
         restoreOrBackup == "restore"
             ? backupRestorePlaylists.restoreFiles(context)
             : backupRestorePlaylists.backupFiles(context);
       }
-
     } else {
       return;
     }
   });
 }
+
 /// END dialog restore or backup
 
 /// DIALOG addToPlaylist() (add a track to an existing playlist)
 // Dropdown for playlist names in dialog addToPlaylist()
 StatefulBuilder dropDownMenuAddToPlaylist() {
+  String selectedPlaylist = "";
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
+      List<String> playlistNames = [];
+      for (var p in BlocProvider.of<PlaylistsBloc>(context).state.playlists) {
+        playlistNames.add(p[0]);
+      }
       return SizedBox(
         height: 60,
         child: Column(
           children: [
             PopupMenuButton(
-              color: Theme.of(context).dialogTheme.backgroundColor!.withOpacity(0.9),
+              color: Theme.of(context)
+                  .dialogTheme
+                  .backgroundColor!
+                  .withOpacity(0.9),
               itemBuilder: (context) {
-                // the entries are saved in a global var by
-                return PlaylistsNamesAndSelectedVars()
-                    .playlistMap
-                    .entries
-                    .map((entry) {
+                return playlistNames.map((entry) {
                   return PopupMenuItem(
-                    value:  entry.value,
                     child: InkWell(
                       splashColor: Theme.of(context).colorScheme.secondary,
                       onTap: () {
-                        var selectedKey = PlaylistsNamesAndSelectedVars()
-                            .playlistMap
-                            .keys
-                            .firstWhere((key) =>
-                        PlaylistsNamesAndSelectedVars().playlistMap[key] ==
-                            entry.value);
                         setState(() {
-                          // update displayed value after onTap on selected value
-                          PlaylistsNamesAndSelectedVars().selectedIndex =
-                              selectedKey;
-                          PlaylistsNamesAndSelectedVars().selectedVal = entry.value;
+                          selectedPlaylist = entry;
                         });
+                        BlocProvider.of<SelectedPlaylistNameCubit>(context)
+                            .setName(entry);
                         Navigator.of(context).pop();
                       },
                       child: Row(
                         children: [
                           Expanded(
                             child: Text(
-                              entry.value,
+                              entry,
                               style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                           ),
@@ -137,9 +135,9 @@ StatefulBuilder dropDownMenuAddToPlaylist() {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: PlaylistsNamesAndSelectedVars().selectedVal == ""
+                    child: selectedPlaylist.isEmpty
                         ? Text(S.of(context).playlistHandler_pick)
-                        : Text(PlaylistsNamesAndSelectedVars().selectedVal),
+                        : Text(selectedPlaylist),
                   ),
                   const Icon(Icons.arrow_drop_down),
                 ],
@@ -153,39 +151,36 @@ StatefulBuilder dropDownMenuAddToPlaylist() {
 }
 
 // Button Save for adding a track to a playlist
-StatefulBuilder buttonSaveAddTrackToPlaylist(
-    String filePath) {
-
+StatefulBuilder buttonSaveAddTrackToPlaylist(String filePath) {
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
     final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
     return TextButton(
       onPressed: () async {
-        if (PlaylistsNamesAndSelectedVars().selectedVal != "") {
-          String selectedPlaylist = PlaylistsNamesAndSelectedVars().selectedVal;
-          if (!playlistsBloc
-              .state
-              .playlists[PlaylistsNamesAndSelectedVars().selectedIndex][1]
-              .contains(filePath)) {
+        if (BlocProvider.of<SelectedPlaylistNameCubit>(context)
+            .state
+            .isNotEmpty) {
+          String selectedPlaylist =
+              BlocProvider.of<SelectedPlaylistNameCubit>(context).state;
+          int index = playlistsBloc.state.playlists
+              .indexWhere((p) => p[0] == selectedPlaylist);
+          if (!playlistsBloc.state.playlists[index][1].contains(filePath)) {
             // we update the m3u file
-            PlaylistHandler().writeNewTrackInPlaylistFile(
-                selectedPlaylist, filePath);
+            PlaylistHandler()
+                .writeNewTrackInPlaylistFile(selectedPlaylist, filePath);
             // we update the selected playlist in bloc
-            playlistsBloc
-                .state.playlists[PlaylistsNamesAndSelectedVars().selectedIndex][1]
-                .add(filePath);
+            playlistsBloc.state.playlists[index][1].add(filePath);
             // track is now added to selected playlist: we close the dialog an inform user about success
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: const Duration(seconds: 2),
                 content: Text(S
                     .of(context)
                     .playlistHandler_theTrackWasAddedToThePlaylistSelectedval(
-                    PlaylistsNamesAndSelectedVars().selectedVal)),
+                        selectedPlaylist)),
               ),
             );
-            PlaylistsNamesAndSelectedVars().selectedVal = "";
+            BlocProvider.of<SelectedPlaylistNameCubit>(context).setName("");
             setState(() {
               // Then we update UI in case we added a track to current playlist (based on current id)
               // this case cannot occur in current app version since we do not allow (for now) user to add same track to a playlist again
@@ -205,7 +200,7 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
                 content: Text(S
                     .of(context)
                     .playlistHandler_thePlaylistSelectedvalAlreadyContainsThisTrack(
-                    PlaylistsNamesAndSelectedVars().selectedVal)),
+                        selectedPlaylist)),
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
             );
@@ -230,16 +225,11 @@ StatefulBuilder buttonSaveAddTrackToPlaylist(
 }
 
 // Dialog after tap on slidable action on list item
-Future dialogAddTrackToPlaylist(
-    String filePath, BuildContext context) async {
+Future dialogAddTrackToPlaylist(String filePath, BuildContext context) async {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
-  String description = S
-      .of(context)
-      .playlistHandler_addThisTrackToPlaylist;
-  PlaylistsNamesAndSelectedVars().selectedVal = "";
-  PlaylistHandler().buildPlaylistStrings(playlistsBloc.state.playlists);
+  String description = S.of(context).playlistHandler_addThisTrackToPlaylist;
 
-  if (PlaylistsNamesAndSelectedVars().playlistNames.isNotEmpty) {
+  if (playlistsBloc.state.playlists.isNotEmpty) {
     return await showDialog(
       context: context,
       builder: (context) {
@@ -277,54 +267,103 @@ Future dialogAddTrackToPlaylist(
             )
           ],
           showDropdown: false,
-          titleWidget:
-          DescriptionText(description: description),
+          titleWidget: DescriptionText(description: description),
         );
       },
     );
   }
 }
+
 /// END DIALOG addToPlaylist()
 
 /// Dialog for Icon + in BottomSheet for Playlists (create a new playlist) AND for saving queue as new playlist
 void dialogCreatePlaylist(
     String description, List playlist, BuildContext context) {
   final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
-  PlaylistsNamesAndSelectedVars().txtController.clear();
+  TextEditingController txtController = TextEditingController();
   showDialog(
     context: context,
     builder: (context) {
-          return CustomDialog(
-            content: MyTextInput(
-              txtController: PlaylistsNamesAndSelectedVars().txtController,
-            ),
-            actions: [
-              SimpleButton(
-                btnText: S.of(context).buttonCancel,
-                function: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              SimpleButton(
-                btnText: S.of(context).save,
-                function: () async {
-                  String name = PlaylistsNamesAndSelectedVars().txtController.text.trim();
-                  bool nameExists = playlistsBloc.state.playlists.any((element) => element[0] == name);
-                  // we handle playlist name issues and create file
-                  await PlaylistHandler().createPlaylistFile(playlist, nameExists, name, context);
-                  // if no issue with name, we trigger event
-                  if(name.isNotEmpty && !nameExists){
-                    playlistsBloc.add(PlaylistCreated(name: name, playlist: playlist));
+      return CustomDialog(
+        content: MyTextInput(
+          txtController: txtController,
+        ),
+        actions: [
+          SimpleButton(
+            btnText: S.of(context).buttonCancel,
+            function: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          SimpleButton(
+            btnText: S.of(context).save,
+            function: () async {
+              String name = txtController.text.trim();
+              bool nameExists = playlistsBloc.state.playlists
+                  .any((element) => element[0] == name);
+              if (name.isNotEmpty && !nameExists) {
+                // we create file
+                bool success =
+                    await PlaylistHandler().createPlaylistFile(playlist, name);
+                if (success) {
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 2),
+                        content: Text(
+                          S
+                              .of(context)
+                              .playlistHandler_thePlaylistNameWasCreated(name),
+                        ),
+                      ),
+                    );
                   }
-                },
-              )
-            ],
-            showDropdown: false,
-            titleWidget: DescriptionText(
-              description: description,
-            ),
-          );
+                  // we send event
+                  playlistsBloc
+                      .add(PlaylistCreated(name: name, playlist: playlist));
+                } else {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 2),
+                        content: Text(
+                          S
+                              .of(context)
+                              .edit_tags_snackBarUpdateError,
+                        ),
+                      ),
+                    );
+                  }
+                }
+              } else if (nameExists) {
+                Navigator.of(context).pop();
+                dialogCreatePlaylist(
+                  S
+                      .of(context)
+                      .playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName(
+                          name),
+                  playlist,
+                  context,
+                );
+              } else if (name.isEmpty) {
+                Navigator.of(context).pop();
+                dialogCreatePlaylist(
+                  S.of(context).playlistHandler_enterANameForYourNewPlaylist,
+                  playlist,
+                  context,
+                );
+              }
+            },
+          )
+        ],
+        showDropdown: false,
+        titleWidget: DescriptionText(
+          description: description,
+        ),
+      );
     },
   );
 }
+
 /// END Dialog for Icon + in BottomSheet for Playlists

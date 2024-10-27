@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/domain/repositories/playlists_repository.dart';
 import 'package:orangejam/domain/repositories/tracks_repository.dart';
 import 'package:orangejam/domain/usecases/playlists_usecases.dart';
@@ -54,7 +53,7 @@ Future<void> init() async {
   final audioSession = MyAudioSession();
   sl.registerLazySingleton<MyAudioSession>(() => audioSession);
 
-  sl.registerLazySingleton<GlobalLists>(() => GlobalLists());
+  //sl.registerLazySingleton<GlobalLists>(() => GlobalLists());
 
   // state management
   final playerControls = PlayerControlsBloc();

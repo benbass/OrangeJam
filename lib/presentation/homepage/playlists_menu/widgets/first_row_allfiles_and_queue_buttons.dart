@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/presentation/homepage/playlists_menu/widgets/open_playlist_button.dart';
-
-import '../../../../core/globals.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../injection.dart';
 
 // row of 2 buttons for "Files" and "Queue"
 class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
@@ -26,14 +25,14 @@ class FirstRowAllFilesAndQueueButtons extends StatelessWidget {
             id: -2,
             width: 120,
             name: S.of(context).files,
-            length: sl<GlobalLists>().initialTracks.length.toString(),
+            length: BlocProvider.of<PlaylistsBloc>(context).state.initialTracks.length.toString(),
           ),
           OpenPlaylistButton(
             scrollController: scrollController,
             id: -1,
             width: 120,
             name: S.of(context).queue,
-            length: sl<GlobalLists>().queue.length.toString(),
+            length: BlocProvider.of<PlaylistsBloc>(context).state.queue.length.toString(),
           ),
         ],
       ),

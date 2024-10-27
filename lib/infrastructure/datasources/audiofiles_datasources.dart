@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:external_path/external_path.dart';
 import 'package:path/path.dart';
 
-import '../../services/permissions_directory.dart';
+import '../../services/check_storage_permission.dart';
 
 // this gets the files from device
 abstract class AudioFilesDataSources {
@@ -14,8 +14,8 @@ class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
 
   @override
   Future<List<FileSystemEntity>> getAudioFiles() async {
-    final PermissionsAndDirectory permissionAndDirectory =
-        PermissionsAndDirectory();
+    final CheckStoragePermission permissionAndDirectory =
+        CheckStoragePermission();
 
     final bool isGranted = await permissionAndDirectory.getStoragePermission(); // check permissions
 

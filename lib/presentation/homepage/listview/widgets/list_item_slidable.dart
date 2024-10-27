@@ -12,7 +12,6 @@ import '../../../../core/globals.dart';
 import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../injection.dart';
 import '../../dialogs/dialogs.dart';
 import '../../dialogs/writer_view.dart';
 import 'item_leading.dart';
@@ -86,7 +85,7 @@ class ListItemSlidable extends StatelessWidget {
           /// Add track to queue
           SlidableAction(
             onPressed: (_) {
-              if (!sl<GlobalLists>().queue.contains(track)) {
+              if (!playlistsBloc.state.queue.contains(track)) {
                 playlistsBloc.add(TrackAddedToQueue(track: track));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

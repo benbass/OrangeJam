@@ -8,6 +8,7 @@ import 'package:orangejam/core/globals.dart';
 
 import 'application/extra_top_bar/filterby/topbar_filterby_cubit.dart';
 import 'application/extra_top_bar/sortby/sort_by_cubit.dart';
+import 'application/playlists/selected_playlist_name_cubit.dart';
 import 'core/objectbox.dart';
 import 'domain/entities/track_entity.dart';
 import 'generated/l10n.dart';
@@ -113,6 +114,11 @@ void main() async {
         /// handles app language
         BlocProvider(
           create: (BuildContext context) => LanguageCubit(),
+        ),
+
+        /// sets the name of the selected playlist when user adds a track to this playlist
+        BlocProvider(
+          create: (BuildContext context) => SelectedPlaylistNameCubit(),
         ),
       ],
       child: const MyApp(),

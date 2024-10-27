@@ -8,7 +8,7 @@ import '../core/globals.dart';
 // For writing purpose, we are using [MediaStore] plugin. It will use MediaStore or java File based on API level.
 // It will use MediaStore for writing files from API level 30 or use java File lower than 30
 
-class PermissionsAndDirectory {
+class CheckStoragePermission {
 
   Future<bool> _checkPermissions(List<Permission> permissions) async {
     for (Permission permission in permissions) {
@@ -23,7 +23,8 @@ class PermissionsAndDirectory {
     return true;
   }
 
-  // audiofiles_datasources.dart calls this function before getting music folder
+  /// MediaStore plugin is taking care of this permission but
+  /// audiofiles_datasources.dart calls this function before getting music folder
   Future<bool> getStoragePermission() async {
     List<Permission> permissions = [];
     bool isGranted = false;

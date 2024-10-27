@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../generated/l10n.dart';
-import '../../presentation/homepage/dialogs/dialogs.dart';
 import '../globals.dart';
 
 class PlaylistHandler {
-
   // get the correct m3u file
   Future<File> getFile(String fileName) async {
     final Directory appDir = await getApplicationDocumentsDirectory();
@@ -16,16 +12,6 @@ class PlaylistHandler {
       await plDir.create();
     }
     return File("${plDir.path}/$fileName.m3u");
-  }
-
-  // this method is used in dialog dialogAddTrackToPlaylist() for the dropdown menu. And in homepage where the strings are needed for the playlists menu
-  void buildPlaylistStrings(List playlists) async {
-    PlaylistsNamesAndSelectedVars().playlistNames.clear();
-    for (var el in playlists) {
-      PlaylistsNamesAndSelectedVars().playlistNames.add(el[0]);
-    }
-    PlaylistsNamesAndSelectedVars().playlistMap =
-        PlaylistsNamesAndSelectedVars().playlistNames.asMap();
   }
 
   Future<void> reorderLinesInFile(
@@ -66,52 +52,22 @@ class PlaylistHandler {
     await file.delete();
   }
 
-  Future<void> createPlaylistFile(List playlist, bool nameExists, String name, BuildContext context) async {
-    List playlists = [];
-    if (name.isNotEmpty) {
-      if (!nameExists) {
-        playlists.add([name, playlist]);
-
-        final File file = await getFile(name).then((value) => value.create());
-
-        for (String s in playlist) {
-          await file.writeAsString("$s\n", mode: FileMode.append);
+  Future<bool> createPlaylistFile(List playlist, String name) async {
+    try {
+      List playlists = [];
+      playlists.add([name, playlist]);
+      final File file = await getFile(name).then((value) async {
+        if (await value.exists()) {
+          await value.delete();
         }
-        if(context.mounted) {
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 2),
-              content: Text(
-                S
-                    .of(context)
-                    .playlistHandler_thePlaylistNameWasCreated(name),
-              ),
-            ),
-          );
-        }
-        PlaylistsNamesAndSelectedVars().txtController.clear();
-      } else {
-        Navigator.of(context).pop();
-        dialogCreatePlaylist(
-          S
-              .of(context)
-              .playlistHandler_thePlaylistNameAlreadyExistsnpleaseChooseAnotherName(
-                  name),
-          playlist,
-          context,
-        );
+        return value.create();
+      });
+      for (String s in playlist) {
+        await file.writeAsString("$s\n", mode: FileMode.append);
       }
-    } else {
-      Navigator.of(context).pop();
-      dialogCreatePlaylist(
-        S
-            .of(context)
-            .playlistHandler_enterANameForYourNewPlaylist,
-        playlist,
-        context,
-      );
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

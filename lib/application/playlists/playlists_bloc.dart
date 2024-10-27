@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:orangejam/domain/usecases/tracks_usecases.dart';
 
-import '../../../core/globals.dart';
 import '../../../domain/entities/track_entity.dart';
 import '../../../domain/usecases/playlists_usecases.dart';
 import '../../domain/failures/tracks_failures.dart';
-import '../../injection.dart';
 
 part 'playlists_event.dart';
 part 'playlists_state.dart';
@@ -50,6 +48,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
           emit(
             state.copyWith(
               tracks: tracklist,
+              initialTracks: tracklist,
             ),
           );
           add(PlaylistsTracksLoadedEvent());
@@ -68,8 +67,11 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
       // get last playlist id from Shared Prefs
       int savedId = playlistsUsecases.idFromPrefs();
 
-      List<TrackEntity> tracks =
-          playlistsUsecases.getInitialListAsPerPrefs(state.playlists, savedId);
+      List<TrackEntity> tracks = playlistsUsecases.getInitialListAsPerPrefs(
+        initialTracks: state.initialTracks,
+        playlists: state.playlists,
+        savedId: savedId,
+      );
 
       emit(
         state.copyWith(tracks: tracks, playlistId: savedId, loading: false),
@@ -81,17 +83,18 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
     on<PlaylistCreated>((event, emit) async {
       List playlists = [...state.playlists];
       // add playlist-name and path-list from event to current playlists
-      playlists.add([
-        event.name,
-        event.playlist
-      ]);
+      playlists.add([event.name, event.playlist]);
       emit(state.copyWith(playlists: playlists));
     });
 
     on<PlaylistChanged>((event, emit) async {
       List playlists = state.playlists;
-      List<TrackEntity> tracks =
-          playlistsUsecases.playlistChanged(playlists: playlists, id: event.id);
+      List<TrackEntity> tracks = playlistsUsecases.playlistChanged(
+        playlists: playlists,
+        id: event.id,
+        initialTracks: state.initialTracks,
+        queue: state.queue,
+      );
 
       emit(state.copyWith(tracks: tracks, playlistId: event.id));
     });
@@ -100,7 +103,7 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
     on<PlaylistDeleted>((event, emit) async {
       List<TrackEntity> tracks = [];
       if (event.id == state.playlistId) {
-        for (TrackEntity track in sl<GlobalLists>().initialTracks) {
+        for (TrackEntity track in state.initialTracks) {
           tracks.add(track);
         }
         emit(state.copyWith(tracks: tracks, playlistId: -2));
@@ -129,7 +132,10 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
     });
 
     on<PlaylistSearchedByKeyword>((event, emit) async {
-      List<TrackEntity> results = playlistsUsecases.searchedList(event.keyword);
+      List<TrackEntity> results = playlistsUsecases.searchedList(
+        keyword: event.keyword,
+        initialTracks: state.initialTracks,
+      );
       emit(state.copyWith(tracks: results));
     });
 
@@ -137,23 +143,28 @@ class PlaylistsBloc extends Bloc<PlaylistsEvent, PlaylistsState> {
 
     /// Queue
     on<TrackAddedToQueue>((event, emit) async {
-      List<TrackEntity> tracks = playlistsUsecases.addTrackToQueue(event.track);
+      List<TrackEntity> queue = [...state.queue];
+      queue.add(event.track);
+      emit(state.copyWith(queue: queue));
+
       // if current playlist is queue we update UI: following doesn't happen in current app version
       // because it would mean we are trying to add same track again and this is not allowed!
       if (state.playlistId == -1) {
-        emit(state.copyWith(tracks: tracks));
+        emit(state.copyWith(tracks: queue, queue: queue));
       }
     });
 
     /// the 2 following events occur only when queue is current view
     on<TrackRemoveFromQueue>((event, emit) async {
-      List<TrackEntity> tracks = playlistsUsecases.removeTrackFromQueue(event.track);
-      emit(state.copyWith(tracks: tracks));
+      List<TrackEntity> queue = [...state.queue];
+      queue.remove(event.track);
+      emit(state.copyWith(tracks: queue, queue: queue));
     });
 
     on<ClearQueue>((event, emit) async {
-      List<TrackEntity> tracks = playlistsUsecases.clearQueue();
-      emit(state.copyWith(tracks: tracks));
+      List<TrackEntity> queue = [...state.queue];
+      queue.clear();
+      emit(state.copyWith(tracks: queue, queue: queue));
     });
 
     /// End queue

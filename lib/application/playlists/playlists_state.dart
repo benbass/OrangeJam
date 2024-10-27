@@ -3,6 +3,8 @@ part of 'playlists_bloc.dart';
 // with EquatableMixin only needed for unit test
 class PlaylistsState with EquatableMixin {
   final List<TrackEntity> tracks;
+  final List<TrackEntity> initialTracks;
+  final List<TrackEntity> queue;
   final int playlistId;
   final List playlists;
   final bool loading;
@@ -10,6 +12,8 @@ class PlaylistsState with EquatableMixin {
 
   const PlaylistsState({
     required this.tracks,
+    required this.initialTracks,
+    required this.queue,
     required this.playlistId,
     required this.playlists,
     required this.loading,
@@ -18,6 +22,8 @@ class PlaylistsState with EquatableMixin {
 
   factory PlaylistsState.initial() => const PlaylistsState(
         tracks: [],
+        initialTracks: [],
+        queue: [],
         playlistId: -2,
         playlists: [],
         loading: true,
@@ -26,6 +32,8 @@ class PlaylistsState with EquatableMixin {
   factory PlaylistsState.error({required String message}) =>
       const PlaylistsState(
         tracks: [],
+        initialTracks: [],
+        queue: [],
         playlistId: -2,
         playlists: [],
         loading: false,
@@ -33,12 +41,16 @@ class PlaylistsState with EquatableMixin {
 
   PlaylistsState copyWith({
     List<TrackEntity>? tracks,
+    List<TrackEntity>? initialTracks,
+    List<TrackEntity>? queue,
     int? playlistId,
     List? playlists,
     bool? loading,
   }) {
     return PlaylistsState(
       tracks: tracks ?? this.tracks,
+      initialTracks: initialTracks ?? this.initialTracks,
+      queue: queue ?? this.queue,
       playlistId: playlistId ?? this.playlistId,
       playlists: playlists ?? this.playlists,
       loading: loading ?? this.loading,
@@ -46,5 +58,5 @@ class PlaylistsState with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [tracks, playlistId, playlists, loading];
+  List<Object?> get props => [tracks, initialTracks, queue, playlistId, playlists, loading];
 }

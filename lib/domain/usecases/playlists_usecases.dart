@@ -6,23 +6,22 @@ import 'package:path/path.dart' as aspath;
 import 'package:orangejam/domain/repositories/playlists_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/globals.dart';
-import '../../injection.dart';
 import '../entities/track_entity.dart';
 
 class PlaylistsUsecases {
   final PlaylistsRepository playlistsRepository;
   final SharedPreferences sharedPreferences;
 
-  PlaylistsUsecases({required this.playlistsRepository, required this.sharedPreferences});
+  PlaylistsUsecases(
+      {required this.playlistsRepository, required this.sharedPreferences});
 
   Future<List> getPlaylistsUsecase() async {
     return playlistsRepository.getPlaylistsFromM3uFiles();
   }
 
-  int idFromPrefs(){
+  int idFromPrefs() {
     // load id of last opened playlist from SharedPrefs so app starts with it
     int savedId = sharedPreferences.getInt("startWith") ?? -2;
-    //int savedId = await startPrefs.then((value) => value.getInt("startWith") ?? -2);
     // We don't save queue so we get rid of id -1 at next app start
     if (savedId == -1) {
       savedId = -2;
@@ -31,11 +30,14 @@ class PlaylistsUsecases {
     return savedId;
   }
 
-  void saveIdToPrefs(int id){
+  void saveIdToPrefs(int id) {
     sharedPreferences.setInt("startWith", id);
   }
 
-  List<TrackEntity> getInitialListAsPerPrefs(List playlists, savedId) {
+  List<TrackEntity> getInitialListAsPerPrefs(
+      {required List<TrackEntity> initialTracks,
+      required List playlists,
+      required savedId}) {
     List<TrackEntity> tracks = [];
 
     // start with a playlist (id > -1) or with all files
@@ -43,7 +45,7 @@ class PlaylistsUsecases {
       if (playlists.asMap().containsKey(savedId)) {
         List selectedPlaylist = playlists[savedId][1];
         for (var el in selectedPlaylist) {
-          for (var track in sl<GlobalLists>().initialTracks) {
+          for (var track in initialTracks) {
             if (track.filePath == el) {
               tracks.add(track);
             }
@@ -51,7 +53,7 @@ class PlaylistsUsecases {
         }
       }
     } else {
-      for (TrackEntity track in sl<GlobalLists>().initialTracks) {
+      for (TrackEntity track in initialTracks) {
         tracks.add(track);
       }
     }
@@ -59,7 +61,12 @@ class PlaylistsUsecases {
     return tracks;
   }
 
-  List<TrackEntity> playlistChanged({required int id, required List playlists}) {
+  List<TrackEntity> playlistChanged({
+    required List<TrackEntity> initialTracks,
+    required List<TrackEntity> queue,
+    required int id,
+    required List playlists,
+  }) {
     List<TrackEntity> tracks = [];
 
     saveIdToPrefs(id);
@@ -69,7 +76,7 @@ class PlaylistsUsecases {
       if (playlists.asMap().containsKey(id)) {
         List selectedPlaylist = playlists[id][1];
         for (var el in selectedPlaylist) {
-          for (var track in sl<GlobalLists>().initialTracks) {
+          for (var track in initialTracks) {
             if (track.filePath == el) {
               tracks.add(track);
             }
@@ -78,12 +85,12 @@ class PlaylistsUsecases {
       }
       // User selects the queue or queue content was modified while queue is current list
     } else if (id == -1) {
-      for (TrackEntity track in sl<GlobalLists>().queue) {
+      for (TrackEntity track in queue) {
         tracks.add(track);
       }
       // User selects all files
     } else {
-      for (TrackEntity track in sl<GlobalLists>().initialTracks) {
+      for (TrackEntity track in initialTracks) {
         tracks.add(track);
       }
     }
@@ -91,7 +98,8 @@ class PlaylistsUsecases {
     return tracks;
   }
 
-  List<TrackEntity> sortedList(List<TrackEntity> tracks, String sortBy, bool ascending) {
+  List<TrackEntity> sortedList(
+      List<TrackEntity> tracks, String sortBy, bool ascending) {
     switch (sortBy) {
       case "File name":
         {
@@ -155,7 +163,8 @@ class PlaylistsUsecases {
     return tracks;
   }
 
-  List<TrackEntity> filteredList(List<TrackEntity> tracks, String filterBy, String value) {
+  List<TrackEntity> filteredList(
+      List<TrackEntity> tracks, String filterBy, String value) {
     List<TrackEntity> results = [];
     switch (filterBy) {
       case "Artist":
@@ -238,15 +247,18 @@ class PlaylistsUsecases {
     return results;
   }
 
-  List<TrackEntity> searchedList(String? keyword) {
+  List<TrackEntity> searchedList({
+    required String? keyword,
+    required List<TrackEntity> initialTracks,
+  }) {
     List<TrackEntity> results = [];
 
     if (keyword == null) {
-      for (TrackEntity track in sl<GlobalLists>().initialTracks) {
+      for (TrackEntity track in initialTracks) {
         results.add(track);
       }
     } else {
-      for (var track in sl<GlobalLists>().initialTracks) {
+      for (var track in initialTracks) {
         if (track.filePath.toLowerCase().contains(keyword.toLowerCase()) ||
             (track.trackArtistNames!
                 .toLowerCase()
@@ -266,20 +278,5 @@ class PlaylistsUsecases {
       }
     }
     return results;
-  }
-
-  List<TrackEntity> addTrackToQueue(TrackEntity track){
-    sl<GlobalLists>().queue.add(track);
-    return sl<GlobalLists>().queue;
-  }
-
-  List<TrackEntity> removeTrackFromQueue(TrackEntity track){
-    sl<GlobalLists>().queue.remove(track);
-    return sl<GlobalLists>().queue;
-  }
-
-  List<TrackEntity> clearQueue(){
-    sl<GlobalLists>().queue.clear();
-    return sl<GlobalLists>().queue;
   }
 }

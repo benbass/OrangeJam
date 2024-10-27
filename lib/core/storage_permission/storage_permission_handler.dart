@@ -4,7 +4,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../application/playlists/playlists_bloc.dart';
 import '../../generated/l10n.dart';
-import '../../injection.dart';
 import '../../presentation/homepage/custom_widgets/custom_widgets.dart';
 import '../globals.dart';
 
@@ -57,7 +56,8 @@ class StoragePermissionHandler {
               ],
               showDropdown: false,
               titleWidget: DescriptionText(
-                description: S.of(context).storage_permissions_dialog_description,
+                description:
+                    S.of(context).storage_permissions_dialog_description,
               ),
             ),
           );
@@ -76,10 +76,11 @@ class StoragePermissionHandler {
     } else {
       granted = await Permission.audio.isGranted;
     }
-    // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
-    // An empty list can indicate that permission was never granted
-    if (granted && sl<GlobalLists>().initialTracks.isEmpty) {
-      if (context.mounted) {
+    if (context.mounted) {
+      // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
+      // An empty list can indicate that permission was never granted
+      if (granted &&
+          BlocProvider.of<PlaylistsBloc>(context).state.initialTracks.isEmpty) {
         BlocProvider.of<PlaylistsBloc>(context)
             .add(PlaylistsTracksLoadingEvent());
       }
