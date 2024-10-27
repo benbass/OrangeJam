@@ -12,17 +12,6 @@ late Box<TrackEntity> trackBox;
 // We will use this plugin to be able to overwrite audio files in music library with updated metadata
 final mediaStorePlugin = MediaStore();
 
-// we need to access the scaffold key from a lot of methods and widgets so we make it global
-GlobalScaffoldKey globalScaffoldKey = GlobalScaffoldKey();
-
-class GlobalScaffoldKey {
-  late GlobalKey _scaffoldKey;
-  GlobalScaffoldKey() {
-    _scaffoldKey = GlobalKey();
-  }
-  GlobalKey get scaffoldKey => _scaffoldKey;
-}
-
 // we save the tracklist and make it globally accessible via dependency injection
 class GlobalLists {
   List<TrackEntity> initialTracks = [];

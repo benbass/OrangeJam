@@ -29,7 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(trackName) =>
       "The track \'${trackName}\' is now added to the queue.";
 
-  static String m3(filePath) => "Ups, the file \'${filePath}\' was not found!";
+  static String m3(filePath) =>
+      "Ups, the file \'${filePath}\' was not found or permissions are missing!";
 
   static String m4(name) => "The playlist \'${name}\' was deleted.";
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:external_path/external_path.dart';
 import 'package:path/path.dart';
 
 import '../../services/permissions_directory.dart';
@@ -16,10 +17,11 @@ class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
     final PermissionsAndDirectory permissionAndDirectory =
         PermissionsAndDirectory();
 
-    await permissionAndDirectory.getStoragePermission(); // check permissions
+    final bool isGranted = await permissionAndDirectory.getStoragePermission(); // check permissions
 
-    if (permissionAndDirectory.isGranted) {
-      String path = await permissionAndDirectory.getPublicMusicDirectoryPath();
+    if (isGranted) {
+      String path = await ExternalPath.getExternalStoragePublicDirectory(
+          ExternalPath.DIRECTORY_MUSIC);
       List<FileSystemEntity> allFiles = [];
 
       final dir = Directory(path);

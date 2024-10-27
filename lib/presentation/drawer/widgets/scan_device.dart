@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:orangejam/application/drawer_prefs/language/language_cubit.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
+import 'package:orangejam/core/storage_permission/storage_permission_handler.dart';
 import '../../../core/globals.dart';
 import '../../../generated/l10n.dart';
 import '../../homepage/custom_widgets/custom_widgets.dart';
@@ -12,6 +13,7 @@ class ScanDevice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StoragePermissionHandler storagePermissionHandler = StoragePermissionHandler(context: context);
     return BlocBuilder<LanguageCubit, String>(
       builder: (context2, state) {
         return Column(
@@ -22,11 +24,13 @@ class ScanDevice extends StatelessWidget {
             ),
             SimpleButton(
               btnText: S.of(context).drawer_scanDevice,
-              function: () {
+              function: () async {
                 Navigator.of(context).pop();
                 trackBox.removeAll();
-                BlocProvider.of<PlaylistsBloc>(context)
+                if(await storagePermissionHandler.callDialogForStoragePermission() == false && context.mounted) {
+                  BlocProvider.of<PlaylistsBloc>(context)
                     .add(PlaylistsTracksLoadingEvent());
+                }
               },
             ),
           ],

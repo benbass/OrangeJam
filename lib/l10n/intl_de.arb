@@ -19,7 +19,7 @@
   "trackNo": "Titel Nr: ",
   "duration": "Dauer: ",
   "file": "Datei: ",
-  "listItemSlidable_upsTheFileTrackfilepathWasNotFound": "Ups, die Datei '{filePath}' wurde nicht gefunden!",
+  "listItemSlidable_upsTheFileTrackfilepathWasNotFound": "Ups, die Datei '{filePath}' wurde nicht gefunden oder Berechtigungen fehlen!",
   "listItemSlidable_theTrackTracktracknameIsNowAddedToTheQueue": "Der Titel '{trackName}' wurde der Queue hinzugefügt.",
   "listItemSlidable_theQueueAlreadyContainsThisTrack": "Dieser Titel befindet sich bereits in der Queue.",
   "listItemSlidable_remove": "Entfernen",

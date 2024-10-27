@@ -250,10 +250,10 @@ class S {
     );
   }
 
-  /// `Ups, the file '{filePath}' was not found!`
+  /// `Ups, the file '{filePath}' was not found or permissions are missing!`
   String listItemSlidable_upsTheFileTrackfilepathWasNotFound(Object filePath) {
     return Intl.message(
-      'Ups, the file \'$filePath\' was not found!',
+      'Ups, the file \'$filePath\' was not found or permissions are missing!',
       name: 'listItemSlidable_upsTheFileTrackfilepathWasNotFound',
       desc: '',
       args: [filePath],
