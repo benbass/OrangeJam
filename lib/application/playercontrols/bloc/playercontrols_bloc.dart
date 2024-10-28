@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/domain/entities/track_entity.dart';
 
 import '../../../core/globals.dart';
+import '../../../core/notifications/create_notification.dart';
 import '../../../injection.dart';
 import '../../../core/player/audiohandler.dart';
 
@@ -72,25 +73,30 @@ class PlayerControlsBloc
       emit(state.copyWith(isPausing: true));
     });
 
+    // For skip next or previous, this track will be played.
+    // But if user changes playlist and then skip, then first track of new list will be played.
+    // And if new playlist is empty (so we get em empty track), playing track keeps playing and notification is created
     on<NextButtonPressed>((event, emit) async {
       contextBloc = event.context;
-        TrackEntity nextTrack = await sl<MyAudioHandler>()
-            .getNextTrackToPlay(1, state.track, event.context);
-        if(nextTrack == TrackEntity.empty()){
-          add(StopButtonPressed());
-        } else {
-          emit(PlayerControlsState(
-            track: nextTrack,
-            isPausing: false,
-            height: 200,
-            loopMode: state.loopMode,
-          ));
-          if (event.context.mounted) {
-            sl<MyAudioHandler>().playTrack(nextTrack, event.context);
-          }
+      // check if event.mounted: necessary for notification after list was changed
+      //if (event.context.mounted) {
+      TrackEntity nextTrack = await sl<MyAudioHandler>()
+          .getNextTrackToPlay(1, state.track, event.context);
+
+      if (nextTrack == TrackEntity.empty()) {
+        createNotificationListViewEmpty();
+      } else {
+        emit(PlayerControlsState(
+          track: nextTrack,
+          isPausing: false,
+          height: 200,
+          loopMode: state.loopMode,
+        ));
+        if (event.context.mounted) {
+          sl<MyAudioHandler>().playTrack(nextTrack, event.context);
         }
-
-
+      }
+      //}
     });
 
     on<NextButtonInNotificationPressed>((event, emit) async {
@@ -99,21 +105,23 @@ class PlayerControlsBloc
 
     on<PreviousButtonPressed>((event, emit) async {
       contextBloc = event.context;
-        TrackEntity previousTrack = await sl<MyAudioHandler>()
-            .getNextTrackToPlay(-1, state.track, event.context);
-        if(previousTrack == TrackEntity.empty()){
-          add(StopButtonPressed());
-        } else {
-          emit(PlayerControlsState(
-            track: previousTrack,
-            isPausing: false,
-            height: 200,
-            loopMode: state.loopMode,
-          ));
-          if (event.context.mounted) {
-            sl<MyAudioHandler>().playTrack(previousTrack, event.context);
-          }
+      //if (event.context.mounted) {
+      TrackEntity previousTrack = await sl<MyAudioHandler>()
+          .getNextTrackToPlay(-1, state.track, event.context);
+      if (previousTrack == TrackEntity.empty()) {
+        createNotificationListViewEmpty();
+      } else {
+        emit(PlayerControlsState(
+          track: previousTrack,
+          isPausing: false,
+          height: 200,
+          loopMode: state.loopMode,
+        ));
+        if (event.context.mounted) {
+          sl<MyAudioHandler>().playTrack(previousTrack, event.context);
         }
+      }
+      //}
     });
 
     on<PreviousButtonInNotificationPressed>((event, emit) async {

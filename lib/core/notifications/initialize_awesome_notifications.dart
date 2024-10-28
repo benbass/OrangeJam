@@ -16,7 +16,7 @@ void initAwesomeNotifications(BuildContext context) {
         channelKey: 'basic_channel',
         channelName: '$appName Player Track Playing',
         channelDescription: 'Notification channel for the $appName Player',
-        //defaultColor: const Color(0xFFFF8100),
+        defaultColor: const Color(0xFFFF8100),
         //ledColor: Colors.white,
         playSound: false,
         enableVibration: false,
