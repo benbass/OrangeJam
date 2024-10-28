@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,6 @@ import 'package:orangejam/domain/entities/track_entity.dart';
 import '../../../core/globals.dart';
 import '../../../injection.dart';
 import '../../../core/player/audiohandler.dart';
-import '../../playlists/playlists_bloc.dart';
 
 part 'playercontrols_event.dart';
 part 'playercontrols_state.dart';
@@ -15,7 +13,6 @@ part 'playercontrols_state.dart';
 class PlayerControlsBloc
     extends Bloc<PlayerControlsEvent, PlayerControlsState> {
   PlayerControlsBloc() : super(PlayerControlsState.initial()) {
-
     late BuildContext contextBloc;
 
     // Initial state: empty track -> player controls not visible
@@ -34,14 +31,19 @@ class PlayerControlsBloc
       // player controls visible and audioHandler plays track
       if (event.track != state.track) {
         // play new selected track
-        emit(state.copyWith(track: event.track, isPausing: false, height: 200));
+        emit(state.copyWith(
+          track: event.track,
+          isPausing: false,
+          height: 200,
+        ));
         sl<MyAudioHandler>().playTrack(event.track, event.context);
       } else {
         // same track: player controls not visible and audioHandler stops track
         emit(state.copyWith(
-            track: TrackEntity.empty().copyWith(id: 0),
-            isPausing: false,
-            height: 0));
+          track: TrackEntity.empty().copyWith(id: 0),
+          isPausing: false,
+          height: 0,
+        ));
         sl<MyAudioHandler>().stopTrack();
       }
     });
@@ -71,21 +73,24 @@ class PlayerControlsBloc
     });
 
     on<NextButtonPressed>((event, emit) async {
-      PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-          contextBloc);
-      List<TrackEntity> tracks = playlistsBloc.state.tracks;
-      TrackEntity nextTrack = await sl<MyAudioHandler>().getNextTrack(1, state.track, contextBloc, tracks);
-      //await sl<MyAudioHandler>().getNextTrack(1, state.track).then((value) {
-        //if (nextTrack.id != 0) {
+      contextBloc = event.context;
+        TrackEntity nextTrack = await sl<MyAudioHandler>()
+            .getNextTrackToPlay(1, state.track, event.context);
+        if(nextTrack == TrackEntity.empty()){
+          add(StopButtonPressed());
+        } else {
           emit(PlayerControlsState(
             track: nextTrack,
             isPausing: false,
             height: 200,
             loopMode: state.loopMode,
           ));
-          sl<MyAudioHandler>().playTrack(nextTrack, contextBloc);
-        //}
-      //});
+          if (event.context.mounted) {
+            sl<MyAudioHandler>().playTrack(nextTrack, event.context);
+          }
+        }
+
+
     });
 
     on<NextButtonInNotificationPressed>((event, emit) async {
@@ -93,21 +98,22 @@ class PlayerControlsBloc
     });
 
     on<PreviousButtonPressed>((event, emit) async {
-      PlaylistsBloc playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-          contextBloc);
-      List<TrackEntity> tracks = playlistsBloc.state.tracks;
-      TrackEntity previousTrack = await sl<MyAudioHandler>().getNextTrack(-1, state.track, contextBloc, tracks);
-      //await sl<MyAudioHandler>().getNextTrack(-1, state.track).then((value) {
-        //if (value.id != 0) {
+      contextBloc = event.context;
+        TrackEntity previousTrack = await sl<MyAudioHandler>()
+            .getNextTrackToPlay(-1, state.track, event.context);
+        if(previousTrack == TrackEntity.empty()){
+          add(StopButtonPressed());
+        } else {
           emit(PlayerControlsState(
             track: previousTrack,
             isPausing: false,
             height: 200,
             loopMode: state.loopMode,
           ));
-          sl<MyAudioHandler>().playTrack(previousTrack, event.context);
-        //}
-      //});
+          if (event.context.mounted) {
+            sl<MyAudioHandler>().playTrack(previousTrack, event.context);
+          }
+        }
     });
 
     on<PreviousButtonInNotificationPressed>((event, emit) async {

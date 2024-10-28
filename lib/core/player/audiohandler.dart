@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
@@ -14,7 +15,9 @@ import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../../application/playercontrols/cubits/track_duration_cubit.dart';
 import '../../application/playercontrols/cubits/track_position_cubit.dart';
 import '../../application/drawer_prefs/automatic_playback/automatic_playback_cubit.dart';
+import '../../application/playlists/playlists_bloc.dart';
 import '../../domain/entities/track_entity.dart';
+import '../../generated/l10n.dart';
 import '../../injection.dart';
 import '../notifications/create_notification.dart';
 
@@ -117,12 +120,13 @@ class MyAudioHandler {
     createNotification(currentTrack, isPausingState, p);
   }
 
-  Future<TrackEntity> getNextTrack(
+  Future<TrackEntity> getNextTrackToPlay(
     int plusMinusOne,
     TrackEntity currentTrack,
     BuildContext context,
-    List<TrackEntity> tracks,
   ) async {
+    List<TrackEntity> tracks =
+        BlocProvider.of<PlaylistsBloc>(context).state.tracks;
     // we get the current list index based on current track id
     int index = tracks.indexWhere((element) => element.id == currentTrack.id);
 
@@ -137,11 +141,27 @@ class MyAudioHandler {
       if (await File(filePath).exists()) {
         return track;
       } else {
-        stopTrack();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(S
+                  .of(context)
+                  .listItemSlidable_upsTheFileTrackfilepathWasNotFound(
+                      track.filePath)),
+            ),
+          );
+        }
         return TrackEntity.empty();
       }
     } else {
-      return currentTrack;
+      // Here user selected a different playlist: app will play the 1st track of this playlist.
+      // If this playlist is empty, player will stop.
+      if (BlocProvider.of<PlaylistsBloc>(context).state.tracks.isNotEmpty) {
+        return BlocProvider.of<PlaylistsBloc>(context).state.tracks[0];
+      } else {
+        return TrackEntity.empty();
+      }
     }
   }
 }
