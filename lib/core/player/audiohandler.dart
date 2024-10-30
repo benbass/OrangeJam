@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:orangejam/core/helpers/get_current_index.dart';
 
 import 'package:orangejam/services/audio_session.dart';
 import 'package:orangejam/injection.dart' as di;
@@ -119,15 +120,16 @@ class MyAudioHandler {
     createNotification(currentTrack, isPausingState, p);
   }
 
-  Future<TrackEntity> getNextTrackToPlay(
+  Future<TrackEntity> getNextTrackToPlayAndPlay(
     int plusMinusOne,
     TrackEntity currentTrack,
     BuildContext context,
   ) async {
     List<TrackEntity> tracks =
         BlocProvider.of<PlaylistsBloc>(context).state.tracks;
+    TrackEntity track = TrackEntity.empty();
     // we get the current list index based on current track id
-    int index = tracks.indexWhere((element) => element.id == currentTrack.id);
+    int index = getIndex(context);
 
     // We in- or decrease list index based on parameter
     index += plusMinusOne;
@@ -135,9 +137,12 @@ class MyAudioHandler {
     // we prevent out of range exception for index == -1 && index bigger than last index and play previous/next track.
     if (index > -1 && index < tracks.length) {
       // we set new track based on decreased index
-      TrackEntity track = tracks[index];
+      track = tracks[index];
       String filePath = track.filePath;
       if (await File(filePath).exists()) {
+        if(context.mounted) {
+          playTrack(track, context);
+        }
         return track;
       } else {
         if (context.mounted) {
@@ -151,16 +156,21 @@ class MyAudioHandler {
             ),
           );
         }
-        return TrackEntity.empty();
+        track = TrackEntity.empty();
+        return track;
       }
     } else {
-      // Here user selected a different playlist: app will play the 1st track of this playlist.
-      // If this playlist is empty, player will stop.
+      // Here user skips after last or before first list item: app will play the 1st track of the playlist.
       if (BlocProvider.of<PlaylistsBloc>(context).state.tracks.isNotEmpty) {
-        return BlocProvider.of<PlaylistsBloc>(context).state.tracks[0];
+        track = BlocProvider.of<PlaylistsBloc>(context).state.tracks[0];
+        playTrack(track, context);
+        return track;
       } else {
-        return TrackEntity.empty();
+        // Here user selected a different playlist:
+        // If this playlist is empty, empty track is returned and player will do nothing: current playback continues.
+        return track;
       }
     }
   }
+
 }

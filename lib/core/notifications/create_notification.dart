@@ -12,7 +12,7 @@ import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../helpers/format_duration.dart';
 
 // This method will be called when user changed in app to an empty playlist
-// but tries to skip to previous or next track from the notification
+// but tries to skip to previous or next track.
 void createNotificationListViewEmpty() {
   AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -33,15 +33,17 @@ void createNotificationListViewEmpty() {
       ),
       localizations: {
         'en': NotificationLocalization(
-            title: 'Oops!',
-            body: 'The currently selected playlist is empty...',
+          title: 'Oops!',
+          body: 'The currently selected playlist is empty...',
         ),
         'de': NotificationLocalization(
-            title: 'Hoppla!',
-            body: 'Die aktuell ausgewählte PLaylist ist leer...'),
+          title: 'Hoppla!',
+          body: 'Die aktuell ausgewählte Playlist ist leer...',
+        ),
         'fr': NotificationLocalization(
-            title: 'Oups!',
-            body: 'La playliste actuellement sélectionnée est vide...'),
+          title: 'Oups!',
+          body: 'La playliste actuellement sélectionnée est vide...',
+        ),
       });
 }
 

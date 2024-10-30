@@ -28,7 +28,11 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
         final List linesList = [];
         bool rewrite = false;
         for (String line in lines) { // a line is a path of an audio file
-          audioFile = File(line);
+          // we exclude Extended m3u headers, comments and empty lines
+          // (User may try to import unsupported extended m3u files)
+          if(!line.startsWith('#') || line.isNotEmpty) {
+            audioFile = File(line);
+          }
           final exists =
               await audioFile.exists(); // we check if file still exists
           if (exists) {

@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/playlists/playlists_bloc.dart';
 import '../../../application/playlists/selected_playlist_name_cubit.dart';
 import '../../../core/globals.dart';
-import '../../../core/playlists/backup_restore_playlists.dart';
+import '../../../core/playlists/backup_playlists.dart';
 import '../../../core/playlists/playlist_handler.dart';
+import '../../../core/playlists/restore_playlists.dart';
 import '../../../generated/l10n.dart';
 import '../custom_widgets/custom_widgets.dart';
 
-/// TODO: implement a file picker instead of saving backups directly to Google Drive
-
-/// a simple dialog for canceling actions (used only in file lib/core/playlists/backup_restore_playlists.dart)
+/// a simple dialog for canceling actions at backup and restore of playlists
 void dialogClose(BuildContext context, String message) {
   showDialog(
     builder: (context) => CustomDialog(
@@ -38,7 +37,6 @@ void dialogClose(BuildContext context, String message) {
 /// This dialog is called when user taps on one of the buttons restore or backup in drawer
 void dialogActionRestoreOrBackupPlaylists(
     BuildContext context, String restoreOrBackup) {
-  BackupRestorePlaylists backupRestorePlaylists = BackupRestorePlaylists();
   String playlistsWillBeDeleted =
       S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
   String zipWillBeCreated =
@@ -73,8 +71,8 @@ void dialogActionRestoreOrBackupPlaylists(
     if (exit) {
       if (context.mounted) {
         restoreOrBackup == "restore"
-            ? backupRestorePlaylists.restoreFiles(context)
-            : backupRestorePlaylists.backupFiles(context);
+            ? restoreM3uFiles(context)
+            : backupM3uFiles(context);
       }
     } else {
       return;

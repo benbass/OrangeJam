@@ -28,7 +28,8 @@ class MetaTagsHandler{
         metaData,
       );
     } catch(e){
-      ScaffoldMessenger.of(context)
+      if(context.mounted) {
+        ScaffoldMessenger.of(context)
           .showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
@@ -36,6 +37,7 @@ class MetaTagsHandler{
               "ERROR: \n$e"),
         ),
       );
+      }
     }
 
   }

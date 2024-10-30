@@ -80,21 +80,19 @@ class PlayerControlsBloc
       contextBloc = event.context;
       // check if event.mounted: necessary for notification after list was changed
       //if (event.context.mounted) {
-      TrackEntity nextTrack = await sl<MyAudioHandler>()
-          .getNextTrackToPlay(1, state.track, event.context);
+      TrackEntity track = await sl<MyAudioHandler>()
+          .getNextTrackToPlayAndPlay(1, state.track, event.context);
 
-      if (nextTrack == TrackEntity.empty()) {
+      if (track == TrackEntity.empty()) {
+        // current playlist is empty
         createNotificationListViewEmpty();
       } else {
         emit(PlayerControlsState(
-          track: nextTrack,
+          track: track,
           isPausing: false,
           height: 200,
           loopMode: state.loopMode,
         ));
-        if (event.context.mounted) {
-          sl<MyAudioHandler>().playTrack(nextTrack, event.context);
-        }
       }
       //}
     });
@@ -106,20 +104,17 @@ class PlayerControlsBloc
     on<PreviousButtonPressed>((event, emit) async {
       contextBloc = event.context;
       //if (event.context.mounted) {
-      TrackEntity previousTrack = await sl<MyAudioHandler>()
-          .getNextTrackToPlay(-1, state.track, event.context);
-      if (previousTrack == TrackEntity.empty()) {
+      TrackEntity track = await sl<MyAudioHandler>()
+          .getNextTrackToPlayAndPlay(-1, state.track, event.context);
+      if (track == TrackEntity.empty()) {
         createNotificationListViewEmpty();
       } else {
         emit(PlayerControlsState(
-          track: previousTrack,
+          track: track,
           isPausing: false,
           height: 200,
           loopMode: state.loopMode,
         ));
-        if (event.context.mounted) {
-          sl<MyAudioHandler>().playTrack(previousTrack, event.context);
-        }
       }
       //}
     });

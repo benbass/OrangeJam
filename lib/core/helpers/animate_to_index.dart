@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-import 'package:orangejam/injection.dart' as di;
-import '../../application/playlists/playlists_bloc.dart';
-import '../player/audiohandler.dart';
+import 'get_current_index.dart';
 
 // this is used to jump to currently playing track in list
 void gotoItem(double offset, ListObserverController observerController, BuildContext context ) {
@@ -18,8 +15,3 @@ void gotoItem(double offset, ListObserverController observerController, BuildCon
   );
 }
 
-int getIndex(BuildContext context){
-  // we need current index in case user sorted or filtered the list
-  return BlocProvider.of<PlaylistsBloc>(context).state.tracks
-      .indexWhere((element) => element.id == di.sl<MyAudioHandler>().currentTrack.id);
-}
