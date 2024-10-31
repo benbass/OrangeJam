@@ -71,7 +71,7 @@ class MyListview extends StatelessWidget {
         // Play first track automatically if pref in drawer is set
         if (BlocProvider.of<AutomaticPlaybackCubit>(context).state == true && c.tracks.isNotEmpty) {
           BlocProvider.of<PlayerControlsBloc>(context)
-              .add(TrackItemPressed(track: c.tracks[0], context: context));
+              .add(TrackItemPressed(track: c.tracks[0]));
         }
         return true;
       },

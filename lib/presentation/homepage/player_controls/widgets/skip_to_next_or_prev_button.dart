@@ -23,9 +23,9 @@ class SkipToNextOrPrevious extends StatelessWidget {
       onPressed: () {
         value == 1
             ? BlocProvider.of<PlayerControlsBloc>(context)
-                .add(NextButtonPressed(context: context))
+                .add(NextButtonPressed())
             : BlocProvider.of<PlayerControlsBloc>(context)
-                .add(PreviousButtonPressed(context: context));
+                .add(PreviousButtonPressed());
         gotoItem(value == 1 ? 0.0 : 144.0, observerController, context);
       },
       icon: Icon(

@@ -22,6 +22,9 @@ import '../../injection.dart';
 import '../notifications/create_notification.dart';
 
 class MyAudioHandler {
+  final BuildContext context;
+  MyAudioHandler(this.context);
+
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
 
   /// track with id 0 has impact on notification update
@@ -39,7 +42,7 @@ class MyAudioHandler {
   }
 
   /// PLAYER CONTROLS ///
-  void playTrack(TrackEntity track, BuildContext context) {
+  void playTrack(TrackEntity track) {
     final automaticPlaybackCubit = context.read<AutomaticPlaybackCubit>();
     final playerControlsBloc = context.read<PlayerControlsBloc>();
     final trackPositionCubit = context.read<TrackPositionCubit>();
@@ -51,7 +54,7 @@ class MyAudioHandler {
 
     flutterSoundPlayer.startPlayer(
       fromURI: track.filePath,
-      whenFinished: () => _handleTrackFinished(context, automaticPlaybackCubit, playerControlsBloc),
+      whenFinished: () => _handleTrackFinished(automaticPlaybackCubit, playerControlsBloc),
     );
     openAudioSession();
     createNotification(track, isPausingState, currentPosition);
@@ -64,13 +67,13 @@ class MyAudioHandler {
     });
   }
 
-  void _handleTrackFinished(BuildContext context, AutomaticPlaybackCubit automaticPlaybackCubit, PlayerControlsBloc playerControlsBloc) async {
+  void _handleTrackFinished(AutomaticPlaybackCubit automaticPlaybackCubit, PlayerControlsBloc playerControlsBloc) async {
     if (playerControlsBloc.state.loopMode) {
       // Loop mode prevails: play same track again
-      playTrack(currentTrack, context);
+      playTrack(currentTrack);
     } else if (automaticPlaybackCubit.state) {
       // no loop mode so we play next track: event is sent to bloc for UI update and the bloc will call method getNextTrackToPlayAndPlay() below
-      sl<PlayerControlsBloc>().add(NextButtonPressed(context: context));
+      sl<PlayerControlsBloc>().add(NextButtonPressed());
     } else {
       // no loop mode and no automatic playback: player just stops. Event is sent to bloc for UI update
       sl<PlayerControlsBloc>().add(InitialPlayerControls());
@@ -110,7 +113,6 @@ class MyAudioHandler {
   Future<TrackEntity> getNextTrackAndPlay(
       int direction,
       TrackEntity currentTrack,
-      BuildContext context,
       ) async {
     final tracks = context.read<PlaylistsBloc>().state.tracks;
     // we get the current list index based on current track id
@@ -124,21 +126,21 @@ class MyAudioHandler {
       final track = tracks[index];
       final filePath = track.filePath;
       if (await File(filePath).exists()) {
-        if (context.mounted) {
-          playTrack(track, context);
-        }
+
+          playTrack(track);
+
         return track;
       } else {
-        if (context.mounted) {
-          _showTrackNotFoundSnackBar(context, track);
-        }
+
+          _showTrackNotFoundSnackBar(track);
+
         return TrackEntity.empty();
       }
     } else {
       // Here user skips -after last or before first- list item: app will play the 1st track of the playlist.
       if (tracks.isNotEmpty) {
         final track = tracks[0];
-        playTrack(track, context);
+        playTrack(track);
         return track;
       } else {
         // Here user selected a different playlist:
@@ -148,7 +150,7 @@ class MyAudioHandler {
     }
   }
 
-  void _showTrackNotFoundSnackBar(BuildContext context, TrackEntity track) {
+  void _showTrackNotFoundSnackBar(TrackEntity track) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -161,5 +163,6 @@ class MyAudioHandler {
       );
     }
   }
+
 }
 

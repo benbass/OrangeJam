@@ -11,7 +11,6 @@ import 'package:orangejam/core/metatags/metatags_handler.dart';
 import 'package:orangejam/infrastructure/repositories/playlists_repository_impl.dart';
 import 'package:orangejam/infrastructure/repositories/tracks_repository_impl.dart';
 import 'package:orangejam/services/audio_session.dart';
-import 'package:orangejam/core/player/audiohandler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
@@ -47,8 +46,7 @@ Future<void> init() async {
   final metaTagsHandler = MetaTagsHandler();
   sl.registerLazySingleton<MetaTagsHandler>(() => metaTagsHandler);
 
-  final audioHandler = MyAudioHandler();
-  sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+
 
   final audioSession = MyAudioSession();
   sl.registerLazySingleton<MyAudioSession>(() => audioSession);

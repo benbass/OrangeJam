@@ -13,7 +13,6 @@ import 'core/objectbox.dart';
 import 'domain/entities/track_entity.dart';
 import 'generated/l10n.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
-import 'package:orangejam/core/player/audiohandler.dart';
 import 'application/listview/ui/is_comm_with_google_cubit.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'injection.dart' as di;
@@ -35,7 +34,6 @@ void main() async {
   trackBox = objectbox.store.box<TrackEntity>();
   //sl.registerSingleton(() => trackBox);
   await di.init();
-  await di.sl<MyAudioHandler>().flutterSoundPlayer.openPlayer();
   MetadataGod.initialize();
 
   /// media_store_plus plugin

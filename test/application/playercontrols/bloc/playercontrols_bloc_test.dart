@@ -57,7 +57,6 @@ void main() {
   );
 
   group("PlayerControlsBloc", () {
-
     // Initial state
     blocTest<PlayerControlsBloc, PlayerControlsState>(
         "emits [PlayerControlsState] with initial values when InitialPlayerControls is added',",
@@ -77,13 +76,51 @@ void main() {
     // TrackItemPressed: replace track, update height
     for (var testData in [
       // Testdata for all 3 possible cases:
-      {'currentTrack': track1, 'newTrack': track2, 'currentHeight': 200.0, 'newHeight': 200.0}, // play new track -> replaces track
-      {'currentTrack': TrackEntity.empty().copyWith(id: 0), 'newTrack': track1, 'currentHeight': 0.0, 'newHeight': 200.0}, // play track from empty
-    ]){
+      {
+        'currentTrack': track1,
+        'newTrack': track2,
+        'expectedTrack': track2,
+        'currentHeight': 200.0,
+        'newHeight': 200.0
+      }, // play new track -> replaces track
+      {
+        'currentTrack': track1,
+        'newTrack': track1,
+        'expectedTrack': TrackEntity.empty().copyWith(id: 0),
+        'currentHeight': 200.0,
+        'newHeight': 0.0
+      }, // same track: stop track
+      {
+        'currentTrack': TrackEntity.empty().copyWith(id: 0),
+        'newTrack': track1,
+        'expectedTrack': track1,
+        'currentHeight': 0.0,
+        'newHeight': 200.0
+      }, // play track from empty
+    ]) {
       blocTest<PlayerControlsBloc, PlayerControlsState>(
         "emits [PlayerControlsState] with updated values when TrackItemPressed is added',",
         build: () {
-          when(mockMyAudioHandler.playTrack(any)).thenAnswer((_) => (){}); // we don't test this method here
+          /*
+          when(mockMyAudioHandler
+                  .playTrack(testData['expectedTrack'] as TrackEntity))
+              .thenAnswer((_) => () {
+                    PlayerControlsState(
+                      track: testData['expectedTrack'] as TrackEntity,
+                      isPausing: false,
+                      height: testData['newHeight'] as double,
+                      loopMode: false,
+                    );
+                  });
+          when(mockMyAudioHandler.stopTrack()).thenAnswer((_) => () {
+                PlayerControlsState(
+                  track: testData['expectedTrack'] as TrackEntity,
+                  isPausing: false,
+                  height: testData['newHeight'] as double,
+                  loopMode: false,
+                );
+              });
+          */ // we don't test these methods here
           return playerControlsBloc;
         },
         seed: () => PlayerControlsState(
@@ -92,11 +129,10 @@ void main() {
           height: testData['currentHeight'] as double,
           loopMode: false,
         ),
-
         act: (bloc) => bloc.add(TrackItemPressed(track: testData['newTrack'] as TrackEntity)),
         expect: () => [
           PlayerControlsState(
-            track: testData['newTrack'] as TrackEntity,
+            track: testData['expectedTrack'] as TrackEntity,
             isPausing: false,
             height: testData['newHeight'] as double,
             loopMode: false,
@@ -113,25 +149,37 @@ void main() {
         },
         act: (bloc) => bloc.add(StopButtonPressed()),
         expect: () => [
-          PlayerControlsState(
-            track: TrackEntity.empty().copyWith(id: 0),
-            isPausing: false,
-            height: 0,
-            loopMode: false,
-          )
-        ]);
+              PlayerControlsState(
+                track: TrackEntity.empty().copyWith(id: 0),
+                isPausing: false,
+                height: 0,
+                loopMode: false,
+              )
+            ]);
 
     // PausePlayButtonPressed: pause or resume
     for (var testData in [
       // Testdata for all 3 possible cases:
-      {'track': track1, 'expectedTrack': track1, 'isPausing': false, 'expectedIsPausing': true},
-      {'track': track1, 'expectedTrack': track1, 'isPausing': true, 'expectedIsPausing': false},
-    ]){
+      {
+        'track': track1,
+        'expectedTrack': track1,
+        'isPausing': false,
+        'expectedIsPausing': true
+      },
+      {
+        'track': track1,
+        'expectedTrack': track1,
+        'isPausing': true,
+        'expectedIsPausing': false
+      },
+    ]) {
       blocTest<PlayerControlsBloc, PlayerControlsState>(
         "emits [PlayerControlsState] with updated isPausing state when PausePlayButtonPressed is added',",
         build: () {
-          when(mockMyAudioHandler.pauseTrack()).thenAnswer((_) => (){}); // we don't test this method here
-          when(mockMyAudioHandler.resumeTrack()).thenAnswer((_) => (){}); // we don't test this method here
+          when(mockMyAudioHandler.pauseTrack())
+              .thenAnswer((_) => () {}); // we don't test this method here
+          when(mockMyAudioHandler.resumeTrack())
+              .thenAnswer((_) => () {}); // we don't test this method here
           return playerControlsBloc;
         },
         seed: () => PlayerControlsState(
@@ -140,7 +188,6 @@ void main() {
           height: 200,
           loopMode: false,
         ),
-
         act: (bloc) => bloc.add(PausePlayButtonPressed()),
         expect: () => [
           PlayerControlsState(
@@ -157,23 +204,28 @@ void main() {
     blocTest<PlayerControlsBloc, PlayerControlsState>(
       "emits [PlayerControlsState] with next track when NextButtonPressed is added',",
       build: () {
-        final nextTrack = TrackEntity.empty().copyWith(id: 2);
-        final currentTrack = TrackEntity.empty().copyWith(id: 1);
-        when(mockMyAudioHandler.getNextTrack(1, currentTrack))
-            .thenAnswer((_) async => nextTrack);
-        when(mockMyAudioHandler.playTrack(nextTrack)).thenAnswer((_) => (){}); // we don't test this method here
+        when(mockMyAudioHandler.getNextTrackAndPlay(1, track1))
+            .thenAnswer((_) async => track2);
+        when(mockMyAudioHandler.playTrack(track2))
+            .thenAnswer((_) => () {}); // we don't test this method here
+
         return playerControlsBloc;
       },
+      seed: () =>  PlayerControlsState(
+        track: track1,
+        isPausing: false,
+        height: 200,
+        loopMode: false,
+      ),
       act: (bloc) => bloc.add(NextButtonPressed()),
       expect: () => [
         PlayerControlsState(
-          track: TrackEntity.empty().copyWith(id: 2),
+          track: track2,
           isPausing: false,
           height: 200,
           loopMode: false,
         ),
       ],
     );
-
   });
 }

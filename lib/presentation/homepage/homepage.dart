@@ -31,14 +31,22 @@ class MyHomePage extends StatelessWidget {
     super.key,
   });
 
+  void openPlayer() async{
+    await sl<MyAudioHandler>().flutterSoundPlayer.openPlayer();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Now we have the context so we can initialize and register audioHandler with it
+    final MyAudioHandler audioHandler = MyAudioHandler(context);
+    sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+    openPlayer();
+
     // app language will be set based on shared drawer_prefs if set. Default lang is en.
     setAppLanguage(context);
 
     final StoragePermissionHandler storagePermissionHandler =
         StoragePermissionHandler(context: context);
-    final MyAudioHandler audioHandler = sl<MyAudioHandler>();
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
     final isScrollReverseCubit = BlocProvider.of<IsScrollReverseCubit>(context);
     final automaticPlaybackCubit =

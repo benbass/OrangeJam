@@ -40,7 +40,7 @@ class ListItemSlidable extends StatelessWidget {
 
     void playTrack(TrackEntity track) {
       BlocProvider.of<PlayerControlsBloc>(context)
-          .add(TrackItemPressed(track: track, context: context));
+          .add(TrackItemPressed(track: track));
     }
 
     void snackBarFileNotExist() {

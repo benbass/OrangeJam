@@ -7,6 +7,6 @@ import '../player/audiohandler.dart';
 
 int getIndex(BuildContext context){
   // we need current index in case user sorted or filtered the list
-  return BlocProvider.of<PlaylistsBloc>(context).state.tracks
+  return context.read<PlaylistsBloc>().state.tracks
       .indexWhere((element) => element.id == di.sl<MyAudioHandler>().currentTrack.id);
 }
