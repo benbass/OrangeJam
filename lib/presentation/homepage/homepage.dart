@@ -39,7 +39,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Now we have the context so we can initialize and register audioHandler with it
     final MyAudioHandler audioHandler = MyAudioHandler(context);
-    sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+    // For development purpose we need to check if dependency is already registered
+    // in order to avoid error at hot reload!
+    if(!sl.isRegistered<MyAudioHandler>()) {
+      sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+    }
+
     openPlayer();
 
     // app language will be set based on shared drawer_prefs if set. Default lang is en.
