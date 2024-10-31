@@ -81,7 +81,7 @@ class PlayerControlsBloc
       // check if event.mounted: necessary for notification after list was changed
       //if (event.context.mounted) {
       TrackEntity track = await sl<MyAudioHandler>()
-          .getNextTrackToPlayAndPlay(1, state.track, event.context);
+          .getNextTrackAndPlay(1, state.track, event.context);
 
       if (track == TrackEntity.empty()) {
         // current playlist is empty
@@ -105,7 +105,7 @@ class PlayerControlsBloc
       contextBloc = event.context;
       //if (event.context.mounted) {
       TrackEntity track = await sl<MyAudioHandler>()
-          .getNextTrackToPlayAndPlay(-1, state.track, event.context);
+          .getNextTrackAndPlay(-1, state.track, event.context);
       if (track == TrackEntity.empty()) {
         createNotificationListViewEmpty();
       } else {

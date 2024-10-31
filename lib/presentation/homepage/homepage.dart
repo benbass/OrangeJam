@@ -54,7 +54,7 @@ class MyHomePage extends StatelessWidget {
     void updateNotificationIfNeeded() {
       if (sl<PlayerControlsBloc>().state.track.id != 0) {
         createNotification(audioHandler.currentTrack,
-            audioHandler.isPausingState, audioHandler.p);
+            audioHandler.isPausingState, audioHandler.currentPosition);
       }
     }
 

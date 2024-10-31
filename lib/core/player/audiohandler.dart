@@ -24,12 +24,10 @@ import '../notifications/create_notification.dart';
 class MyAudioHandler {
   FlutterSoundPlayer flutterSoundPlayer = FlutterSoundPlayer();
 
-  /// we need the following vars with initial values for the notification handler at app start
-  /// track id 0 is empty track
+  /// track with id 0 has impact on notification update
   TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0);
   bool isPausingState = false;
-
-  ///
+  Duration currentPosition = Duration.zero;
 
   void openAudioSession() {
     di.sl<MyAudioSession>().audioSession();
@@ -40,55 +38,44 @@ class MyAudioHandler {
     AwesomeNotifications().cancel(10);
   }
 
-  Duration p = Duration.zero;
-
   /// PLAYER CONTROLS ///
   void playTrack(TrackEntity track, BuildContext context) {
-    /// The following 2 vars are needed for the whenFinished function
-    final automaticPlaybackCubit =
-        BlocProvider.of<AutomaticPlaybackCubit>(context);
-    final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(context);
+    final automaticPlaybackCubit = context.read<AutomaticPlaybackCubit>();
+    final playerControlsBloc = context.read<PlayerControlsBloc>();
+    final trackPositionCubit = context.read<TrackPositionCubit>();
+    final trackDurationCubit = context.read<TrackDurationCubit>();
 
-    ///
-
-    final trackPositionCubit = BlocProvider.of<TrackPositionCubit>(context);
-    final trackDurationCubit = BlocProvider.of<TrackDurationCubit>(context);
-
-    p = Duration.zero;
+    currentPosition = Duration.zero;
     isPausingState = false;
     currentTrack = track;
+
     flutterSoundPlayer.startPlayer(
       fromURI: track.filePath,
-
-      /// Logic for loop song and automatic playback!!!
-      whenFinished: () async {
-        if (playerControlsBloc.state.loopMode && automaticPlaybackCubit.state) {
-          // Loop mode prevails: play same track again
-          playTrack(currentTrack, context);
-        } else if (playerControlsBloc.state.loopMode &&
-            !automaticPlaybackCubit.state) {
-          // Loop mode prevails: play same track again
-          playTrack(currentTrack, context);
-        } else if (automaticPlaybackCubit.state &&
-            !playerControlsBloc.state.loopMode) {
-          // no loop mode so we play next track
-          sl<PlayerControlsBloc>().add(NextButtonPressed(context: context));
-        } else {
-          // no loop mode and no automatic playback: we stop the player
-          sl<PlayerControlsBloc>().add(InitialPlayerControls());
-          cancelNotification();
-        }
-      },
+      whenFinished: () => _handleTrackFinished(context, automaticPlaybackCubit, playerControlsBloc),
     );
     openAudioSession();
-    createNotification(track, isPausingState, p);
+    createNotification(track, isPausingState, currentPosition);
 
     // Update progressbar in notification and player controls
     flutterSoundPlayer.onProgress?.listen((event) {
-      p = event.position;
+      currentPosition = event.position;
       trackDurationCubit.setDuration(event.duration);
       trackPositionCubit.setPosition(event.position);
     });
+  }
+
+  void _handleTrackFinished(BuildContext context, AutomaticPlaybackCubit automaticPlaybackCubit, PlayerControlsBloc playerControlsBloc) async {
+    if (playerControlsBloc.state.loopMode) {
+      // Loop mode prevails: play same track again
+      playTrack(currentTrack, context);
+    } else if (automaticPlaybackCubit.state) {
+      // no loop mode so we play next track: event is sent to bloc for UI update and the bloc will call method getNextTrackToPlayAndPlay() below
+      sl<PlayerControlsBloc>().add(NextButtonPressed(context: context));
+    } else {
+      // no loop mode and no automatic playback: player just stops. Event is sent to bloc for UI update
+      sl<PlayerControlsBloc>().add(InitialPlayerControls());
+      cancelNotification();
+    }
   }
 
   void stopTrack() {
@@ -101,7 +88,7 @@ class MyAudioHandler {
     flutterSoundPlayer.pausePlayer();
     isPausingState = true;
     // we update the button play/pause
-    createNotification(currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, currentPosition);
   }
 
   void resumeTrack() {
@@ -109,68 +96,70 @@ class MyAudioHandler {
     isPausingState = false;
     openAudioSession();
     // we update the button play/pause
-    createNotification(currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, currentPosition);
   }
 
   void gotoSeekPosition(Duration seekPosition) {
     flutterSoundPlayer.seekToPlayer(seekPosition);
     // We update the progress in notification:
-    p = seekPosition;
+    currentPosition = seekPosition;
     AwesomeNotifications().cancel(10);
-    createNotification(currentTrack, isPausingState, p);
+    createNotification(currentTrack, isPausingState, currentPosition);
   }
 
-  Future<TrackEntity> getNextTrackToPlayAndPlay(
-    int plusMinusOne,
-    TrackEntity currentTrack,
-    BuildContext context,
-  ) async {
-    List<TrackEntity> tracks =
-        BlocProvider.of<PlaylistsBloc>(context).state.tracks;
-    TrackEntity track = TrackEntity.empty();
+  Future<TrackEntity> getNextTrackAndPlay(
+      int direction,
+      TrackEntity currentTrack,
+      BuildContext context,
+      ) async {
+    final tracks = context.read<PlaylistsBloc>().state.tracks;
     // we get the current list index based on current track id
-    int index = getIndex(context);
+    var index = getIndex(context);
 
     // We in- or decrease list index based on parameter
-    index += plusMinusOne;
+    index += direction;
 
-    // we prevent out of range exception for index == -1 && index bigger than last index and play previous/next track.
+    // we prevent out of range exception for index == -1 or index bigger than last index
     if (index > -1 && index < tracks.length) {
-      // we set new track based on decreased index
-      track = tracks[index];
-      String filePath = track.filePath;
+      final track = tracks[index];
+      final filePath = track.filePath;
       if (await File(filePath).exists()) {
-        if(context.mounted) {
+        if (context.mounted) {
           playTrack(track, context);
         }
         return track;
       } else {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 2),
-              content: Text(S
-                  .of(context)
-                  .listItemSlidable_upsTheFileTrackfilepathWasNotFound(
-                      track.filePath)),
-            ),
-          );
+          _showTrackNotFoundSnackBar(context, track);
         }
-        track = TrackEntity.empty();
-        return track;
+        return TrackEntity.empty();
       }
     } else {
-      // Here user skips after last or before first list item: app will play the 1st track of the playlist.
-      if (BlocProvider.of<PlaylistsBloc>(context).state.tracks.isNotEmpty) {
-        track = BlocProvider.of<PlaylistsBloc>(context).state.tracks[0];
+      // Here user skips -after last or before first- list item: app will play the 1st track of the playlist.
+      if (tracks.isNotEmpty) {
+        final track = tracks[0];
         playTrack(track, context);
         return track;
       } else {
         // Here user selected a different playlist:
         // If this playlist is empty, empty track is returned and player will do nothing: current playback continues.
-        return track;
+        return TrackEntity.empty();
       }
     }
   }
 
+  void _showTrackNotFoundSnackBar(BuildContext context, TrackEntity track) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(S
+              .of(context)
+              .listItemSlidable_upsTheFileTrackfilepathWasNotFound(
+              track.filePath)),
+        ),
+      );
+    }
+  }
 }
+
