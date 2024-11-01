@@ -39,6 +39,7 @@ app.*.map.json
 
 # May be not necessary
 **/google-services*.json*
+**/GoogleService-Info.plist*
 
 # Android Studio will place build artifacts here
 /android/app/debug
