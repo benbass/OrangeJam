@@ -21,3 +21,7 @@ Beautiful player for audio files located in the device's music folder.
   MacOS: flutter config --jdk-dir "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
   Windows: flutter config --jdk-dir "C:\Program Files\Java\jdk-17"
   (adjust path to your jdk17 installation)
+
+## Supported platforms
+- Android: fully supported
+- iOS: app runs in emulator but not fully tested due to emulator limitations
