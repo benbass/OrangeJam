@@ -33,19 +33,25 @@ class MyHomePage extends StatelessWidget {
 
   void openPlayer() async{
     await sl<MyAudioHandler>().flutterSoundPlayer.openPlayer();
+    // Player is open so we can subscribe
+    if (sl<MyAudioHandler>().flutterSoundPlayer.isOpen()) {
+      // Position for Progressbar in Player controls and behaviour at playback end
+      sl<MyAudioHandler>().flutterSoundPlayer.setSubscriptionDuration(
+          const Duration(milliseconds: 100));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     // Now we have the context so we can initialize and register audioHandler with it
-    final MyAudioHandler audioHandler = MyAudioHandler(context);
+    late MyAudioHandler audioHandler;
     // For development purpose we need to check if dependency is already registered
     // in order to avoid error at hot reload!
     if(!sl.isRegistered<MyAudioHandler>()) {
+      audioHandler = MyAudioHandler(context);
       sl.registerLazySingleton<MyAudioHandler>(() => audioHandler);
+      openPlayer();
     }
-
-    openPlayer();
 
     // app language will be set based on shared drawer_prefs if set. Default lang is en.
     setAppLanguage(context);
@@ -127,13 +133,6 @@ class MyHomePage extends StatelessWidget {
                 //bloc: BlocProvider.of<PlaylistsBloc>(context),
                 builder: (context, playlistsState) {
                   if (playlistsState.loading) {
-                    // Player is open so we can subscribe
-                    if (audioHandler.flutterSoundPlayer.isOpen()) {
-                      // Position for Progressbar in Player controls and behaviour at playback end
-                      audioHandler.flutterSoundPlayer.setSubscriptionDuration(
-                          const Duration(milliseconds: 100));
-                    }
-
                     // Check sharedPrefs for automatic playback and emit state according to result
                     automaticPlaybackCubit.getAutomaticPlaybackFromPrefs();
                     //
