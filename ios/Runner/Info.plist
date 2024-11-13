@@ -26,22 +26,6 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Music!</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSCameraUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSContactsUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSMotionUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>MyApp does not need this permission</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -60,6 +44,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>The app plays files from the library</string>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>The app plays music</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -67,7 +55,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>kTCCServiceMediaLibrary</key>
-	<string>media</string>
 </dict>
 </plist>
