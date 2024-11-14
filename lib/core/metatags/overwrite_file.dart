@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:media_store_plus/media_store_plus.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart' as path;
-import 'package:audiotags/audiotags.dart';
 
 import '../../injection.dart';
 import '../globals.dart';
 import 'metatags_handler.dart';
 
 class OverwriteFile {
-  final Tag metaData;
+  final Metadata metaData;
   final File file;
   final String fileName;
 
@@ -34,7 +34,7 @@ class OverwriteFile {
     await file.copy(filePath);
 
     // we write metaTag to temp file
-    if(context.mounted) {
+    if (context.mounted) {
       await sl<MetaTagsHandler>().writeTags(filePath, metaData, context);
     }
     // returns temp file

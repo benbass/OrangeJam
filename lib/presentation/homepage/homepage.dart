@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/core/storage_permission/storage_permission_handler.dart';
@@ -25,6 +27,8 @@ import 'bottombar/widgets/playlists_menu_button.dart';
 import 'bottombar/widgets/show_hide_playercontrols.dart';
 import 'extra_top_bar/extra_top_bar.dart';
 import 'listview/listview.dart';
+
+/// TODO: permission handler for iOS
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
@@ -85,7 +89,9 @@ class MyHomePage extends StatelessWidget {
     // notification should live only when track is not empty
     void onResumed() {
       updateNotificationIfNeeded();
-      storagePermissionHandler.checkStoragePermissionOnResumed();
+      if(Platform.isAndroid) {
+        storagePermissionHandler.checkStoragePermissionOnResumed();
+      }
     }
 
     // Listen to the app lifecycle state changes
