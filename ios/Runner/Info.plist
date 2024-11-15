@@ -45,7 +45,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>The app plays files from the library</string>
+	<string>The app needs access to your music library to play your audio files</string>
+    <key>com.apple.developer.music-library</key>
+    <true/>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>The app plays music</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>

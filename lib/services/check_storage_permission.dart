@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:permission_handler/permission_handler.dart';
 
 import '../core/globals.dart';
@@ -9,7 +11,6 @@ import '../core/globals.dart';
 // It will use MediaStore for writing files from API level 30 or use java File lower than 30
 
 class CheckStoragePermission {
-
   Future<bool> _checkPermissions(List<Permission> permissions) async {
     for (Permission permission in permissions) {
       if (await permission.request().isPermanentlyDenied) {
@@ -23,21 +24,22 @@ class CheckStoragePermission {
     return true;
   }
 
-  /// MediaStore plugin is taking care of this permission but
+  /// Android: MediaStore plugin is taking care of this permission but
   /// audiofiles_datasources.dart calls this function before getting music folder
   Future<bool> getStoragePermission() async {
-    List<Permission> permissions = [];
     bool isGranted = false;
-    if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
-      permissions.add(Permission.storage);
-      isGranted = await _checkPermissions(permissions);
-    } else {
-      permissions.add(Permission.audio);
-      // permissions.add(Permission.photos); // NOT NEEDED
-      // permissions.add(Permission.videos); // NOT NEEDED
-      isGranted = await _checkPermissions(permissions);
+    if (Platform.isAndroid) {
+      List<Permission> permissions = [];
+      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
+        permissions.add(Permission.storage);
+        isGranted = await _checkPermissions(permissions);
+      } else {
+        permissions.add(Permission.audio);
+        // permissions.add(Permission.photos); // NOT NEEDED
+        // permissions.add(Permission.videos); // NOT NEEDED
+        isGranted = await _checkPermissions(permissions);
+      }
     }
     return isGranted;
   }
-
 }
