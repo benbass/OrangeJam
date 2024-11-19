@@ -136,7 +136,7 @@ class _WriterViewState extends State<WriterView> {
                   ),
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 15,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

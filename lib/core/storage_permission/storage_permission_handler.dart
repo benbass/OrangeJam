@@ -87,18 +87,7 @@ class StoragePermissionHandler {
   /// Checks audio/storage permission on app resume in case user updated permission
   /// If so, we can scan device and refresh UI
   void checkStoragePermissionOnResumed() async {
-    late bool granted;
-    if(Platform.isAndroid){
-      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
-        granted = await Permission.storage.isGranted;
-      } else {
-        granted = await Permission.audio.isGranted;
-      }
-    }
-    if(Platform.isIOS){
-      granted = await Permission.mediaLibrary.isGranted;
-    }
-
+    final bool granted = await permissionGranted();
     if (context.mounted) {
       // We scan device only if track list is empty. Doing so, we prevent a scan at each resume
       // An empty list can indicate that permission was never granted
@@ -107,6 +96,21 @@ class StoragePermissionHandler {
         BlocProvider.of<PlaylistsBloc>(context)
             .add(PlaylistsTracksLoadingEvent());
       }
+    }
+  }
+
+  Future<bool> permissionGranted() async {
+    late bool granted;
+    if(Platform.isAndroid){
+      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
+        granted = await Permission.storage.isGranted;
+      } else {
+        granted = await Permission.audio.isGranted;
+      }
+      return granted;
+    } else {
+      granted = await Permission.mediaLibrary.isGranted;
+      return granted;
     }
   }
 }

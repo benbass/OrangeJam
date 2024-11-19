@@ -46,8 +46,8 @@
 	</array>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>The app needs access to your music library to play your audio files</string>
-    <key>com.apple.developer.music-library</key>
-    <true/>
+    <key>com.apple.account.iTunesStore</key>
+    <string>Diese App benötigt Zugriff auf Ihren iTunes Store-Account, um auf die Musikbibliothek zuzugreifen.</string>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>The app plays music</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>

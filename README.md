@@ -24,4 +24,6 @@ Player for audio files located in the device's music folder (music library)
 
 ## Supported platforms
 - Android: fully supported
-- iOS: app is being built (emulator and real device) but we get "com.apple.accounts.appleaccount.fullaccess" error despite permission for music library is granted
+- iOS: app is being built with list of audio files from the devices's music library. Files can be played. 
+       Next issues to fix: artwork images are null?, some audio files are truncated
+

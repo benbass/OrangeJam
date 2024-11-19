@@ -10,15 +10,4 @@ class MusicLibraryManager: NSObject {
         }
     }
 
-    func fetchSongs() -> [[String: String]] {
-        let query = MPMediaQuery.songs()
-        let songs = query.items?.map {item in
-         return [
-         "title": item.title ?? "Unknown Title",
-         "artist": item.artist ?? "Unknown Artist",
-         "filePath": item.assetURL?.absoluteString ?? "Unknown Path"
-         ]
-         } ?? []
-        return songs
-    }
 }
