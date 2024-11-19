@@ -4,28 +4,28 @@ import 'package:path/path.dart';
 
 import '../../services/check_storage_permission.dart';
 
+/// THIS CLASS IS USED FOR ANDROID ONLY
 // this gets the files from device
 abstract class AudioFilesDataSources {
   Future<List<FileSystemEntity>> getAudioFiles();
 }
 
 class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
-  List supportedExtensions = ["mp3", "flac", "m4a", "ogg", "opus", "wav"];
-
   @override
   Future<List<FileSystemEntity>> getAudioFiles() async {
+    List<FileSystemEntity> allFiles = [];
+
+    List supportedExtensions = ["mp3", "flac", "m4a", "ogg", "opus", "wav"];
     final CheckStoragePermission permissionAndDirectory =
         CheckStoragePermission();
 
-    final bool isGranted = await permissionAndDirectory.getStoragePermission(); // check permissions
+    final bool isGranted = await permissionAndDirectory
+        .getStoragePermission(); // check permissions
 
     if (isGranted) {
       String path = await ExternalPath.getExternalStoragePublicDirectory(
           ExternalPath.DIRECTORY_MUSIC);
-      List<FileSystemEntity> allFiles = [];
-
       final dir = Directory(path);
-      // All files, filtered
       allFiles = dir.listSync(recursive: true, followLinks: false).toList();
 
       // supported and tested audio codecs with flutter_sound: mp3, flac, m4a, ogg, opus, wav
@@ -33,9 +33,9 @@ class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
       // also exclude .trashed and .thumbnails files, and folders
       Future<List<FileSystemEntity>> audioFiles = Future.value(allFiles
           .where((file) =>
-      supportedExtensions
-          .contains(basename(file.path).split('.').last.toLowerCase()) ==
-          true)
+              supportedExtensions.contains(
+                  basename(file.path).split('.').last.toLowerCase()) ==
+              true)
           .where((file) => file.path.contains(".trashed") == false)
           .where((file) => file.path.contains(".thumbnails") == false)
           .where((el) => (el is Directory) == false)
@@ -45,5 +45,4 @@ class AudioFilesDataSourcesImpl implements AudioFilesDataSources {
       return <FileSystemEntity>[];
     }
   }
-
 }

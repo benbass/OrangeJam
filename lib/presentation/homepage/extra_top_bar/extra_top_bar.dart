@@ -36,7 +36,7 @@ class ExtraTopBar extends StatelessWidget {
                   child: SortByDropdown(),
                 ),
                 const Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: SizedBox.expand(),
                 ),
 
@@ -48,7 +48,7 @@ class ExtraTopBar extends StatelessWidget {
 
                 /// SEARCH
                 Expanded(
-                  flex: 9,
+                  flex: 8,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 12.0, top: 0),
                     child: SearchTextField(

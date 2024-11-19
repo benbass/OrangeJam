@@ -28,7 +28,7 @@ class PlayerControlsBloc
     // track was pressed:
     on<TrackItemPressed>((event, emit) {
       // player controls visible and audioHandler plays track
-      if (event.track != state.track) {
+      if (event.track.id != state.track.id) {
         // play new selected track
         emit(state.copyWith(
           track: event.track,
@@ -79,10 +79,10 @@ class PlayerControlsBloc
           .getNextTrackAndPlay(1, state.track);
 
       if (track == TrackEntity.empty()) {
-        // current playlist is empty
+        // user changed to an empty playlist
         createNotificationListViewEmpty();
       } else {
-        emit(PlayerControlsState(
+        emit(state.copyWith(
           track: track,
           isPausing: false,
           height: 200,
@@ -101,7 +101,7 @@ class PlayerControlsBloc
       if (track == TrackEntity.empty()) {
         createNotificationListViewEmpty();
       } else {
-        emit(PlayerControlsState(
+        emit(state.copyWith(
           track: track,
           isPausing: false,
           height: 200,

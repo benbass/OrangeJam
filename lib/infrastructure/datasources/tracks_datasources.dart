@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/services.dart';
 import 'package:orangejam/core/metatags/metatags_handler.dart';
 import 'package:orangejam/domain/failures/tracks_failures.dart';
 import 'package:orangejam/infrastructure/datasources/audiofiles_datasources.dart';
+import 'package:orangejam/infrastructure/models/track_model.dart';
 import '../../core/globals.dart';
 import '../../injection.dart';
 
@@ -32,11 +34,16 @@ class TracksDatasourceImpl implements TracksDatasource {
     } else {
       /// if db is empty or if user rescan the device, we gets all files from device: time consuming!
       try {
-        // First we load the files from device storage
-        List audioFiles = await audioFilesDataSources.getAudioFiles();
+        List<TrackEntity> tracksFromFiles = [];
 
-        // Then we create a list of track entities from list of audio files
-        List<TrackEntity> tracksFromFiles = await _handleFiles(audioFiles);
+        if (Platform.isAndroid) {
+          // Android: First we load the files from device storage: we get file entities
+          List audioFiles = await audioFilesDataSources.getAudioFiles();
+          // We must read metadata before we can create entities
+          tracksFromFiles = await _handleFiles(audioFiles);
+        } else {
+          tracksFromFiles = await _handleObjectsIos();
+        }
 
         // We clear the objectBox store (we want to (re)build the db)
         trackBox.removeAll();
@@ -57,7 +64,8 @@ class TracksDatasourceImpl implements TracksDatasource {
     List<TrackEntity> tracksFromFiles = [];
     for (File file in audioFiles) {
       // creates a track entity with metadata from file
-      TrackEntity track = await Future.value(sl<MetaTagsHandler>().readTags(file));
+      TrackEntity track =
+          await Future.value(sl<MetaTagsHandler>().readTags(file));
       tracksFromFiles.add(track);
     }
     // let initial list be sorted by track names asc
@@ -66,4 +74,26 @@ class TracksDatasourceImpl implements TracksDatasource {
             removeDiacritics(b.trackName ?? b.trackName!.toLowerCase())));
     return tracksFromFiles;
   }
+
+  Future<List<TrackEntity>> _handleObjectsIos() async {
+    List<TrackEntity> tracksFromFiles = [];
+    Future getSongData() async {
+      try {
+        final List songData = await platform.invokeMethod('getSongData');
+        return songData;
+      } on PlatformException{
+        //print("_________________________________________________________ERROR");
+        return [];
+      }
+    }
+    // iOS: First we load the files from music library: we get objects with assetUrls and metadata values
+    List songData = await getSongData();
+    // These objects already contain the metadata: we only need to create the entities
+    for (var data in songData){
+      TrackEntity track = TrackModel.ios(data);
+      tracksFromFiles.add(track);
+    }
+    return tracksFromFiles;
+  }
+
 }

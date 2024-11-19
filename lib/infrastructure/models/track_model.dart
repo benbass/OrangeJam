@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:path/path.dart' as aspath;
 
 import 'package:metadata_god/metadata_god.dart';
@@ -19,7 +20,7 @@ class TrackModel extends TrackEntity {
     required super.albumArtist,
   });
 
-  /// creates a track with metadata: used in metaTagsHandler
+  /// creates a track with metadata: used in metaTagsHandler (Android only)
   factory TrackModel.metaData(Metadata metadata, File file) {
     // track name: from metadata. If this field is null, we use the file name.
     return TrackModel(
@@ -34,6 +35,29 @@ class TrackModel extends TrackEntity {
       trackDuration: metadata.durationMs,
       albumArt: metadata.picture?.data,
       albumArtist: metadata.albumArtist,
+    );
+  }
+
+  factory TrackModel.ios(Map map){
+    final ByteData? byteData = map['albumArt'];
+    Uint8List? imageData;
+    if(byteData != null) {
+      imageData = byteData.buffer.asUint8List();
+    } else {
+      imageData = null;
+    }
+    return TrackModel(
+      filePath: map['assetUrl'],
+      trackName: map['title'] ?? aspath.basenameWithoutExtension(map['assetUrl']),
+      trackArtistNames: map['artist'],
+      albumName: map['album'],
+      trackNumber: map['trackNumber'],
+      albumLength: map['albumLength'],
+      year: map['year'],
+      genre: map['genre'],
+      trackDuration: map['duration'],
+      albumArt: imageData,
+      albumArtist: map['albumArtist'],
     );
   }
 }

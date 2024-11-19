@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:audiotags/audiotags.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/core/metatags/overwrite_file.dart';
@@ -66,10 +67,12 @@ class _WriterViewState extends State<WriterView> {
     titleController = TextEditingController(text: widget.track.trackName);
     artistController =
         TextEditingController(text: widget.track.trackArtistNames?.toString());
-    albumController = TextEditingController(text: widget.track.albumName?.toString());
+    albumController =
+        TextEditingController(text: widget.track.albumName?.toString());
     albumArtistController =
         TextEditingController(text: widget.track.albumArtist?.toString());
-    genreController = TextEditingController(text: widget.track.genre?.toString());
+    genreController =
+        TextEditingController(text: widget.track.genre?.toString());
     trackNumberController =
         TextEditingController(text: widget.track.trackNumber?.toString());
     trackTotalController =
@@ -104,7 +107,9 @@ class _WriterViewState extends State<WriterView> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 12,),
+            const SizedBox(
+              height: 12,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -131,7 +136,7 @@ class _WriterViewState extends State<WriterView> {
                   ),
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 15,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,74 +218,67 @@ class _WriterViewState extends State<WriterView> {
   }
 
   saveUpdatedTrack(BuildContext context) async {
-            // we create metaTag from form
-            Tag metaData = Tag(
-              title: titleController.text,
-              trackArtist: artistController.text,
-              album: albumController.text,
-              albumArtist: albumArtistController.text,
-              genre: genreController.text,
-              year: int.tryParse(yearController.text),
-              trackNumber: int.tryParse(trackNumberController.text),
-              trackTotal: int.tryParse(trackTotalController.text),
-              pictures: imgFromPicker != null // User picked new image
-                  ? [
-                Picture(
-                    bytes: imgFromPicker!.readAsBytesSync(),
-                    mimeType: null,
-                    pictureType: PictureType.other)
-              ]
-                  : widget.track.albumArt != null // User didn't pick new image: we keep the existing one, if any
-                  ? [
-                Picture(
-                    bytes: widget.track.albumArt!,
-                    mimeType: null,
-                    pictureType: PictureType.other)
-              ]
-                  : [],
-            );
+    // we create metaTag from form
+    Metadata metaData = Metadata(
+      title: titleController.text,
+      artist: artistController.text,
+      album: albumController.text,
+      albumArtist: albumArtistController.text,
+      genre: genreController.text,
+      year: int.tryParse(yearController.text),
+      trackNumber: int.tryParse(trackNumberController.text),
+      trackTotal: int.tryParse(trackTotalController.text),
+      picture: imgFromPicker != null // User picked new image
+          ? Picture(
+              data: imgFromPicker!.readAsBytesSync(),
+              mimeType: lookupMimeType(imgFromPicker!.path)!,
+            )
+          : widget.track.albumArt !=
+                  null // User didn't pick new image: we keep the existing one, if any
+              ? Picture(
+                  data: widget.track.albumArt!,
+                  mimeType: '',
+                )
+              : null,
+    );
 
-            // We send metadata to method where copy of original file will be created,
-            // copy's metadata updated and this copy used to overwrite the original file
-            OverwriteFile overwriteFile = OverwriteFile(metaData: metaData, file: file, fileName: fileName);
-            bool? fileIsSaved = await overwriteFile.saveFileWithMediaStore(context);
-            // Handle success / error writing to file
-            if(fileIsSaved != null && fileIsSaved && context.mounted){
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 2),
-                  content: Text(
-                      S.of(context).edit_tags_snackBarUpdateSuccess(fileName)),
-                ),
-              );
-              // ObjectBox item must also be updated so we avoid scanning device
-              await _updateDbObject();
-              if(context.mounted){
-                final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-                    context);
-                final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(
-                    context);
-                // list
-                playlistsBloc.add(PlaylistsTracksLoadingEvent());
-                // player controls and track details if updated track is playback track
-                if (widget.track.id == playerControlsBloc.state.track.id) {
-                  playerControlsBloc.add(TrackMetaTagUpdated());
-                }
-              }
-            } else {
-              if(context.mounted) {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 2),
-                    content: Text(
-                        S.of(context).edit_tags_snackBarUpdateError),
-                  ),
-                );
-              }
-            }
-          }
+    // We send metadata to method where copy of original file will be created,
+    // copy's metadata updated and this copy used to overwrite the original file
+    OverwriteFile overwriteFile =
+        OverwriteFile(metaData: metaData, file: file, fileName: fileName);
+    bool? fileIsSaved = await overwriteFile.saveFileWithMediaStore(context);
+    // Handle success / error writing to file
+    if (fileIsSaved != null && fileIsSaved && context.mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content:
+              Text(S.of(context).edit_tags_snackBarUpdateSuccess(fileName)),
+        ),
+      );
+      // ObjectBox item must also be updated so we avoid scanning device
+      await _updateDbObject();
+      if (context.mounted) {
+        final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
+        final playerControlsBloc = BlocProvider.of<PlayerControlsBloc>(context);
+        // list
+        playlistsBloc.add(PlaylistsTracksLoadingEvent());
+        // player controls and track details if updated track is playback track
+        if (widget.track.id == playerControlsBloc.state.track.id) {
+          playerControlsBloc.add(TrackMetaTagUpdated());
+        }
+      }
+    } else {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text(S.of(context).edit_tags_snackBarUpdateError),
+          ),
+        );
+      }
+    }
+  }
 }

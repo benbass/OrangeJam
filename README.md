@@ -4,7 +4,7 @@ Player for local audio files
 
 ## Features
 
-Beautiful player for audio files located in the device's music folder.
+Player for audio files located in the device's music folder (music library)
 
 - Supported audio files with flutter_sound package: mp3, flac, m4a, ogg, opus, wav (https://pub.dev/packages/flutter_sound)
   flutter_sound is using deprecated API and prevents other packages to be updated due to incompatible dependencies: it may be replaced in near future.
@@ -24,4 +24,6 @@ Beautiful player for audio files located in the device's music folder.
 
 ## Supported platforms
 - Android: fully supported
-- iOS: app runs in emulator but not fully tested due to emulator limitations
+- iOS: app is being built with list of audio files from the devices's music library. Files can be played. 
+       Next issues to fix: artwork images are null?, some audio files are truncated
+

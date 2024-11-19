@@ -56,13 +56,17 @@ class ListItemSlidable extends StatelessWidget {
     }
 
     Future<bool> permissionGranted() async {
-      late bool granted;
-      if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
-      granted = await Permission.storage.isGranted;
+      if(Platform.isAndroid){
+        late bool granted;
+        if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
+          granted = await Permission.storage.isGranted;
+        } else {
+          granted = await Permission.audio.isGranted;
+        }
+        return granted;
       } else {
-      granted = await Permission.audio.isGranted;
+        return true;
       }
-      return granted;
     }
 
     return Slidable(
@@ -178,12 +182,18 @@ class ListItemSlidable extends StatelessWidget {
           child: InkWell(
             splashColor: Colors.black87,
             onTap: () async {
-              // The Bloc will decide if track is to be played (tap on new track) or stopped (tap on current track)
-              // We check first if file still exists and storage permission is still granted
-              if (await File(track.filePath).exists() && await permissionGranted()) {
-                playTrack(track);
+              String filePath = "";
+              if(Platform.isAndroid){
+                filePath = track.filePath;
+                // The Bloc will decide if track is to be played (tap on new track) or stopped (tap on current track)
+                // We check first if file still exists and storage permission is still granted
+                if (await File(filePath).exists() && await permissionGranted()) {
+                  playTrack(track);
+                } else {
+                  snackBarFileNotExist();
+                }
               } else {
-                snackBarFileNotExist();
+                playTrack(track);
               }
             },
             child: Row(

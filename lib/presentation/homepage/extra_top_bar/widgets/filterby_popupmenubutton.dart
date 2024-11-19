@@ -28,7 +28,7 @@ class FilterByPopupMenuButton extends StatelessWidget {
               if (track.trackArtistNames != "" &&
                       track.trackArtistNames != " " ||
                   track.albumArtist != null) {
-                String artistT = track.trackArtistNames!.trim();
+                String artistT = track.trackArtistNames?.trim() ?? '';
                 String? artistA = track.albumArtist?.trim();
                 if (!artists.contains(artistT) && !artists.contains(artistA)) {
                   artists.add(artistT);

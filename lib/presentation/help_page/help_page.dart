@@ -243,14 +243,24 @@ class HelpPage extends StatelessWidget {
                         const SizedBox(
                           height: 6,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        Column(
                           children: [
-                            const Icon(Icons.swipe_left),
-                            const Text(" + "),
-                            const Icon(Icons.edit),
-                            Text(S.of(context).help_or),
-                            const Icon(Icons.edit),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.swipe_left),
+                                Text(" + "),
+                                Icon(Icons.edit),
+                              ],
+
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(S.of(context).help_or),
+                                const Icon(Icons.edit),
+                              ],
+                            ),
                           ],
                         )
                       ],

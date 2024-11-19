@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:media_store_plus/media_store_plus.dart';
@@ -36,10 +38,12 @@ void main() async {
   await di.init();
   MetadataGod.initialize();
 
-  /// media_store_plus plugin
-  await MediaStore.ensureInitialized();
-  // We must set this otherwise media store throws AppFolderNotSetException:
-  MediaStore.appFolder = "MediaStorePlugin";
+  if (Platform.isAndroid) {
+    /// media_store_plus plugin
+    await MediaStore.ensureInitialized();
+    // We must set this otherwise media store throws AppFolderNotSetException:
+    MediaStore.appFolder = "MediaStorePlugin";
+  }
 
   /// END media_store_plus plugin
 
