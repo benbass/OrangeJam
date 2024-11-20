@@ -26,10 +26,11 @@ class BottomSheetTrackDetails extends StatelessWidget {
                   ? SizedBox(
                 height: 480,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 8.0),
+                      const EdgeInsets.only(top: 8, bottom: 16,),
                       child: ContainerInfoImage(
                           currentTrack: track),
                     ),
@@ -42,16 +43,18 @@ class BottomSheetTrackDetails extends StatelessWidget {
                 ),
               )
                   : Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 6.0,
                       top: 10.0,
                       bottom: 10.0,
+                      right: 6.0
                     ),
                     child: SizedBox(
                         width: 240,
+                        height: 240,
                         child: ContainerInfoImage(
                           currentTrack: track,
                         )),

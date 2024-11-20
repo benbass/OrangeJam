@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:path/path.dart' as aspath;
 
 import 'package:metadata_god/metadata_god.dart';
@@ -38,7 +37,9 @@ class TrackModel extends TrackEntity {
     );
   }
 
-  factory TrackModel.ios(Map map){
+  factory TrackModel.ios(Map map) {
+    // Issue creating artwork image: we set it null for now!
+    /*
     final ByteData? byteData = map['albumArt'];
     Uint8List? imageData;
     if(byteData != null) {
@@ -46,6 +47,7 @@ class TrackModel extends TrackEntity {
     } else {
       imageData = null;
     }
+    */
     return TrackModel(
       filePath: map['assetUrl'],
       trackName: map['title'] ?? aspath.basenameWithoutExtension(map['assetUrl']),
@@ -56,7 +58,7 @@ class TrackModel extends TrackEntity {
       year: map['year'],
       genre: map['genre'],
       trackDuration: map['duration'],
-      albumArt: imageData,
+      albumArt: null,//imageData,
       albumArtist: map['albumArtist'],
     );
   }

@@ -17,11 +17,11 @@ class ContainerInfoImage extends StatelessWidget {
         image: currentTrack.albumArt != null
             ? DecorationImage(
                 image: MemoryImage(currentTrack.albumArt!),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               )
             : const DecorationImage(
                 image: AssetImage("assets/album-placeholder.png"),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
         boxShadow: [
           BoxShadow(
