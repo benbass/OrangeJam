@@ -49,7 +49,7 @@ import awesome_notifications
                         if let image = artwork.image(at: CGSize(width: 256, height: 256)) {
                             if let imageData = image.pngData() {
                                 // Convert Data to Uint8List
-                                //let uint8List = Array(imageData)
+                                let uint8List = Array(imageData)
                                 song["albumArt"] = imageData
                             }
                         }
