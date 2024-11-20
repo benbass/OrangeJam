@@ -32,19 +32,21 @@ import awesome_notifications
                     song["album"] = item.value(forProperty: MPMediaItemPropertyAlbumTitle) as? String
                     song["trackNumber"] = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? Int
                     song["albumLength"] = item.value(forProperty: MPMediaItemPropertyAlbumTrackCount) as? Int
-                    if let releaseDate = item.value(forProperty: MPMediaItemPropertyReleaseDate) as? Date {
-                        let calendar = Calendar.current
-                        let year = calendar.component(.year, from: releaseDate)
-                        song["year"] = year
+                    
+                    if let itemYearNumber = item.value(forProperty: "year") as? NSNumber {
+                        song["year"] = itemYearNumber.intValue
                     } else {
                         song["year"] = nil
                     }
+                    
                     song["genre"] = item.value(forProperty: MPMediaItemPropertyGenre) as? String
+                    
                     if let duration = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber {
                         song["duration"] = duration.doubleValue // Convert NSNumber to Double
                     } else {
                         song["duration"] = 0
                     }
+                    
                     if let artwork = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
                         if let image = artwork.image(at: CGSize(width: 256, height: 256)) {
                             if let imageData = image.pngData() {
@@ -56,6 +58,7 @@ import awesome_notifications
                     } else {
                         song["albumArt"] = nil
                     }
+                    
                     song["albumArtist"] = item.value(forProperty: MPMediaItemPropertyAlbumArtist) as? String
                     songs.append(song)
                 }
