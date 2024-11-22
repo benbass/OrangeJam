@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:audiotags/audiotags.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
-//import 'package:audiotags/audiotags.dart';
 
 import '../../domain/entities/track_entity.dart';
 import '../../infrastructure/models/track_model.dart';
@@ -12,7 +11,9 @@ import '../../infrastructure/models/track_model.dart';
 ///Problem: other plugins do not read all tags correctly.
 ///Audiotags for ex. doesn't read the genre. And as per Issues on GitHub, it seems there is also a problem building app for iOS
 class MetaTagsHandler {
-  Future<TrackEntity> readTags(File file) => MetadataGod.readMetadata(
+  /// READ
+  // version for metadata_god
+ Future<TrackEntity> readTags(File file) => MetadataGod.readMetadata(
         file: file.path,
       ).then(
         (value) async =>
@@ -20,8 +21,18 @@ class MetaTagsHandler {
                 .then((value) => value),
       );
 
-  // This method uses metadata_god: artwork is not updated correctly unless we could use version 1.0.0
-  /*writeTags(String filePath, Metadata metaData, BuildContext context) async {
+ // version for audiotags
+ /* Future<TrackEntity> readTags(File file) => AudioTags.read(file.path,)
+      .then(
+        (value) async =>
+    await Future.sync(() => TrackModel.metaData(value!, file))
+        .then((value) => value),
+  );*/
+
+  /// WRITE
+  // This method uses metadata_god: artwork is not updated correctly unless we could use version 1.0.0, which is not compatible with Android on real device
+ /*
+  writeTags(String filePath, Metadata metaData, BuildContext context) async {
     try {
       await MetadataGod.writeMetadata(
         file: filePath,
@@ -37,7 +48,8 @@ class MetaTagsHandler {
         );
       }
     }
-  }*/
+  }
+  */
 
   // We use AudioTags to write: MetadataGod doesn't always write album art so it's not updated. Reason unknown...
   writeTags(String filePath, Tag metaData, BuildContext context) async {
@@ -59,5 +71,4 @@ class MetaTagsHandler {
       }
     }
   }
-
 }

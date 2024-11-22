@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-// import 'package:mime/mime.dart'; // needed when using metadata_god
 import 'package:audiotags/audiotags.dart';
-//import 'package:metadata_god/metadata_god.dart';
+//import 'package:metadata_god/metadata_god.dart' as mg;
+//import 'package:mime/mime.dart' as mime;
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/core/metatags/overwrite_file.dart';
@@ -220,7 +220,8 @@ class _WriterViewState extends State<WriterView> {
 
   saveUpdatedTrack(BuildContext context) async {
     // we create metaTag from form (with metadata_god)
-  /*  Metadata metaData = Metadata(
+   /*
+    mg.Metadata metaData = mg.Metadata(
       title: titleController.text,
       artist: artistController.text,
       album: albumController.text,
@@ -230,18 +231,19 @@ class _WriterViewState extends State<WriterView> {
       trackNumber: int.tryParse(trackNumberController.text),
       trackTotal: int.tryParse(trackTotalController.text),
       picture: imgFromPicker != null // User picked new image
-          ? Picture(
+          ? mg.Picture(
               data: imgFromPicker!.readAsBytesSync(),
-              mimeType: lookupMimeType(imgFromPicker!.path)!,
+              mimeType: mime.lookupMimeType(imgFromPicker!.path) ?? "image/jpeg",
             )
           : widget.track.albumArt !=
                   null // User didn't pick new image: we keep the existing one, if any
-              ? Picture(
+              ? mg.Picture(
                   data: widget.track.albumArt!,
                   mimeType: '',
                 )
               : null,
-    );*/
+    );
+    */
 
     // we create metaTag from form (with audiotags)
     Tag metaData = Tag(
@@ -269,7 +271,6 @@ class _WriterViewState extends State<WriterView> {
       ]
           : [],
     );
-
 
 
     // We send metadata to method where copy of original file will be created,

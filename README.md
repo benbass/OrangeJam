@@ -28,7 +28,9 @@ Player for audio files located in the device's music folder (music library)
 
 ## Supported platforms
 - Android: fully supported with plugin metadata_god: ^0.5.2+1
-  - iOS: Plugin metadata_god is not needed but must be ^1.0.0 for build. And call "pod update flutter_sound_core" after switching from version 0.5.2!
-  App is being built with list of audio files from the devices's music library. Files can be played. 
-  Next issues to fix: artwork can't be retrieved, some audio files are truncated.
+- iOS: Plugin metadata_god is not needed but must be ^1.0.0 for build. And call "pod update flutter_sound_core" after switching from metadata_god version 0.5.2 before building!
+Serious issue: audiotags is used on Android to update metadata (metadata_god 0.5.2 doesn't update artwork) but audiotags prevents iOS build, in the same way metadata_god 0.5.2 does.
+If audiotags is removed and with it all references to it, app is being built on iOS with list of audio files from the devices's music library. Files can be played. 
+Considering creating branch for iOS.
+Next issues to fix: artwork can't be retrieved, some audio files are truncated.
 
