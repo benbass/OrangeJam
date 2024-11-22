@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audiotags
   awesome_notifications
   objectbox_flutter_libs
 )

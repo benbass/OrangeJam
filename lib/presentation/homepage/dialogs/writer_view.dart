@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
-import 'package:metadata_god/metadata_god.dart';
+// import 'package:mime/mime.dart'; // needed when using metadata_god
+import 'package:audiotags/audiotags.dart';
+//import 'package:metadata_god/metadata_god.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/core/globals.dart';
 import 'package:orangejam/core/metatags/overwrite_file.dart';
@@ -218,8 +219,8 @@ class _WriterViewState extends State<WriterView> {
   }
 
   saveUpdatedTrack(BuildContext context) async {
-    // we create metaTag from form
-    Metadata metaData = Metadata(
+    // we create metaTag from form (with metadata_god)
+  /*  Metadata metaData = Metadata(
       title: titleController.text,
       artist: artistController.text,
       album: albumController.text,
@@ -240,7 +241,36 @@ class _WriterViewState extends State<WriterView> {
                   mimeType: '',
                 )
               : null,
+    );*/
+
+    // we create metaTag from form (with audiotags)
+    Tag metaData = Tag(
+      title: titleController.text,
+      trackArtist: artistController.text,
+      album: albumController.text,
+      albumArtist: albumArtistController.text,
+      genre: genreController.text,
+      year: int.tryParse(yearController.text),
+      trackNumber: int.tryParse(trackNumberController.text),
+      trackTotal: int.tryParse(trackTotalController.text),
+      pictures: imgFromPicker != null // User picked new image
+          ? [
+        Picture(
+            bytes: imgFromPicker!.readAsBytesSync(),
+            mimeType: null,
+            pictureType: PictureType.other)
+      ]
+          : widget.track.albumArt != null // User didn't pick new image: we keep the existing one, if any
+          ? [
+        Picture(
+            bytes: widget.track.albumArt!,
+            mimeType: null,
+            pictureType: PictureType.other)
+      ]
+          : [],
     );
+
+
 
     // We send metadata to method where copy of original file will be created,
     // copy's metadata updated and this copy used to overwrite the original file

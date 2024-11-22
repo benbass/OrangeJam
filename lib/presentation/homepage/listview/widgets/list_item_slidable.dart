@@ -35,8 +35,7 @@ class ListItemSlidable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(
-        context);
+    final playlistsBloc = BlocProvider.of<PlaylistsBloc>(context);
 
     void playTrack(TrackEntity track) {
       BlocProvider.of<PlayerControlsBloc>(context)
@@ -56,7 +55,7 @@ class ListItemSlidable extends StatelessWidget {
     }
 
     Future<bool> permissionGranted() async {
-      if(Platform.isAndroid){
+      if (Platform.isAndroid) {
         late bool granted;
         if (await mediaStorePlugin.getPlatformSDKInt() < 33) {
           granted = await Permission.storage.isGranted;
@@ -123,23 +122,24 @@ class ListItemSlidable extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         children: [
-          SlidableAction(
-            /// Edit tags
-            onPressed: (_) {
-              showDialog(
-                builder: (context) => WriterView(
-                  track: track,
-                ),
-                context: context,
-              );
-            },
-            flex: 20,
-            backgroundColor: const Color(0xFFFF8100),
-            foregroundColor: const Color(0xFF202531),
-            icon: Icons.edit,
-            label: 'Tags',
-            padding: EdgeInsets.zero,
-          ),
+          if (Platform.isAndroid)
+            SlidableAction(
+              /// Edit tags. ONLY ANDROID!
+              onPressed: (_) {
+                showDialog(
+                  builder: (context) => WriterView(
+                    track: track,
+                  ),
+                  context: context,
+                );
+              },
+              flex: 20,
+              backgroundColor: const Color(0xFFFF8100),
+              foregroundColor: const Color(0xFF202531),
+              icon: Icons.edit,
+              label: 'Tags',
+              padding: EdgeInsets.zero,
+            ),
 
           /// Remove track from playlist (not available on "Files" view (when playlistId == -2)
           if (playlistsBloc.state.playlistId > -2)
@@ -183,11 +183,12 @@ class ListItemSlidable extends StatelessWidget {
             splashColor: Colors.black87,
             onTap: () async {
               String filePath = "";
-              if(Platform.isAndroid){
+              if (Platform.isAndroid) {
                 filePath = track.filePath;
                 // The Bloc will decide if track is to be played (tap on new track) or stopped (tap on current track)
                 // We check first if file still exists and storage permission is still granted
-                if (await File(filePath).exists() && await permissionGranted()) {
+                if (await File(filePath).exists() &&
+                    await permissionGranted()) {
                   playTrack(track);
                 } else {
                   snackBarFileNotExist();

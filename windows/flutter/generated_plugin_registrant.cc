@@ -6,11 +6,14 @@
 
 #include "generated_plugin_registrant.h"
 
+#include <audiotags/audiotags_plugin_c_api.h>
 #include <awesome_notifications/awesome_notifications_plugin_c_api.h>
 #include <objectbox_flutter_libs/objectbox_flutter_libs_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
+  AudiotagsPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("AudiotagsPluginCApi"));
   AwesomeNotificationsPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("AwesomeNotificationsPluginCApi"));
   ObjectboxFlutterLibsPluginRegisterWithRegistrar(

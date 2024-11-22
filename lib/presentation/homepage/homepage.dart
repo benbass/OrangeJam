@@ -60,6 +60,9 @@ class MyHomePage extends StatelessWidget {
     // app language will be set based on shared drawer_prefs if set. Default lang is en.
     setAppLanguage(context);
 
+    //init and check permission for awesomeNotifications
+    initAwesomeNotifications(context);
+
     final StoragePermissionHandler storagePermissionHandler =
         StoragePermissionHandler(context: context);
     final isScrollingCubit = BlocProvider.of<IsScrollingCubit>(context);
@@ -147,7 +150,7 @@ class MyHomePage extends StatelessWidget {
                     );
                   } else if (!playlistsState.loading) {
                     //init and check permission for awesomeNotifications
-                    initAwesomeNotifications(context);
+                    //initAwesomeNotifications(context);
 
                     /// List of tracks, extra top bar (if any, depending on kind of list)
                     return Column(
