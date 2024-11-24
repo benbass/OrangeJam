@@ -19,7 +19,6 @@ import 'application/listview/ui/is_comm_with_google_cubit.dart';
 import 'application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
-import 'package:metadata_god/metadata_god.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/presentation/homepage/homepage.dart';
 import 'package:orangejam/application/playercontrols/cubits/track_duration_cubit.dart';
@@ -36,7 +35,6 @@ void main() async {
   trackBox = objectbox.store.box<TrackEntity>();
   //sl.registerSingleton(() => trackBox);
   await di.init();
-  MetadataGod.initialize();
 
   if (Platform.isAndroid) {
     /// media_store_plus plugin

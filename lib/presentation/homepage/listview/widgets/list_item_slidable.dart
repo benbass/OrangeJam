@@ -13,7 +13,6 @@ import '../../../../domain/entities/track_entity.dart';
 import '../../../../core/playlists/playlist_handler.dart';
 import '../../../../generated/l10n.dart';
 import '../../dialogs/dialogs.dart';
-import '../../dialogs/writer_view.dart';
 import 'item_leading.dart';
 import 'item_texts.dart';
 
@@ -123,50 +122,33 @@ class ListItemSlidable extends StatelessWidget {
         motion: const DrawerMotion(),
         children: [
           if (Platform.isAndroid)
-            SlidableAction(
-              /// Edit tags. ONLY ANDROID!
-              onPressed: (_) {
-                showDialog(
-                  builder: (context) => WriterView(
-                    track: track,
-                  ),
-                  context: context,
-                );
-              },
-              flex: 20,
-              backgroundColor: const Color(0xFFFF8100),
-              foregroundColor: const Color(0xFF202531),
-              icon: Icons.edit,
-              label: 'Tags',
-              padding: EdgeInsets.zero,
-            ),
 
-          /// Remove track from playlist (not available on "Files" view (when playlistId == -2)
-          if (playlistsBloc.state.playlistId > -2)
-            SlidableAction(
-              onPressed: (_) {
-                if (playlistsBloc.state.playlistId > -1) {
-                  playlistsBloc
-                      .state.playlists[playlistsBloc.state.playlistId][1]
-                      .remove(track.filePath);
-                  PlaylistHandler().deleteLineInFile(
-                      playlistsBloc
-                          .state.playlists[playlistsBloc.state.playlistId][0],
-                      index);
-                  playlistsBloc
-                      .add(PlaylistChanged(id: playlistsBloc.state.playlistId));
-                } else {
-                  playlistsBloc.add(TrackRemoveFromQueue(track: track));
+            /// Remove track from playlist (not available on "Files" view (when playlistId == -2)
+            if (playlistsBloc.state.playlistId > -2)
+              SlidableAction(
+                onPressed: (_) {
+                  if (playlistsBloc.state.playlistId > -1) {
+                    playlistsBloc
+                        .state.playlists[playlistsBloc.state.playlistId][1]
+                        .remove(track.filePath);
+                    PlaylistHandler().deleteLineInFile(
+                        playlistsBloc
+                            .state.playlists[playlistsBloc.state.playlistId][0],
+                        index);
+                    playlistsBloc.add(
+                        PlaylistChanged(id: playlistsBloc.state.playlistId));
+                  } else {
+                    playlistsBloc.add(TrackRemoveFromQueue(track: track));
 
-                  /// TrackRemoveFromQueue calls PlaylistChanged with id -1
-                }
-              },
-              flex: 20,
-              backgroundColor: const Color(0xFF202531),
-              foregroundColor: const Color(0xFFFF8100),
-              icon: Icons.delete,
-              label: S.of(context).listItemSlidable_remove,
-            ),
+                    /// TrackRemoveFromQueue calls PlaylistChanged with id -1
+                  }
+                },
+                flex: 20,
+                backgroundColor: const Color(0xFF202531),
+                foregroundColor: const Color(0xFFFF8100),
+                icon: Icons.delete,
+                label: S.of(context).listItemSlidable_remove,
+              ),
         ],
       ),
       child: Card(

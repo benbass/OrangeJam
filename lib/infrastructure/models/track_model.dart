@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:path/path.dart' as aspath;
 
-import 'package:metadata_god/metadata_god.dart';
-//import 'package:audiotags/audiotags.dart';
 import 'package:orangejam/domain/entities/track_entity.dart';
 
 class TrackModel extends TrackEntity {
@@ -19,44 +16,6 @@ class TrackModel extends TrackEntity {
     required super.albumArt,
     required super.albumArtist,
   });
-
-  /// creates a track with metadata: used in metaTagsHandler
-  // version for metadata_god
-  factory TrackModel.metaData(Metadata metadata, File file) {
-    // track name: from metadata. If this field is null, we use the file name.
-    return TrackModel(
-      filePath: file.path,
-      trackName: metadata.title ?? aspath.basenameWithoutExtension(file.path),
-      trackArtistNames: metadata.artist ?? "",
-      albumName: metadata.album ?? "",
-      trackNumber: metadata.trackNumber,
-      albumLength: metadata.trackTotal,
-      year: metadata.year,
-      genre: metadata.genre ?? "",
-      trackDuration: metadata.durationMs,
-      albumArt: metadata.picture?.data,
-      albumArtist: metadata.albumArtist,
-    );
-  }
-
-  // Version for audiotags
- /*
-  factory TrackModel.metaData(Tag metadata, File file) {
-    // track name: from metadata. If this field is null, we use the file name.
-    return TrackModel(
-      filePath: file.path,
-      trackName: metadata.title ?? aspath.basenameWithoutExtension(file.path),
-      trackArtistNames: metadata.trackArtist ?? "",
-      albumName: metadata.album ?? "",
-      trackNumber: metadata.trackNumber,
-      albumLength: metadata.trackTotal,
-      year: metadata.year,
-      genre: metadata.genre ?? "",
-      trackDuration: metadata.duration?.toDouble(),
-      albumArt: metadata.pictures.first.bytes,
-      albumArtist: metadata.albumArtist,
-    );
-  }*/
 
   factory TrackModel.ios(Map map) {
     // Issue creating artwork image: we set it null for now!

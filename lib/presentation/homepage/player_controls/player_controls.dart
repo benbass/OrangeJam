@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/widgets/play_pause_button.dart';
@@ -11,7 +9,6 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../application/playercontrols/bloc/playercontrols_bloc.dart';
 
 import '../modal_bottomsheet_track_details/bottomsheet_track_details.dart';
-import '../dialogs/writer_view.dart';
 import 'widgets/shuffle_button.dart';
 import 'widgets/loop_button.dart';
 
@@ -68,28 +65,6 @@ class PlayerControls extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // We can't write to files in iOS media library
-                            Platform.isAndroid
-                                ? IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        builder: (context) => WriterView(
-                                          track: state.track,
-                                        ),
-                                        context: context,
-                                      );
-                                    },
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Color(0xFF202531),
-                                    ),
-                                    iconSize: 22,
-                                  )
-                                : const SizedBox(
-                                    width: 22,
-                                  ),
                             BottomSheetTrackDetails(
                               track: state.track,
                             ),

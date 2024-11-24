@@ -3,13 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audiotags
   awesome_notifications
   objectbox_flutter_libs
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
-  metadata_god
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
