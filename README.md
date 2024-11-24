@@ -28,5 +28,5 @@ Player for audio files located in the device's music folder (music library)
 ## Supported platforms
 - Android: fully supported with plugin metadata_god: ^0.5.2+1 (main branch!)
 - iOS: audio matadata is provided by native MediaPlayer. No need for extra package: All reference to metadata_god and audiotags and all methods related to getting/writing tags removed from branch main_ios.
-Next issues to fix: artwork can't be retrieved, some audio files are truncated.
+Next issues to fix: artwork and duration can't be retrieved.
 
