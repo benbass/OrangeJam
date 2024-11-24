@@ -15,9 +15,9 @@ Player for audio files located in the device's music folder (music library)
 - Data persistence for tracks objects: Objectbox database package (https://pub.dev/packages/objectbox)
 
 ## Technical notes
-- IMPORTANT: before building app, pubspec.yaml must be edited depending on target platform:
-    -   metadata_god: ^0.5.2+1 must be used on Android. Newer version 1.0.0 causes build issues on real devices (rust issues)
-  
+- IMPORTANT: this is the main_ios branch to be used for iOS. 
+- The main branch is for Android only due to metadata_god and audiotags plugin incompatibilities with each other and with iOS because of the rust version these plugins are using.
+
 - Project uses Google Services for OAuth: this project will run only with the google-service.json (Android) and the GoogleService-Info.plist (iOS) file from the developer's own firebase project.
 - Android Studio Ladybug (2024.2...) is shipped with JDK 21. That causes compilation issue with plugins that expect JDK 17.
   That's why Flutter on machines running this app on Android emulator must be configured as follows:
