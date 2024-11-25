@@ -121,8 +121,6 @@ class ListItemSlidable extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         children: [
-          if (Platform.isAndroid)
-
             /// Remove track from playlist (not available on "Files" view (when playlistId == -2)
             if (playlistsBloc.state.playlistId > -2)
               SlidableAction(
