@@ -18,16 +18,6 @@ class TrackModel extends TrackEntity {
   });
 
   factory TrackModel.ios(Map map) {
-    // Issue creating artwork image: we set it null for now!
-    /*
-    final ByteData? byteData = map['albumArt'];
-    Uint8List? imageData;
-    if(byteData != null) {
-      imageData = byteData.buffer.asUint8List();
-    } else {
-      imageData = null;
-    }
-    */
     return TrackModel(
       filePath: map['assetUrl'],
       trackName: map['title'] ?? aspath.basenameWithoutExtension(map['assetUrl']),
@@ -37,9 +27,10 @@ class TrackModel extends TrackEntity {
       albumLength: map['albumLength'],
       year: map['year'],
       genre: map['genre'],
-      trackDuration: map['duration'],
-      albumArt: null,//imageData,
+      trackDuration: map['duration']*1000, // we get the duration in seconds but we use milliseconds
+      albumArt: map['albumArt'],
       albumArtist: map['albumArtist'],
     );
   }
+
 }

@@ -38,7 +38,7 @@ import awesome_notifications
                     } else {
                         song["year"] = nil
                     }
-                    
+
                     song["genre"] = item.value(forProperty: MPMediaItemPropertyGenre) as? String
                     
                     if let duration = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber {
@@ -50,8 +50,6 @@ import awesome_notifications
                     if let artwork = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
                         if let image = artwork.image(at: CGSize(width: 256, height: 256)) {
                             if let imageData = image.pngData() {
-                                // Convert Data to Uint8List
-                                let uint8List = Array(imageData)
                                 song["albumArt"] = imageData
                             }
                         }
