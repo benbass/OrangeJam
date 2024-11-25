@@ -27,7 +27,7 @@ class TrackModel extends TrackEntity {
       albumLength: map['albumLength'],
       year: map['year'],
       genre: map['genre'],
-      trackDuration: map['duration']*1000, // we get the duration in seconds but we use milliseconds
+      trackDuration: map['duration'] != null ? map['duration']*1000 : null, // we get the duration in seconds but we use milliseconds
       albumArt: map['albumArt'],
       albumArtist: map['albumArtist'],
     );
