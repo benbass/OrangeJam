@@ -9,7 +9,9 @@ import 'package:image/image.dart' as i;
 import 'package:orangejam/injection.dart' as di;
 
 import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
+import '../../injection.dart';
 import '../helpers/format_duration.dart';
+import '../player/audiohandler.dart';
 
 // This method will be called when user changed in app to an empty playlist
 // but tries to skip to previous or next track.
@@ -52,7 +54,7 @@ void createNotification(
   // We create notification only if user tapped on a track.
   // This check is necessary in order to prevent errors when app is resumed or inactive and player is stopped,
   // in which case id == 0, which can causes issues... id 0 is the id of an empty track which always stops the audio player
-  if (currentTrack.id != 0) {
+  if (sl<MyAudioHandler>().id != 0) {
     Duration d = Duration(milliseconds: currentTrack.trackDuration!.toInt());
 
     /// we create the image and its path (used by largeIcon) from the tracks album art
