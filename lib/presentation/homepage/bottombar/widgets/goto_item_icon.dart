@@ -30,7 +30,7 @@ class GotoItemIcon extends StatelessWidget {
       children: [
         BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
           builder: (context, state) {
-            if (state.track.id != 0) {
+            if (sl<MyAudioHandler>().id != 0) {
               // button is shown only if a track is playing && list is scrolled
               return BlocBuilder<IsScrollingCubit, bool?>(
                   builder: (context, scrollingState) {
@@ -38,8 +38,7 @@ class GotoItemIcon extends StatelessWidget {
                     builder: (context, reverseState) {
                   return IconButton(
                     onPressed: () => gotoItem(72.0, observerController, context),
-                    icon: scrollingState! &&
-                            sl<MyAudioHandler>().currentTrack.id != 0
+                    icon: scrollingState!
                         ? Transform.flip(
                             flipY: reverseState!,
                             child: const Icon(
