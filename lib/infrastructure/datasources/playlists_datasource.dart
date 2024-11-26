@@ -33,8 +33,14 @@ class PlaylistsDatasourceImpl implements Playlistsdatasource {
           if(!line.startsWith('#') || line.isNotEmpty) {
             audioFile = File(line);
           }
-          final exists =
-              await audioFile.exists(); // we check if file still exists
+
+          bool exists = false;
+          if(Platform.isIOS){
+            exists = await platform.invokeMethod('fileExists', {'assetUrl': audioFile.path});
+          } else {
+            exists = await audioFile.exists(); // we check if file still exists
+          }
+
           if (exists) {
             linesList.add(line); // only if file exists, its path is added to linesList
           } else {

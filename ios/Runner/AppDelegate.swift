@@ -11,6 +11,9 @@ import awesome_notifications
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
 
+      // Register the Observer for app termination events
+    NotificationCenter.default.addObserver(self, selector: #selector(appWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
+       
 
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let channel = FlutterMethodChannel(name: "orangejam_music_dir", binaryMessenger: controller.binaryMessenger)
@@ -94,14 +97,40 @@ import awesome_notifications
                 } else {
                     result(FlutterError(code: "INVALID_ASSET_URL", message: "Ungültige Asset-URL", details: nil))
                 }
+        case "fileExists":
+            if let arguments = call.arguments as? [String: Any],
+                  let assetUrlString = arguments["assetUrl"] as? String {
+                   
+                       if let assetUrl = URL(string: assetUrlString) {
+                           // Extract persistent ID from URL
+                           if let persistentIDString = assetUrl.query?.components(separatedBy: "=").last,
+                              let persistentID = Int(persistentIDString) {
+
+                               let query = MPMediaQuery.songs()
+                               let predicate = MPMediaPropertyPredicate(value: persistentID, forProperty: MPMediaItemPropertyPersistentID)
+                               query.addFilterPredicate(predicate)
+
+                               if let items = query.items, !items.isEmpty {
+                                   result(true) // File exists
+                               } else {
+                                   result(false) // file does not exist
+                               }
+                           } else {
+                               result(false) // Invalid persistent ID
+                           }
+                       } else {
+                           result(false) // Invalid assetUrl
+                       }
+                 
+               } else {
+                   result(FlutterError(code: "INVALID_ARGUMENTS", message: "Ungültige Argumente", details: nil))
+               }
             
-            default:
-                result(FlutterMethodNotImplemented)
+        default:
+            result(FlutterMethodNotImplemented)
             }
 
     })
-      
-    
       
 
     // This function registers the desired plugins to be used within a notification background action
@@ -112,4 +141,19 @@ import awesome_notifications
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+    @objc func appWillTerminate() {
+            let fileManager = FileManager.default
+            let tempDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+
+            do {
+                let fileURLs = try fileManager.contentsOfDirectory(at: tempDirectory, includingPropertiesForKeys: nil)
+                for fileURL in fileURLs {
+                    try fileManager.removeItem(at: fileURL)
+                }
+            } catch {
+                print("Fehler beim Löschen temporärer Dateien: \(error)")
+            }
+        }
+    
 }
