@@ -260,10 +260,14 @@ class PlaylistsUsecases {
     } else {
       for (var track in initialTracks) {
         if (track.filePath.toLowerCase().contains(keyword.toLowerCase()) ||
-            (track.trackArtistNames!
-                .toLowerCase()
-                .contains(keyword.toLowerCase())) ||
-            track.trackName!.toLowerCase().contains(keyword.toLowerCase()) ||
+            (track.trackArtistNames != null &&
+                track.trackArtistNames!
+                    .toLowerCase()
+                    .contains(keyword.toLowerCase())) ||
+            (track.trackName != null &&
+                track.trackName!
+                    .toLowerCase()
+                    .contains(keyword.toLowerCase())) ||
             (track.albumName != null &&
                 track.albumName!
                     .toLowerCase()
