@@ -52,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "album": MessageLookupByLibrary.simpleMessage("Album: "),
         "albumArtist": MessageLookupByLibrary.simpleMessage("Artiste album: "),
         "artist": MessageLookupByLibrary.simpleMessage("Artiste: "),
+        "backupRestore_backupAborted": MessageLookupByLibrary.simpleMessage(
+            "Backup des playlistes interrompu."),
         "backupRestore_backupFileNotCreated":
             MessageLookupByLibrary.simpleMessage(
                 "Le fichier du backup n\'a pas pu être créé."),
@@ -59,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Erreur de lecture du fichier.\nEssayez à nouveau."),
+        "backupRestore_hasBeenSaved": MessageLookupByLibrary.simpleMessage(
+            " créé pour votre backup a été sauvegardé."),
         "backupRestore_hasBeenUploadedToYourGoogleDrive":
             MessageLookupByLibrary.simpleMessage(
                 " a été téléchargé sur votre Google Drive."),
@@ -90,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonOk": MessageLookupByLibrary.simpleMessage("Ok"),
         "buttonRestore": MessageLookupByLibrary.simpleMessage("Restaurer"),
         "close": MessageLookupByLibrary.simpleMessage("Fermer"),
+        "cutomWidgets_aZipArchiveWillBeCreatedAndSaved":
+            MessageLookupByLibrary.simpleMessage(
+                "Un fichier ZIP sera créé et sauvegardé à l\'emplacement de votre choix"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "Un fichier ZIP sera créé puis téléchargé sur votre Google Drive"),

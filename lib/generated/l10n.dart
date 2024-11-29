@@ -471,6 +471,16 @@ class S {
     );
   }
 
+  /// `A ZIP archive will be created and saved to the location of your choice`
+  String get cutomWidgets_aZipArchiveWillBeCreatedAndSaved {
+    return Intl.message(
+      'A ZIP archive will be created and saved to the location of your choice',
+      name: 'cutomWidgets_aZipArchiveWillBeCreatedAndSaved',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Continue`
   String get buttonContinue {
     return Intl.message(
@@ -526,6 +536,16 @@ class S {
     return Intl.message(
       ' has been uploaded to your Google Drive.',
       name: 'backupRestore_hasBeenUploadedToYourGoogleDrive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` created for your backup has been saved.`
+  String get backupRestore_hasBeenSaved {
+    return Intl.message(
+      ' created for your backup has been saved.',
+      name: 'backupRestore_hasBeenSaved',
       desc: '',
       args: [],
     );
@@ -596,6 +616,16 @@ class S {
     return Intl.message(
       'Restore aborted.',
       name: 'backupRestore_restoreAborted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup aborted.`
+  String get backupRestore_backupAborted {
+    return Intl.message(
+      'Backup aborted.',
+      name: 'backupRestore_backupAborted',
       desc: '',
       args: [],
     );
