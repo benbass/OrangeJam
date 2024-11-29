@@ -31,6 +31,7 @@ class MyAudioHandler {
 
   /// track with id 0 has impact on notification update
   TrackEntity currentTrack = TrackEntity.empty().copyWith(id: 0);
+  int id = 0; // this will be the currentTrack.id
   bool isPausingState = false;
   Duration currentPosition = Duration.zero;
 
@@ -61,6 +62,7 @@ class MyAudioHandler {
   /// PLAYER CONTROLS ///
   void playTrack(TrackEntity track) async {
     currentTrack = track;
+    id = currentTrack.id;
 
     final trackPositionCubit = context.read<TrackPositionCubit>();
     final trackDurationCubit = context.read<TrackDurationCubit>();
@@ -110,6 +112,7 @@ class MyAudioHandler {
   void stopTrack() {
     flutterSoundPlayer.stopPlayer();
     currentTrack = TrackEntity.empty().copyWith(id: 0);
+    id = 0;
     cancelNotification();
   }
 

@@ -19,7 +19,7 @@ class ShowHidePlayerControls extends StatelessWidget {
         // Show player controls
         BlocBuilder<PlayerControlsBloc, PlayerControlsState>(
           builder: (context, state) {
-            if (sl<MyAudioHandler>().currentTrack.id != 0) {
+            if (sl<MyAudioHandler>().id != 0) {
               return IconButton(
                 onPressed: () {
                   state.height > 0

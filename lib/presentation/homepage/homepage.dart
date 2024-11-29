@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orangejam/core/storage_permission/storage_permission_handler.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../application/playercontrols/bloc/playercontrols_bloc.dart';
 import 'package:orangejam/application/playlists/playlists_bloc.dart';
 import 'package:orangejam/presentation/homepage/player_controls/player_controls.dart';
 import 'package:orangejam/application/listview/ui/is_scrolling_cubit.dart';
@@ -78,7 +77,7 @@ class MyHomePage extends StatelessWidget {
         ListObserverController(controller: sctr);
 
     void updateNotificationIfNeeded() {
-      if (sl<PlayerControlsBloc>().state.track.id != 0) {
+      if (sl<MyAudioHandler>().id != 0) {
         createNotification(audioHandler.currentTrack,
             audioHandler.isPausingState, audioHandler.currentPosition);
       }
