@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,8 +41,9 @@ void dialogActionRestoreOrBackupPlaylists(
     BuildContext context, String restoreOrBackup) {
   String playlistsWillBeDeleted =
       S.of(context).cutomWidgets_pickTheZipFileThatContainsYourBackup(appName);
-  String zipWillBeCreated =
-      S.of(context).cutomWidgets_aZipArchiveWillBeCreatedAndUploaded;
+  String zipWillBeCreated = Platform.isAndroid
+      ? S.of(context).cutomWidgets_aZipArchiveWillBeCreatedAndUploaded
+      : S.of(context).cutomWidgets_aZipArchiveWillBeCreatedAndSaved;
   String abort = S.of(context).buttonCancel;
   String continu = S.of(context).buttonContinue;
   String restore = S.of(context).buttonRestore;
@@ -326,9 +329,7 @@ void dialogCreatePlaylist(
                       SnackBar(
                         duration: const Duration(seconds: 2),
                         content: Text(
-                          S
-                              .of(context)
-                              .edit_tags_snackBarUpdateError,
+                          S.of(context).edit_tags_snackBarUpdateError,
                         ),
                       ),
                     );

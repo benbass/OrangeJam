@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:google_sign_in/google_sign_in.dart' as sign_in;
+import 'package:file_picker/file_picker.dart';
 
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../generated/l10n.dart';
@@ -44,43 +45,37 @@ Future<void> backupM3uFiles(BuildContext context) async {
   final s = S.of(context);
 
   // Define common strings
-  const folderName = '$appName user data';
   const backupFolder = '$appName backup dir';
   final dateTimeForReuse = _getFormattedDateTime();
 
   // Get platform-specific directory
-  final dir = Platform.isAndroid
-      ? await getTemporaryDirectory()
-      : await getApplicationDocumentsDirectory();
+  final tempDir = await getTemporaryDirectory();
 
   // Create backup path and folder
-  final backupPath = p.join(dir.path, backupFolder);
+  final backupPath = p.join(tempDir.path, backupFolder);
   await Directory(backupPath).create(recursive: true);
 
-  // Get user data directory
-  final userDataDir = Platform.isAndroid
-      ? Directory(p.join((await getApplicationDocumentsDirectory()).path,
-          '${appName}_Playlists'))
-      : Directory(p.join(dir.path, folderName));
+  // Get app data directory
+  final appDataDir = Directory(p.join((await getApplicationDocumentsDirectory()).path,
+          '${appName}_Playlists'));
 
   try {
     // Get list of m3u files
-    final files = await _getPlaylistFiles(userDataDir);
+    final files = await _getPlaylistFiles(appDataDir);
 
     // Copy files to backup folder
     await _copyFilesToBackupFolder(files, backupPath);
 
     // Create zip file
-    final zipFilePath = Platform.isAndroid
-        ? p.join(dir.path, '${appName}_Playlists_$dateTimeForReuse.zip')
-        : p.join(dir.path, '${appName}_$dateTimeForReuse.zip');
+    final zipFilePath =
+        p.join(tempDir.path, '${appName}_Playlists_$dateTimeForReuse.zip');
 
     encoder.zipDirectory(Directory(backupPath), filename: zipFilePath);
 
     if (Platform.isAndroid) {
       if (context.mounted) {
         await _uploadToGoogleDrive(
-                context, dir, isCommunicating, zipFilePath, s, dateTimeForReuse)
+                context, tempDir, isCommunicating, zipFilePath, s, dateTimeForReuse)
             .whenComplete(() => deleteZipFile(zipFilePath))
             .whenComplete(() => Directory(backupPath).delete(recursive: true))
             .whenComplete(() {
@@ -89,7 +84,7 @@ Future<void> backupM3uFiles(BuildContext context) async {
       }
     } else {
       if (context.mounted) {
-        await _handleLocalBackup(context, dir, backupPath, s, dateTimeForReuse);
+        await _handleLocalBackup(context, s, zipFilePath, backupPath);
       }
     }
   } catch (e) {
@@ -121,9 +116,7 @@ Future<List<File>> _getPlaylistFiles(Directory directory) async {
 Future<void> _copyFilesToBackupFolder(
     List<File> files, String backupPath) async {
   for (final file in files) {
-    final fileName = Platform.isAndroid
-        ? file.extractFileNameFromPath
-        : file.extractFileNameFromPathWin;
+    final fileName = file.extractFileNameFromPath;
     await file.copy(p.join(backupPath, fileName));
   }
 }
@@ -217,7 +210,25 @@ Future<void> _uploadFile(
   );
 }
 
-Future<void> _handleLocalBackup(BuildContext context, Directory dir,
-    String backupPath, S s, String dateTimeForReuse) async {
-  /// TODO: ... (Local backup logic)
+Future<void> _handleLocalBackup(
+    BuildContext context, S s, String zipFilePath, String backupPath) async {
+  String? outputFile = await FilePicker.platform
+      .saveFile(
+        dialogTitle: "Please select the location for your backup",
+        fileName: p.basename(zipFilePath),
+        allowedExtensions: ["zip"],
+        bytes: File(zipFilePath).readAsBytesSync(),
+      )
+      .whenComplete(() => deleteZipFile(zipFilePath))
+      .whenComplete(() => Directory(backupPath).delete(recursive: true))
+      .whenComplete(() => context.mounted
+          ? dialogClose(context,
+              "${s.backupRestore_theFile}${s.backupRestore_hasBeenSaved}")
+          : {});
+
+  if (outputFile == null) {
+    if (context.mounted) {
+      dialogClose(context, s.backupRestore_backupAborted);
+    }
+  }
 }

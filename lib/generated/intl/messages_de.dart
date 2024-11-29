@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "album": MessageLookupByLibrary.simpleMessage("Album: "),
         "albumArtist": MessageLookupByLibrary.simpleMessage("Album Künstler: "),
         "artist": MessageLookupByLibrary.simpleMessage("Künstler: "),
+        "backupRestore_backupAborted":
+            MessageLookupByLibrary.simpleMessage("Sicherung abgebrochen."),
         "backupRestore_backupFileNotCreated":
             MessageLookupByLibrary.simpleMessage(
                 "Die Sicherung konnte nicht erstellt werden."),
@@ -58,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Fehler beim Holen der Sicherungsdatei.\nBitte versuchen Sie es nochmal."),
+        "backupRestore_hasBeenSaved": MessageLookupByLibrary.simpleMessage(
+            " mit Ihrer Sicherung wurde gespeichert."),
         "backupRestore_hasBeenUploadedToYourGoogleDrive":
             MessageLookupByLibrary.simpleMessage(
                 " wurde auf Google Drive hochgeladen."),
@@ -90,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonRestore":
             MessageLookupByLibrary.simpleMessage("Wiederherstellen"),
         "close": MessageLookupByLibrary.simpleMessage("Schliessen"),
+        "cutomWidgets_aZipArchiveWillBeCreatedAndSaved":
+            MessageLookupByLibrary.simpleMessage(
+                "Es wird ein ZIP-Archiv erstellt und an einem Ort Ihrer Wahl gespeichert"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "Eine ZIP Datei wird erstellt und auf Ihren Google Drive hochgeladen"),

@@ -52,12 +52,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "album": MessageLookupByLibrary.simpleMessage("Album: "),
         "albumArtist": MessageLookupByLibrary.simpleMessage("Album artist: "),
         "artist": MessageLookupByLibrary.simpleMessage("Artist: "),
+        "backupRestore_backupAborted":
+            MessageLookupByLibrary.simpleMessage("Backup aborted."),
         "backupRestore_backupFileNotCreated":
             MessageLookupByLibrary.simpleMessage("Backup file not created."),
         "backupRestore_error": MessageLookupByLibrary.simpleMessage("Error"),
         "backupRestore_errorWhileRetrievingTheBackupFilenpleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Error while retrieving the backup file.\nPlease try again."),
+        "backupRestore_hasBeenSaved": MessageLookupByLibrary.simpleMessage(
+            " created for your backup has been saved."),
         "backupRestore_hasBeenUploadedToYourGoogleDrive":
             MessageLookupByLibrary.simpleMessage(
                 " has been uploaded to your Google Drive."),
@@ -89,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttonOk": MessageLookupByLibrary.simpleMessage("Ok"),
         "buttonRestore": MessageLookupByLibrary.simpleMessage("Restore"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "cutomWidgets_aZipArchiveWillBeCreatedAndSaved":
+            MessageLookupByLibrary.simpleMessage(
+                "A ZIP archive will be created and saved to the location of your choice"),
         "cutomWidgets_aZipArchiveWillBeCreatedAndUploaded":
             MessageLookupByLibrary.simpleMessage(
                 "A ZIP archive will be created and uploaded to your Google Drive"),
