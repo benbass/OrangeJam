@@ -2,6 +2,17 @@
 
 Player for local audio files
 
+## Specs
+
+- Architecture pattern:
+    - presentation: UI view
+    - application: state management (view controller)
+    - domain: business logic, data entities
+    - infrastructure: data sources, data models
+- State Management: Bloc
+- Dependency injection: GetIt
+- Internationalization: Intl
+
 ## Features
 
 Player for audio files located in the device's music folder (music library)
