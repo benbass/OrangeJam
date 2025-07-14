@@ -52,7 +52,7 @@ class MetaTagsHandler {
   */
 
   // We use AudioTags to write: MetadataGod doesn't always write album art so it's not updated. Reason unknown...
-  writeTags(String filePath, Tag metaData, BuildContext context) async {
+  Future<void> writeTags(String filePath, Tag metaData, BuildContext context) async {
     try{
       await AudioTags.write(
         filePath,
