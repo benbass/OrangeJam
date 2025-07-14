@@ -41,7 +41,7 @@ class _WriterViewState extends State<WriterView> {
   late String fileName;
 
 // Update DB object
-  _updateDbObject() async {
+  Future<void> _updateDbObject() async {
     // Get the obj
     final track = trackBox.get(widget.track.id)!;
     // Modify obj properties
@@ -218,7 +218,7 @@ class _WriterViewState extends State<WriterView> {
     );
   }
 
-  saveUpdatedTrack(BuildContext context) async {
+  Future<void> saveUpdatedTrack(BuildContext context) async {
     // we create metaTag from form (with metadata_god)
    /*
     mg.Metadata metaData = mg.Metadata(
