@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="de.brbass.orangejam">
     <!-- To read all files until API level 32 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <!-- To write all files until API level 29. We will MediaStore from API level 30 -->
@@ -11,7 +11,8 @@
         android:label="OrangeJam"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true">
         <!-- Need for API level 29. Scoped Storage has some issue in Android 10. So, google recommended to add requestLegacyExternalStorage="true". -->
         <!-- Read more from here: https://developer.android.com/training/data-storage/shared/media#access-other-apps-files-->
         <activity
