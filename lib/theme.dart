@@ -102,8 +102,8 @@ class AppTheme {
     iconTheme: const IconThemeData(
       color: _iconColor,
     ),
-    dialogTheme: DialogTheme(
-      backgroundColor: _primaryVariantColor.withOpacity(0.85),
+    dialogTheme: DialogThemeData(
+      backgroundColor: _primaryVariantColor.withValues(alpha: 0.85),
       titleTextStyle: _bodyTextLarge.copyWith(color: _primaryColor),
       contentTextStyle: _bodyTextMedium,
     ),
