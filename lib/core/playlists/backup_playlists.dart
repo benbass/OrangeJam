@@ -3,16 +3,17 @@ import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:google_sign_in/google_sign_in.dart' as sign_in;
 import 'package:file_picker/file_picker.dart';
 
 import '../../application/listview/ui/is_comm_with_google_cubit.dart';
 import '../../generated/l10n.dart';
 import '../../presentation/homepage/dialogs/dialogs.dart';
 import '../../services/google_auth_client.dart';
+import '../../services/google_sign_in.dart';
 import '../globals.dart';
 
 // ANLEITUNG:
@@ -20,7 +21,7 @@ import '../globals.dart';
 // Dann Google Drive Api aktivieren
 // Anmeldedaten erstellen (OAuth) für Android app. SHA1 key unbedingt!!!! hier mit " ./gradlew signingReport " (zuerst ins Verz. android wechseln!)
 // Wenn später die Anmeldung beim Testen fehlschlägt, dann ist der key wahrscheinlich falsch (falsch erstellt!)
-// Unter OAuth-Zustimmungsbildschirm muss die App Test sein, Usertyp: extern, (Wenn die App veröffenltlicht ist, aud Production wechseln)
+// Unter OAuth-Zustimmungsbildschirm muss die App Test sein, Usertyp: extern, (Wenn die App veröffenltlicht ist, auf Production wechseln)
 // dann nach "Bearbeiten" einfach Speichern und Fortfahren um zu den Scopes zu gelangen.
 // Dort Google Drive API auswählen und speichern.
 // Dann die email des test users eingeben
@@ -56,8 +57,8 @@ Future<void> backupM3uFiles(BuildContext context) async {
   await Directory(backupPath).create(recursive: true);
 
   // Get app data directory
-  final appDataDir = Directory(p.join((await getApplicationDocumentsDirectory()).path,
-          '${appName}_Playlists'));
+  final appDataDir = Directory(p.join(
+      (await getApplicationDocumentsDirectory()).path, '${appName}_Playlists'));
 
   try {
     // Get list of m3u files
@@ -74,8 +75,8 @@ Future<void> backupM3uFiles(BuildContext context) async {
 
     if (Platform.isAndroid) {
       if (context.mounted) {
-        await _uploadToGoogleDrive(
-                context, tempDir, isCommunicating, zipFilePath, s, dateTimeForReuse)
+        await _uploadToGoogleDrive(context, tempDir, isCommunicating,
+                zipFilePath, s, dateTimeForReuse)
             .whenComplete(() => deleteZipFile(zipFilePath))
             .whenComplete(() => Directory(backupPath).delete(recursive: true))
             .whenComplete(() {
@@ -121,7 +122,7 @@ Future<void> _copyFilesToBackupFolder(
   }
 }
 
-deleteZipFile(String filePath) async {
+Future<FileSystemEntity> deleteZipFile(String filePath) async {
   return await File(filePath).delete();
 }
 
@@ -134,20 +135,50 @@ Future<void> _uploadToGoogleDrive(
     String dateTimeForReuse) async {
   isCommunicating.isCommunicatingWithGoogleDrive(true);
 
-  final googleSignIn =
-      sign_in.GoogleSignIn.standard(scopes: [drive.DriveApi.driveFileScope]);
-  final account = await googleSignIn.signIn();
+  GoogleSignInUserData? currentUser;
+  const List<String> scopes = <String>[drive.DriveApi.driveFileScope];
 
-  if (account == null) {
-    if (context.mounted) {
-      dialogClose(
-          context, s.backupRestore_youAreNotSignedInToYourGoogleAccount);
+  try {
+    // Assume the user is already signed in.
+    currentUser = await SignInToGoogle().signIn();
+    if (currentUser == null) {
+      // User is not signed in. Try to sign in explicitly.
+      try {
+        currentUser = await SignInToGoogle().handleSignIn();
+      } catch (e) {
+        debugPrint("Explicit sign in failed. $e");
+        if (context.mounted) {
+          dialogClose(context, "Google sign in failed. Please try again.");
+        }
+      }
     }
+  } catch (e) {
+    debugPrint("User is not signed in. $e");
+    if (context.mounted) {
+      dialogClose(context, "Google sign in failed. Please try again.");
+    }
+  }
+
+  // At this point, currentUser should be non-null.
+  final ClientAuthorizationTokenData? tokens =
+      await GoogleSignInPlatform.instance.clientAuthorizationTokensForScopes(
+          ClientAuthorizationTokensForScopesParameters(
+              request: AuthorizationRequestDetails(
+                  scopes: scopes,
+                  userId: currentUser?.id,
+                  email: currentUser?.email,
+                  promptIfUnauthorized: false)));
+  if (tokens == null) {
+    // currentUser was null, so tokens is null as well
+    if (context.mounted) {
+      dialogClose(context, "Google authorization failed. Please try again.");
+    }
+    isCommunicating.isCommunicatingWithGoogleDrive(false);
     return;
   }
 
-  final authHeaders = await account.authHeaders;
-  final authenticateClient = GoogleAuthClient(authHeaders);
+  final String accessToken = tokens.accessToken;
+  final authenticateClient = GoogleAuthClient(accessToken);
   final driveApi = drive.DriveApi(authenticateClient);
 
   try {
@@ -155,7 +186,6 @@ Future<void> _uploadToGoogleDrive(
     final fileName = '${appName}_Playlists_$dateTimeForReuse.zip';
     final file = File(zipFilePath);
 
-    // create file info for Google Drive and upload
     await _uploadFile(
       driveApi,
       folderId,
@@ -171,7 +201,6 @@ Future<void> _uploadToGoogleDrive(
     if (context.mounted) {
       dialogClose(context, "${s.backupRestore_unableToUpload} ${e.toString()}");
     }
-    // Handle exception, e.g., log it or show a more specific error message
   } finally {
     isCommunicating.isCommunicatingWithGoogleDrive(false);
   }
