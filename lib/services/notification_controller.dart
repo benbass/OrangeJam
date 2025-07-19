@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import '../application/playercontrols/bloc/playercontrols_bloc.dart';
 import '../injection.dart' as di;
 
+@pragma("vm:entry-point")
 class NotificationController {
 /*
   /// Use this method to detect when a new notification or a schedule is created
